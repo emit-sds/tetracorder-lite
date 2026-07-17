@@ -56,19 +56,16 @@ def patch(**kwargs):
     tetra.patch_cmd_file(**kwargs)
 
 
-@cli.command(help="Setup then run tetracorder (the default container action).")
-@click.option("-v", "--version", default="6.00a")
+@cli.command(help="Run tetracorder on the mounted L2A (the default container action).")
 @outp
-@click.option("-s", "--sensor", default="emit_c")
-@mode
-@file
-@click.option("-g", "--geology", is_flag=True)
-@click.option("-c", "--cores", type=int, default=os.cpu_count())
-@click.option("-a", "--args", nargs=9, default=["1", "-T", "-20", "80", "C", "-P", ".5", "1.5", "bar"])
-@click.option("--rm", is_flag=True)
-def run(**kwargs):
-    tetra.setup_tetrun(**kwargs)
-    tetra.exec_tetrun(**kwargs)
+@click.option("--data-dir", default="/data", help="Directory holding the L2A ENVI scene")
+@click.option("--setup/--no-setup", default=False,
+              help="Run cmd-setup-tetrun first (local dev only; baked in the image)")
+def run(output, data_dir, setup):
+    file = tetra.discover_l2a(data_dir)
+    if setup:
+        tetra.setup_tetrun(output=output, file=file)
+    tetra.exec_tetrun(output=output, file=file)
 
 
 @cli.command("convolve", help=convolve.build_all.__doc__)

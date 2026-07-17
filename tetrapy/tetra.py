@@ -121,6 +121,26 @@ def exec_tetrun(
     subprocess.run(cmd, cwd=output)
 
 
+def discover_l2a(data_dir="/data"):
+    """Return the extensionless path of the single ENVI reflectance file in data_dir.
+
+    A scene is an ENVI ``.hdr`` with a matching binary sidecar (``.img`` or no
+    suffix). Tetracorder's ``cmd.runtet`` wants the path without the ``.hdr``.
+    """
+    data_dir = Path(data_dir)
+    hdrs = sorted(p for p in data_dir.glob("*.hdr"))
+    scenes = []
+    for h in hdrs:
+        stem = h.with_suffix("")
+        if stem.exists() or stem.with_suffix(".img").exists():
+            scenes.append(str(stem))
+    if not scenes:
+        raise FileNotFoundError(f"no ENVI scene (.hdr + sidecar) found in {data_dir}")
+    if len(scenes) > 1:
+        raise ValueError(f"expected one scene in {data_dir}, found {len(scenes)}: {scenes}")
+    return scenes[0]
+
+
 def parse_variables(file: str) -> dict[str, float | tuple[float, ...]]:
     """
     Parse ==[NAME] value... definitions from a command file.
