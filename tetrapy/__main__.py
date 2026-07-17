@@ -116,3 +116,16 @@ def cmds2csv_cmd(cmds, csv):
 @click.argument("b")
 def validate_cmd(a, b):
     convolve.compare_libraries(a, b)
+
+
+@cli.command("verify-config", help="Validate the sensor-keyed config tree (build-time gate).")
+@click.option("--cmds-dir", required=True, help="Path to a tetracorder*.cmds directory")
+@click.option("-s", "--sensor", default="emit_c")
+@click.option("--nchans", type=int, required=True, help="Channel count of the epoch")
+@click.option("--std-path", default="/sl1/usgs/library06.conv/s06emitc")
+@click.option("--res-path", default="/sl1/usgs/rlib06/r06emitc")
+def verify_config_cmd(cmds_dir, sensor, nchans, std_path, res_path):
+    from tetrapy import epoch_config
+    epoch_config.verify_config(cmds_dir, sensor=sensor, nchans=nchans,
+                               std_path=std_path, res_path=res_path)
+    click.echo(f"config OK: {sensor} @ {nchans} ch")

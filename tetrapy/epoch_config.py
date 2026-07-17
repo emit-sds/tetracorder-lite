@@ -60,3 +60,19 @@ def validate_restart(path, *, nchans, iyfl, iwfl):
         got = _restart_value(text, key)
         if got != want:
             raise ValueError(f"{path}: {key}={got!r}, expected {want!r}")
+
+
+def verify_config(cmds_dir, *, sensor, nchans, std_path, res_path):
+    """Validate the sensor-keyed config tree under a tetracorder*.cmds directory."""
+    cmds = Path(cmds_dir)
+    dataset = cmds / "DATASETS" / sensor
+    if not dataset.exists():
+        raise ValueError(f"missing DATASET: {dataset}")
+    m = re.search(r"^restart=\s*([^\s#]+)", dataset.read_text(), re.M)
+    if not m:
+        raise ValueError(f"{dataset}: no restart= line")
+    restart = cmds / "DATASETS" / "restart_files" / m.group(1)
+    if not restart.exists():
+        raise ValueError(f"missing restart file: {restart}")
+    validate_restart(restart, nchans=nchans, iyfl=std_path, iwfl=res_path)
+    validate_deleted_channels(cmds / "DELETED.channels" / f"delete_{sensor}", nchans)
