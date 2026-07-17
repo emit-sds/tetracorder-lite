@@ -295,6 +295,15 @@ def read_wavelengths_fwhm_txt(wl_path, fwhm_path, units="nanometers"):
     return waves, fwhm
 
 
+def resolve_grid(envi_header=None, grid=None):
+    """Return (wavelengths, fwhm) in microns from exactly one grid source."""
+    if (envi_header is None) == (grid is None):
+        raise ValueError("provide exactly one of envi_header or grid")
+    if grid is not None:
+        return grid
+    return read_wavelengths_fwhm(envi_header)
+
+
 # --------------------------------------------------------------- recipe parsing
 # A convolution "recipe" enumerates, per output spectrum, the master records to
 # read: the spectrum (recnum), its native wavelength grid (inwave) and native
@@ -429,7 +438,7 @@ def _data_block(shell, title, values):
 
 
 # ------------------------------------------------------------------ entry point
-def build_all(spectral_lib_dir, recipe_dir, output_dir, envi_header):
+def build_all(spectral_lib_dir, recipe_dir, output_dir, *, envi_header=None, grid=None):
     """Convolve every library whose recipe + master are present.
 
     Recipes are discovered by prefix in ``recipe_dir``: ``conv.s06*.cmds`` (or
@@ -471,7 +480,7 @@ def build_all(spectral_lib_dir, recipe_dir, output_dir, envi_header):
         output = f"{output_dir}/{fam['output']}"
         print(f"=== convolving {master.name} via {recipes[0].name} -> {output} ===")
         build_from_recipe(master=str(master), recipe=str(recipes[0]),
-                          output=output, envi_header=envi_header)
+                          output=output, envi_header=envi_header, grid=grid)
         export_envi(output, f"{output}_envi")
         outputs.append(output)
     if not outputs:
@@ -479,7 +488,7 @@ def build_all(spectral_lib_dir, recipe_dir, output_dir, envi_header):
     return outputs
 
 
-def build_from_recipe(master, recipe, output, envi_header, sppad=4):
+def build_from_recipe(master, recipe, output, *, envi_header=None, grid=None, sppad=4):
     """Build a convolved spectral library from a master + recipe, no template.
 
     Reproduces the specpr record layout the Fortran ``conv.*.cmds`` produced — a
@@ -505,7 +514,7 @@ def build_from_recipe(master, recipe, output, envi_header, sppad=4):
     """
     mrecs = load(master)
     rows = read_recipe(recipe)
-    out_wl, out_fwhm = read_wavelengths_fwhm(envi_header)
+    out_wl, out_fwhm = resolve_grid(envi_header=envi_header, grid=grid)
     n_ch = out_wl.size
     channel_axis = np.arange(1, n_ch + 1, dtype=np.float64)
 
