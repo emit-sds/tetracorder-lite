@@ -1,0 +1,7 @@
+SPECPR_Restart=2.00      # Restart Version
+ivfl=/dev/null
+iwfl=/sl1/usgs/rlib06/r06emitc
+iyfl=/sl1/usgs/library06.conv/s06emitc
+nchans=          285  # num wave chans
+inmy=       s06emitc  # file device letter y
+iwdgt=      r06emitc  # file device letter w

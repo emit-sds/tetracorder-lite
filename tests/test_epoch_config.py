@@ -35,3 +35,24 @@ def test_validate_empty(tmp_path):
     f.write_text("C\nC\n")
     with pytest.raises(ValueError):
         validate_deleted_channels(f, nchans=285)
+
+
+from tetrapy.epoch_config import validate_restart
+from tests.conftest import FIXTURES
+
+STD = "/sl1/usgs/library06.conv/s06emitc"
+RES = "/sl1/usgs/rlib06/r06emitc"
+
+
+def test_validate_restart_ok():
+    validate_restart(FIXTURES / "r1-emitc", nchans=285, iyfl=STD, iwfl=RES)
+
+
+def test_validate_restart_wrong_nchans():
+    with pytest.raises(ValueError):
+        validate_restart(FIXTURES / "r1-emitc", nchans=284, iyfl=STD, iwfl=RES)
+
+
+def test_validate_restart_wrong_iyfl():
+    with pytest.raises(ValueError):
+        validate_restart(FIXTURES / "r1-emitc", nchans=285, iyfl="/wrong", iwfl=RES)

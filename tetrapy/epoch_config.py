@@ -43,3 +43,20 @@ def validate_deleted_channels(path, nchans):
     lo, hi = chans[0], chans[-1]
     if lo < 1 or hi > nchans:
         raise ValueError(f"{path}: channel {lo}..{hi} outside [1, {nchans}]")
+
+
+def _restart_value(text, key):
+    m = re.search(rf"^{re.escape(key)}=\s*([^\s#]+)", text, re.M)
+    return m.group(1) if m else None
+
+
+def validate_restart(path, *, nchans, iyfl, iwfl):
+    """Raise ValueError unless the restart file matches the epoch/library wiring."""
+    text = Path(path).read_text()
+    got_n = _restart_value(text, "nchans")
+    if got_n is None or int(got_n) != nchans:
+        raise ValueError(f"{path}: nchans={got_n}, expected {nchans}")
+    for key, want in (("iyfl", iyfl), ("iwfl", iwfl)):
+        got = _restart_value(text, key)
+        if got != want:
+            raise ValueError(f"{path}: {key}={got!r}, expected {want!r}")
