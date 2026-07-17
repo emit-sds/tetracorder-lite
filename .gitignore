@@ -26,14 +26,15 @@ site/
 # Ignore local testing directories
 local/
 
-# Unconvolved master spectral libraries (splib06b / sprlb06b) are small (~24 MB
-# total) and are now COMMITTED under tetracorder/sl1/usgs/library06.conv/ so they
-# bake into the container image. At runtime only the convolution recipe (.cmds/.csv)
-# and the L2A scene (for the target grid) need to be supplied. See
-# docs/convolved-library-build.md (volume contract).
-# (Legacy copies under rlib06/ remain ignored.)
+# Unconvolved master spectral libraries are small (~25 MB total) and are
+# COMMITTED at their delivery paths so they bake into the container image:
+#   standard: tetracorder/sl1/usgs/library06.conv/splib06b
+#   research: tetracorder/sl1/usgs/rlib06/sprlb06b   (research lib lives in rlib06/)
+# At build time the epoch stage convolves these to the instrument grid. See
+# docs/superpowers/specs/2026-07-17-multistage-epoch-container-design.md.
+# The native-resolution "a" bases are NOT committed (we convolve from "b").
 tetracorder/sl1/usgs/rlib06/sprlb06a
-tetracorder/sl1/usgs/rlib06/sprlb06b
+tetracorder/sl1/usgs/library06.conv/splib06a
 
 # uv
 #uv.lock
@@ -46,3 +47,8 @@ tetracorder/sl1/usgs/rlib06/sprlb06b
 
 # Repos
 emit-sds-l2b
+
+# Local-only spectral-library archives / staging (never commit; kept for reference)
+tetracorder/sl1-archive/
+tetracorder/sl1-usgs-new/
+**/.DS_Store
