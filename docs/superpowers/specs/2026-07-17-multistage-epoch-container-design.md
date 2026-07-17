@@ -91,28 +91,41 @@ Runs at **build time**, using epoch inputs supplied as build context/args:
    parameter list) and bake the prepared run tree into the image.
 4. **Verification gate** (structural + config-reference; no smoke run).
 
-## Config wiring (the forgotten steps)
+## Config wiring (the forgotten steps) — REVISED after inspection
 
-Ported into a deterministic, unit-testable module `tetrapy/epoch_config.py`.
+Inspecting the container's actual config files changed this substantially. The
+container keys off the **sensor token** (`emit_c`), and those files are already
+correct and epoch-invariant:
 
-**Follow today's cluster procedure and its file-naming convention** so a
-reviewer can `ls` the config dirs and read the epoch/vintage off the filenames.
-For each new epoch the stage:
+- `DATASETS/emit_c` → `restart= r1-emitc` (fixed).
+- `restart_files/r1-emitc` → `iyfl=/sl1/usgs/library06.conv/s06emitc`,
+  `iwfl=/sl1/usgs/rlib06/r06emitc`, `nchans= 285` (fixed for the 285-ch epoch).
+- `DELETED.channels/delete_emit_c` → an **expert-curated bad-channel list**,
+  e.g. `1t4 75t79 99t106 128t148 188t214 218 219t221 226 280t285c`. Verified
+  NOT mechanically derivable from the L2A `bbl` (it is broader than the scene's
+  atmospheric zeros, and the `-try1/-try2/-try3` history shows hand-tuning).
 
-1. Copies the reference-epoch **DATASET** → epoch-named file following today's
-   convention (e.g. `DATASETS/em<epoch>`), rewriting `data=` / `restart=`.
-2. Copies the reference **restart file** → epoch-named
-   (e.g. `restart_files/r.sem<epoch>`), rewriting `iyfl=` →
-   `/sl1/usgs/library06.conv/s06emitc`, `iwfl=` → `/sl1/usgs/rlib06/r06emitc`,
-   and the `inmy`/`iwdgt` device-letter lines.
-3. Copies the reference **DELETED.channels** → epoch-named
-   (e.g. `DELETED.channels/delete_em<epoch>`), rewriting internal references.
-4. Wires `cmd-setup-tetrun`'s sensor entry (`DATASETS/emit_c`) `restart=` to the
-   epoch restart file, and **deletes the template originals** (old epoch files
-   are tossed, not accumulated).
+**Decision:** the DATASET, restart, and `delete_<sensor>` files are **committed,
+fixed config artifacts** baked in the `libdata` template layer. The epoch build
+does **not** rewrite or regenerate them. Curation of `delete_<sensor>` is a human
+step done occasionally in the repo. The build only **validates** consistency
+(ranges within `nchans`, well-formed, `nchans` matches the delivery). The image
+tag captures which curation was baked.
 
-Filenames encode the epoch for human review; the **image tag is the source of
-truth** for CM.
+**Build arguments are the unifying identity mechanism.** Instrument and epoch
+are selected at build time via `--build-arg` (not runtime flags, not renamed
+files). The repo may hold multiple `delete_<sensor>` files, recipes, etc.; one
+`base`/`libdata` image yields many `emit-tc:<sensor>-<epoch>` images by varying
+build args:
+
+- `SENSOR` (default `emit_c`) — selects the DATASET/restart/`delete_<sensor>`
+  and the convolved output names (`s06<sensor-short>` / `r06<sensor-short>`).
+- `EPOCH_TAG` (e.g. `20250721`) — labels the image and the human-readable
+  provenance; does not rename the sensor-keyed config files.
+- Wavelength/FWHM grid inputs for the convolution (see below).
+
+There is no per-epoch file renaming and no template-deletion step; the earlier
+cluster-style renaming plan is superseded by the build-arg model.
 
 ## Runtime contract (simplified)
 
@@ -136,9 +149,10 @@ truth** for CM.
 1. **Structural asserts** — 30-record specpr header, record counts/layout for
    both convolved libraries (extends the asserts already in
    `build_from_recipe`).
-2. **Config-reference sanity** — the generated DATASET/restart/DELETED files
-   parse and every internal path reference resolves to a baked file
-   (`s06emitc`, `r06emitc`, restart wiring).
+2. **Config sanity** — the baked DATASET/restart/`delete_<sensor>` files parse;
+   restart `iyfl`/`iwfl` resolve to the baked convolved outputs
+   (`s06emitc`/`r06emitc`); restart `nchans` equals the delivery channel count;
+   every `delete_<sensor>` range is within `[1, nchans]` and well-formed.
 
 **Smoke run — deferred to documented manual practice.** A tiny end-to-end
 `cmd.runtet` against a real L2A is the strongest check that setup wired
