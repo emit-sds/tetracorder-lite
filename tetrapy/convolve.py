@@ -268,6 +268,33 @@ def read_wavelengths_fwhm(hdr_path):
     return waves, fwhm
 
 
+def read_wavelengths_fwhm_txt(wl_path, fwhm_path, units="nanometers"):
+    """Read (wavelengths, fwhm) in microns from two plain-text files.
+
+    One numeric value per line; blank lines and ``#`` comments ignored. ``units``
+    is the units of BOTH files: nanometers (default; divided by 1000) or microns.
+    This is the calibration deliverable format (``emit_wl_*.txt`` / ``emit_fwhm_*.txt``)
+    used by the USGS convolution scripts' ``-waves`` / ``-fwhm`` inputs.
+    """
+    def read(path):
+        vals = []
+        for line in Path(path).read_text().splitlines():
+            s = line.split("#", 1)[0].strip()
+            if s:
+                vals.append(float(s))
+        return np.array(vals)
+
+    waves, fwhm = read(wl_path), read(fwhm_path)
+    if waves.shape != fwhm.shape:
+        raise ValueError(f"wavelength/fwhm length mismatch: {waves.shape} vs {fwhm.shape}")
+    u = units.lower()
+    if u.startswith(("nan", "nm")):
+        waves, fwhm = waves / 1000.0, fwhm / 1000.0
+    elif not u.startswith(("mic", "um", "µ")):
+        raise ValueError(f"unexpected units '{units}'")
+    return waves, fwhm
+
+
 # --------------------------------------------------------------- recipe parsing
 # A convolution "recipe" enumerates, per output spectrum, the master records to
 # read: the spectrum (recnum), its native wavelength grid (inwave) and native

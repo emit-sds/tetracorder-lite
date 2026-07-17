@@ -1,0 +1,4 @@
+# EMIT test wavelengths (nm)
+380.85787
+388.26148
+395.66809
