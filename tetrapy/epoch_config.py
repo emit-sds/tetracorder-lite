@@ -71,7 +71,9 @@ def verify_config(cmds_dir, *, sensor, nchans, std_path, res_path):
     m = re.search(r"^restart=\s*([^\s#]+)", dataset.read_text(), re.M)
     if not m:
         raise ValueError(f"{dataset}: no restart= line")
-    restart = cmds / "DATASETS" / "restart_files" / m.group(1)
+    # restart_files/ is a sibling of DATASETS/ under the cmds root, not nested
+    # inside it (verified against tetracorder6.00a.cmds).
+    restart = cmds / "restart_files" / m.group(1)
     if not restart.exists():
         raise ValueError(f"missing restart file: {restart}")
     validate_restart(restart, nchans=nchans, iyfl=std_path, iwfl=res_path)

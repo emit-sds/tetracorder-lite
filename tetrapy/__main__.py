@@ -101,6 +101,31 @@ def convolve_cmd(file, output_dir, spectral_lib, recipe_dir, cmds, master, outpu
         )
 
 
+@cli.command("convolve-epoch", help="Convolve both libraries from a text grid into the sensor-keyed outputs (build-time).")
+@click.option("-s", "--sensor", default="emit_c")
+@click.option("--wl", required=True)
+@click.option("--fwhm", required=True)
+@click.option("--units", default="nanometers")
+@click.option("--spectral-lib", default="/root/tetracorder/sl1/usgs")
+@click.option("--recipe-dir", default="/root/tetracorder/sl1/usgs/library06.conv")
+def convolve_epoch_cmd(sensor, wl, fwhm, units, spectral_lib, recipe_dir):
+    grid = convolve.read_wavelengths_fwhm_txt(wl, fwhm, units=units)
+    # standard master lives in library06.conv, research in rlib06 — build each
+    # into the sensor-keyed output path the restart file references.
+    convolve.build_from_recipe(
+        master=f"{spectral_lib}/library06.conv/splib06b",
+        recipe=f"{recipe_dir}/conv.s06{sensor.replace('_','')}.cmds",
+        output=f"{spectral_lib}/library06.conv/s06{sensor.replace('_','')}", grid=grid)
+    convolve.export_envi(f"{spectral_lib}/library06.conv/s06{sensor.replace('_','')}",
+                         f"{spectral_lib}/library06.conv/s06{sensor.replace('_','')}_envi")
+    convolve.build_from_recipe(
+        master=f"{spectral_lib}/rlib06/sprlb06b",
+        recipe=f"{recipe_dir}/conv.r06{sensor.replace('_','')}.cmds",
+        output=f"{spectral_lib}/rlib06/r06{sensor.replace('_','')}", grid=grid)
+    convolve.export_envi(f"{spectral_lib}/rlib06/r06{sensor.replace('_','')}",
+                         f"{spectral_lib}/rlib06/r06{sensor.replace('_','')}_envi")
+
+
 @cli.command("cmds2csv", help=convolve.cmds_to_csv.__doc__)
 @click.argument("cmds")
 @click.argument("csv")
