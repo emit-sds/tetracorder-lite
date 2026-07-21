@@ -52,3 +52,7 @@ emit-sds-l2b
 tetracorder/sl1-archive/
 tetracorder/sl1-usgs-new/
 **/.DS_Store
+
+# e2e verification scratch (local only)
+_e2e_data/
+_e2e_out/

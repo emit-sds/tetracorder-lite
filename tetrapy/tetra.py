@@ -122,17 +122,35 @@ def exec_tetrun(
 
 
 def discover_l2a(data_dir="/data"):
-    """Return the extensionless path of the single ENVI reflectance file in data_dir.
+    """Return the extensionless path of the single ENVI reflectance scene in data_dir.
 
-    A scene is an ENVI ``.hdr`` with a matching binary sidecar (``.img`` or no
-    suffix). Tetracorder's ``cmd.runtet`` wants the path without the ``.hdr``.
+    A scene is an ENVI ``.hdr`` with a matching binary sidecar. Tetracorder's
+    ``cmd-setup-tetrun`` / ``cmd.runtet`` want the path WITHOUT the ``.hdr`` and
+    require the binary to exist at that extensionless path (it checks ``[ -f ]``
+    on the exact path). EMIT L2A ships as ``<stem>.img`` + ``<stem>.hdr``, so when
+    only the ``.img`` sidecar is present we expose the binary at the extensionless
+    ``<stem>`` path (via symlink) so tetracorder finds it.
     """
     data_dir = Path(data_dir)
     hdrs = sorted(p for p in data_dir.glob("*.hdr"))
     scenes = []
     for h in hdrs:
         stem = h.with_suffix("")
-        if stem.exists() or stem.with_suffix(".img").exists():
+        img = stem.with_suffix(".img")
+        if stem.exists():
+            scenes.append(str(stem))
+        elif img.exists():
+            # Tetracorder wants the binary at the extensionless stem path; EMIT
+            # ships it as .img. Link stem -> .img so `[ -f <stem> ]` succeeds.
+            try:
+                stem.symlink_to(img.name)
+            except FileExistsError:
+                pass
+            except OSError as e:
+                raise OSError(
+                    f"cannot expose {img.name} at extensionless path {stem.name} "
+                    f"(is {data_dir} writable?): {e}"
+                )
             scenes.append(str(stem))
     if not scenes:
         raise FileNotFoundError(f"no ENVI scene (.hdr + sidecar) found in {data_dir}")

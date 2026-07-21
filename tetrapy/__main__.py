@@ -59,8 +59,12 @@ def patch(**kwargs):
 @cli.command(help="Run tetracorder on the mounted L2A (the default container action).")
 @outp
 @click.option("--data-dir", default="/data", help="Directory holding the L2A ENVI scene")
-@click.option("--setup/--no-setup", default=False,
-              help="Run cmd-setup-tetrun first (local dev only; baked in the image)")
+@click.option("--setup/--no-setup", default=True,
+              help="Run cmd-setup-tetrun against the mounted scene before running. "
+                   "On by default: cmd-setup-tetrun needs the real scene to build "
+                   "its run tree, so setup happens at container start (the epoch "
+                   "image bakes the library + config, not the scene-specific run "
+                   "tree). Use --no-setup only if the run tree was prepared already.")
 def run(output, data_dir, setup):
     file = tetra.discover_l2a(data_dir)
     if setup:
@@ -108,22 +112,32 @@ def convolve_cmd(file, output_dir, spectral_lib, recipe_dir, cmds, master, outpu
 @click.option("--units", default="nanometers")
 @click.option("--spectral-lib", default="/root/tetracorder/sl1/usgs")
 @click.option("--recipe-dir", default="/root/tetracorder/sl1/usgs/library06.conv")
-def convolve_epoch_cmd(sensor, wl, fwhm, units, spectral_lib, recipe_dir):
+@click.option("--cmds-dir", default="/root/tetracorder/tetracorder.cmds/tetracorder6.00a.cmds",
+              help="tetracorder*.cmds dir whose restart protection is synced to the "
+                   "freshly-built libraries. Pass '' to skip the restart sync.")
+def convolve_epoch_cmd(sensor, wl, fwhm, units, spectral_lib, recipe_dir, cmds_dir):
+    from tetrapy import epoch_config
     grid = convolve.read_wavelengths_fwhm_txt(wl, fwhm, units=units)
+    slug = sensor.replace("_", "")
+    std_out = f"{spectral_lib}/library06.conv/s06{slug}"
+    res_out = f"{spectral_lib}/rlib06/r06{slug}"
     # standard master lives in library06.conv, research in rlib06 — build each
     # into the sensor-keyed output path the restart file references.
     convolve.build_from_recipe(
         master=f"{spectral_lib}/library06.conv/splib06b",
-        recipe=f"{recipe_dir}/conv.s06{sensor.replace('_','')}.cmds",
-        output=f"{spectral_lib}/library06.conv/s06{sensor.replace('_','')}", grid=grid)
-    convolve.export_envi(f"{spectral_lib}/library06.conv/s06{sensor.replace('_','')}",
-                         f"{spectral_lib}/library06.conv/s06{sensor.replace('_','')}_envi")
+        recipe=f"{recipe_dir}/conv.s06{slug}.cmds", output=std_out, grid=grid)
+    convolve.export_envi(std_out, f"{std_out}_envi")
     convolve.build_from_recipe(
         master=f"{spectral_lib}/rlib06/sprlb06b",
-        recipe=f"{recipe_dir}/conv.r06{sensor.replace('_','')}.cmds",
-        output=f"{spectral_lib}/rlib06/r06{sensor.replace('_','')}", grid=grid)
-    convolve.export_envi(f"{spectral_lib}/rlib06/r06{sensor.replace('_','')}",
-                         f"{spectral_lib}/rlib06/r06{sensor.replace('_','')}_envi")
+        recipe=f"{recipe_dir}/conv.r06{slug}.cmds", output=res_out, grid=grid)
+    convolve.export_envi(res_out, f"{res_out}_envi")
+    # Sync the restart's device-protection numbers to the freshly-built libraries
+    # (reproduces the server-only AAA restart-emit step; without it specpr prompts
+    # on a protection mismatch and the container silently yields zero mineral IDs).
+    if cmds_dir:
+        restart = epoch_config.sync_restart_protection(
+            cmds_dir, sensor=sensor, res_lib=res_out, std_lib=std_out)
+        click.echo(f"synced restart protection: {restart}")
 
 
 @cli.command("cmds2csv", help=convolve.cmds_to_csv.__doc__)
@@ -146,8 +160,15 @@ def validate_cmd(a, b):
 @click.option("--nchans", type=int, required=True, help="Channel count of the epoch")
 @click.option("--std-path", default="/sl1/usgs/library06.conv/s06emitc")
 @click.option("--res-path", default="/sl1/usgs/rlib06/r06emitc")
-def verify_config_cmd(cmds_dir, sensor, nchans, std_path, res_path):
+@click.option("--std-lib", default=None,
+              help="Filesystem path to the built standard library; when given, the "
+                   "restart iprty protection is asserted == -(records-1) of it.")
+@click.option("--res-lib", default=None,
+              help="Filesystem path to the built research library; when given, the "
+                   "restart iprtw protection is asserted == -(records-1) of it.")
+def verify_config_cmd(cmds_dir, sensor, nchans, std_path, res_path, std_lib, res_lib):
     from tetrapy import epoch_config
     epoch_config.verify_config(cmds_dir, sensor=sensor, nchans=nchans,
-                               std_path=std_path, res_path=res_path)
+                               std_path=std_path, res_path=res_path,
+                               std_lib=std_lib, res_lib=res_lib)
     click.echo(f"config OK: {sensor} @ {nchans} ch")

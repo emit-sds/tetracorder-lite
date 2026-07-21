@@ -193,21 +193,30 @@ COPY ${WL_FILE}  /epoch/emit_wl.txt
 COPY ${FWHM_FILE} /epoch/emit_fwhm.txt
 
 # 1) Convolve both libraries from the baked b-masters into the paths the
-#    restart file references.
+#    restart file references, then sync the restart's device-protection numbers
+#    to the freshly-built libraries (reproduces the server-only AAA restart-emit
+#    step — without it specpr prompts on a protection mismatch and the container
+#    silently produces zero mineral IDs).
 RUN tetrapy convolve-epoch \
       --sensor "${SENSOR}" \
       --wl /epoch/emit_wl.txt --fwhm /epoch/emit_fwhm.txt --units "${GRID_UNITS}" \
       --spectral-lib /root/tetracorder/sl1/usgs \
-      --recipe-dir  /root/tetracorder/sl1/usgs/library06.conv
+      --recipe-dir  /root/tetracorder/sl1/usgs/library06.conv \
+      --cmds-dir    /root/tetracorder/tetracorder.cmds/tetracorder6.00a.cmds
 
-# 2) Validate the sensor-keyed config against the epoch channel count + outputs.
+# 2) Validate the sensor-keyed config against the epoch channel count + outputs,
+#    AND assert the restart protection now matches the built libraries (fail-closed).
 RUN tetrapy verify-config \
       --cmds-dir /root/tetracorder/tetracorder.cmds/tetracorder6.00a.cmds \
-      --sensor "${SENSOR}" --nchans "${NCHANS}"
+      --sensor "${SENSOR}" --nchans "${NCHANS}" \
+      --std-lib /root/tetracorder/sl1/usgs/library06.conv/s06emitc \
+      --res-lib /root/tetracorder/sl1/usgs/rlib06/r06emitc
 
-# 3) Bake the prepared Tetracorder run tree (setup happens once, at build time).
-RUN rm -rf /root/tetbake && \
-    tetrapy setup -v 6.00a -s "${SENSOR}" -m cube -o /root/tetbake -f /data/PLACEHOLDER || true
+# Note: setup (cmd-setup-tetrun) is NOT baked here. It requires the actual scene
+# to build its run tree, so it runs at container start against the mounted /data
+# (the `run` command does setup+runtet by default). The epoch image bakes the
+# convolved library + validated config — the scene-independent, per-epoch state —
+# which is what the image tag captures.
 
 LABEL emit.sensor="${SENSOR}" emit.epoch="${EPOCH_TAG}" emit.nchans="${NCHANS}"
 ENTRYPOINT ["tetrapy"]
