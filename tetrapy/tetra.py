@@ -58,7 +58,9 @@ def setup_tetrun(
         *args
     ]
 
-    subprocess.run(cmd)
+    # Fail loud: a non-zero cmd-setup-tetrun must abort, not silently leave a
+    # half-built run tree that yields zero mineral IDs later.
+    subprocess.run(cmd, check=True)
 
     # Remove erroneous 'time' command in the script
     path = Path(output) / "cmd.runtet"
@@ -118,7 +120,10 @@ def exec_tetrun(
         file
     ]
 
-    subprocess.run(cmd, cwd=output)
+    # Fail loud on a non-zero cmd.runtet: the container contract is fail-closed, so
+    # a runtet error must surface as a non-zero container exit rather than an
+    # apparently-successful run with no mineral-ID output.
+    subprocess.run(cmd, cwd=output, check=True)
 
 
 def discover_l2a(data_dir="/data"):

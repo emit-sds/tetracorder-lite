@@ -251,6 +251,10 @@ RUN tetrapy verify-config \
 # convolved library + validated config — the scene-independent, per-epoch state —
 # which is what the image tag captures.
 
+# Bake the sensor so `tetrapy run` uses the matching DATASET/restart at container
+# start (cmd-setup-tetrun is sensor-keyed). Keeps the runtime consistent with the
+# baked config instead of defaulting to emit_c regardless of the SENSOR build-arg.
+ENV TETRA_SENSOR="${SENSOR}"
 LABEL emit.sensor="${SENSOR}" emit.epoch="${EPOCH_TAG}" emit.nchans="${NCHANS}"
 ENTRYPOINT ["tetrapy"]
 CMD ["run"]

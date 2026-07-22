@@ -59,16 +59,20 @@ def patch(**kwargs):
 @cli.command(help="Run tetracorder on the mounted L2A (the default container action).")
 @outp
 @click.option("--data-dir", default="/data", help="Directory holding the L2A ENVI scene")
+@click.option("-s", "--sensor", default=lambda: os.environ.get("TETRA_SENSOR", "emit_c"),
+              help="Sensor whose DATASET/restart cmd-setup-tetrun should use. Defaults "
+                   "to $TETRA_SENSOR (baked into the epoch image from the SENSOR "
+                   "build-arg) or emit_c. Must match the baked config.")
 @click.option("--setup/--no-setup", default=True,
               help="Run cmd-setup-tetrun against the mounted scene before running. "
                    "On by default: cmd-setup-tetrun needs the real scene to build "
                    "its run tree, so setup happens at container start (the epoch "
                    "image bakes the library + config, not the scene-specific run "
                    "tree). Use --no-setup only if the run tree was prepared already.")
-def run(output, data_dir, setup):
+def run(output, data_dir, sensor, setup):
     file = tetra.discover_l2a(data_dir)
     if setup:
-        tetra.setup_tetrun(output=output, file=file)
+        tetra.setup_tetrun(output=output, sensor=sensor, file=file)
     tetra.exec_tetrun(output=output, file=file)
 
 
