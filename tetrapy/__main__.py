@@ -140,6 +140,33 @@ def convolve_epoch_cmd(sensor, wl, fwhm, units, spectral_lib, recipe_dir, cmds_d
         click.echo(f"synced restart protection: {restart}")
 
 
+@cli.command("sync-restart",
+             help="Sync the sensor restart's device-protection to the baked libraries (build-time).")
+@click.option("--cmds-dir", required=True, help="Path to a tetracorder*.cmds directory")
+@click.option("-s", "--sensor", default="emit_c")
+@click.option("--std-lib", required=True,
+              help="Filesystem path to the standard library baked into the image")
+@click.option("--res-lib", required=True,
+              help="Filesystem path to the research library baked into the image")
+def sync_restart_cmd(cmds_dir, sensor, std_lib, res_lib):
+    from tetrapy import epoch_config
+    restart = epoch_config.sync_restart_protection(
+        cmds_dir, sensor=sensor, res_lib=res_lib, std_lib=std_lib)
+    click.echo(f"synced restart protection: {restart}")
+
+
+@cli.command("regen-recipe", help=convolve.build_recipe_from_master.__doc__)
+@click.option("--master", required=True,
+              help="Master library (splib06b / sprlb06b) to enumerate spectra from")
+@click.option("--slug", required=True,
+              help="Output library slug for the title suffix, e.g. r06emitc / s06emitc")
+@click.option("--out", required=True, help="Path to write the conv.<slug>.cmds recipe")
+@click.option("--sppad", type=int, default=4, help="Padding records per spectrum (stride = 2 + sppad)")
+def regen_recipe_cmd(master, slug, out, sppad):
+    rows = convolve.build_recipe_from_master(master, slug)
+    convolve.write_recipe_cmds(rows, out, sppad=sppad)
+
+
 @cli.command("cmds2csv", help=convolve.cmds_to_csv.__doc__)
 @click.argument("cmds")
 @click.argument("csv")

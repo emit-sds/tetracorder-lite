@@ -55,4 +55,11 @@ tetracorder/sl1-usgs-new/
 
 # e2e verification scratch (local only)
 _e2e_data/
-_e2e_out/
+_e2e_out*/
+_e2e_*.log
+_e2e_runpty.py
+# local convolution scratch / one-off analysis (not part of the build)
+out/
+in/
+compare_libraries.py
+library_comparison.png

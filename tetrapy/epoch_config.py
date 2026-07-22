@@ -7,14 +7,23 @@ The restart file is the one exception. It carries per-library "device protection
 numbers (``iprtw`` for the research/w library, ``iprty`` for the standard/y
 library) that MUST equal ``-(records - 1)`` of the library they open, where
 ``records = filesize / 1536`` (specpr's record length; the trailing record is the
-next-free slot and is not counted). Because the epoch stage re-convolves the
-libraries — which can change the record count relative to the committed masters —
-the build rewrites these two protection values to match the freshly-built
-libraries. This reproduces what the server-only
-``AAA.make.new.instrument.convolved.*.sh`` scripts did per epoch: emit a restart
-whose protection matches the library just built. If they desync, specpr prints an
+next-free slot and is not counted). The epoch build syncs these two protection
+values to the libraries actually baked into the image (whether the delivered
+finished libraries or an opt-in re-convolution). If they desync, specpr prints an
 interactive protection WARNING that a non-interactive container silently
 "continues" past, yielding zero mineral IDs.
+
+Two build-time gates guard the silent-zero-IDs failure modes:
+
+* protection gate — the restart's iprtw/iprty equal ``-(records - 1)`` of the
+  baked libraries (see :func:`validate_restart`).
+* record-alignment gate — every ``[sprlb06]``/``[splib06] <n>`` reference in the
+  expert setup file (``cmd.lib.setup.*``) points at a valid data-start record in
+  the baked research/standard library (see :func:`validate_record_alignment`).
+  ``cmd.lib.setup`` addresses spectra by ABSOLUTE record number, so a library that
+  lacks a referenced record makes tetracorder emit ``invalid input`` on that
+  material and abort mineral identification. This gate catches a stale/misaligned
+  library at build time instead of at runtime.
 """
 import re
 from pathlib import Path
@@ -142,6 +151,87 @@ def validate_restart(path, *, nchans, iyfl, iwfl, res_lib=None, std_lib=None):
             )
 
 
+# A real library-record reference in cmd.lib.setup is an active "alternate library"
+# selection line, e.g. ``  a SMALL:  [splib06]  7170 d``. Only the in-use SMALL
+# alternate carries live record numbers; MEDIUM/LARGE are future placeholders with
+# ``xxxx``. Commented lines (leading ``\#``) are notes, not selections.
+_LIBREC_RE = re.compile(
+    r"^\s*a\s+SMALL:\s*\[(?P<lib>sprlb06|splib06)\]\s+(?P<rec>\d+)\b", re.M)
+
+
+def parse_library_record_refs(setup_text):
+    """Yield (library_token, record_number) for every active SMALL selection.
+
+    ``[sprlb06]`` selects the research/w library, ``[splib06]`` the standard/y.
+    MEDIUM/LARGE placeholder (``xxxx``) and commented lines are ignored.
+    """
+    for line in setup_text.splitlines():
+        if line.lstrip().startswith("\\#"):
+            continue
+        m = _LIBREC_RE.match(line)
+        if m:
+            yield m.group("lib"), int(m.group("rec"))
+
+
+def validate_record_alignment(setup_path, *, res_lib, std_lib):
+    """Raise ValueError unless every SMALL record reference is a valid data-start.
+
+    ``cmd.lib.setup`` addresses spectra by ABSOLUTE specpr record number. Each
+    ``[sprlb06] <n>`` must be a data-start in ``res_lib`` (research/w) and each
+    ``[splib06] <n>`` a data-start in ``std_lib`` (standard/y). A missing/invalid
+    record makes tetracorder emit ``invalid input`` on that material and produce no
+    mineral IDs — this gate fails the build closed instead.
+    """
+    from tetrapy import convolve  # local import: convolve pulls in numpy
+
+    libs = {}  # token -> (path, loaded records)
+    for token, path in (("sprlb06", res_lib), ("splib06", std_lib)):
+        if path is not None:
+            libs[token] = (path, convolve.load(path))
+
+    text = Path(setup_path).read_text()
+    checked = 0
+    for token, rec in parse_library_record_refs(text):
+        if token not in libs:
+            continue  # library not supplied for this token; skip
+        path, records = libs[token]
+        checked += 1
+        if not (0 <= rec < len(records) and convolve._is_data_start(records[rec])):
+            reason = "out of range" if rec >= len(records) else "not a data-start"
+            raise ValueError(
+                f"{setup_path}: [{token}] record {rec} is {reason} in {path} "
+                f"({len(records)} records) — tetracorder would emit 'invalid input' "
+                f"and produce no mineral IDs. The library is stale/misaligned "
+                f"relative to this config."
+            )
+    return checked
+
+
+def _resolve_setup_file(cmds_dir, sensor):
+    """Return the Path to the expert cmd.lib.setup file the sensor's run uses.
+
+    The DATASET may name it via a ``lib=`` line; otherwise the shipped default for
+    this cmds tree (``cmd.lib.setup.t6.00a2``) is used. Validated to exist.
+    """
+    cmds = Path(cmds_dir)
+    dataset = cmds / "DATASETS" / sensor
+    name = None
+    if dataset.exists():
+        m = re.search(r"^lib=\s*([^\s#]+)", dataset.read_text(), re.M)
+        if m:
+            name = m.group(1)
+    if name is None:
+        # cmd-setup-tetrun's default: lib=cmd.lib.setup.t6.00a2
+        matches = sorted(cmds.glob("cmd.lib.setup.t*a2"))
+        if not matches:
+            raise ValueError(f"no cmd.lib.setup.t*a2 found in {cmds}")
+        return matches[-1]
+    setup = cmds / name
+    if not setup.exists():
+        raise ValueError(f"missing setup file: {setup}")
+    return setup
+
+
 def _resolve_restart(cmds_dir, sensor):
     """Return the restart Path referenced by the sensor's DATASET, validated to exist."""
     cmds = Path(cmds_dir)
@@ -176,10 +266,15 @@ def verify_config(cmds_dir, *, sensor, nchans, std_path, res_path,
 
     When ``res_lib``/``std_lib`` (paths to the built research/standard libraries)
     are supplied, the restart's device-protection numbers are also asserted to
-    match those libraries' record counts.
+    match those libraries' record counts, AND every SMALL library-record reference
+    in the expert setup file is asserted to be a valid data-start in those
+    libraries (the record-alignment gate).
     """
     restart = _resolve_restart(cmds_dir, sensor)
     validate_restart(restart, nchans=nchans, iyfl=std_path, iwfl=res_path,
                      res_lib=res_lib, std_lib=std_lib)
     validate_deleted_channels(
         Path(cmds_dir) / "DELETED.channels" / f"delete_{sensor}", nchans)
+    if res_lib is not None or std_lib is not None:
+        setup = _resolve_setup_file(cmds_dir, sensor)
+        validate_record_alignment(setup, res_lib=res_lib, std_lib=std_lib)

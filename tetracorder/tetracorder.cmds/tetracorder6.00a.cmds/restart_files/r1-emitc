@@ -14,7 +14,7 @@ irfl=r1-emitc
 # protection number for open files (v,w,d,u,y,s)
 #
 iprtv=             0  # device protection v
-iprtw=         -1343  # device protection w
+iprtw=         -1409  # device protection w
 iprtd=             0  # device protection d
 iprtu=         -7356  # device protection u
 iprty=         -8219  # device protection y

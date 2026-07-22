@@ -167,10 +167,19 @@ ENV PATH="/root/.pixi/envs/default/bin/:$PATH"
 # libdata: reference data in independently-cacheable layers (big -> volatile)
 # ---------------------------------------------------------------------------
 FROM base AS libdata
-# Layer A: masters (~24 MB, change rarely) at their real delivery paths
+# Layer A: FINISHED convolved libraries (the USGS delivery) at their real paths.
+# Baked directly because cmd.lib.setup.t6.00a2 addresses spectra by ABSOLUTE specpr
+# record number (research refs up to 1338, standard up to 8208): the library the
+# runtime restart opens MUST contain those records as valid data-starts. The
+# delivered r06emitc (1410 recs) / s06emitc (8220 recs) satisfy that. (Re-convolving
+# from a stale recipe produced a 1104-rec lib where record 1116 was out of range and
+# tetracorder silently emitted zero mineral IDs — see docs/build.md.)
+COPY tetracorder/sl1/usgs/rlib06/r06emitc         /root/tetracorder/sl1/usgs/rlib06/r06emitc
+COPY tetracorder/sl1/usgs/library06.conv/s06emitc /root/tetracorder/sl1/usgs/library06.conv/s06emitc
+# Layer B: masters + convolution recipes — only needed for the opt-in RECONVOLVE
+# path (a genuinely new grid/sensor). Unused when the finished libs above are baked.
 COPY tetracorder/sl1/usgs/library06.conv/splib06b /root/tetracorder/sl1/usgs/library06.conv/splib06b
-COPY tetracorder/sl1/usgs/rlib06/sprlb06b        /root/tetracorder/sl1/usgs/rlib06/sprlb06b
-# Layer B: convolution recipes (small, change occasionally)
+COPY tetracorder/sl1/usgs/rlib06/sprlb06b         /root/tetracorder/sl1/usgs/rlib06/sprlb06b
 COPY tetracorder/sl1/usgs/library06.conv/conv.s06emitc.cmds /root/tetracorder/sl1/usgs/library06.conv/conv.s06emitc.cmds
 COPY tetracorder/sl1/usgs/library06.conv/conv.r06emitc.cmds /root/tetracorder/sl1/usgs/library06.conv/conv.r06emitc.cmds
 # Layer C: sensor-keyed config templates are already inside tetracorder.cmds
@@ -187,25 +196,49 @@ ARG NCHANS
 ARG GRID_UNITS=nanometers
 ARG WL_FILE
 ARG FWHM_FILE
+# RECONVOLVE=1 opts into re-convolving the libraries from the masters + recipes for
+# a genuinely new grid/sensor. Default (unset/0) bakes the finished delivered libs
+# from the libdata stage — the config-aligned, acceptance path for emit_c.
+ARG RECONVOLVE=0
 
-# Calibration grid deliverable (tiny text files) supplied via build context
+# Calibration grid deliverable (tiny text files) supplied via build context.
+# For the baked path these are PROVENANCE ONLY (the delivered lib is already
+# convolved for this grid); they drive the convolution only when RECONVOLVE=1.
 COPY ${WL_FILE}  /epoch/emit_wl.txt
 COPY ${FWHM_FILE} /epoch/emit_fwhm.txt
 
-# 1) Convolve both libraries from the baked b-masters into the paths the
-#    restart file references, then sync the restart's device-protection numbers
-#    to the freshly-built libraries (reproduces the server-only AAA restart-emit
-#    step — without it specpr prompts on a protection mismatch and the container
-#    silently produces zero mineral IDs).
-RUN tetrapy convolve-epoch \
-      --sensor "${SENSOR}" \
-      --wl /epoch/emit_wl.txt --fwhm /epoch/emit_fwhm.txt --units "${GRID_UNITS}" \
-      --spectral-lib /root/tetracorder/sl1/usgs \
-      --recipe-dir  /root/tetracorder/sl1/usgs/library06.conv \
-      --cmds-dir    /root/tetracorder/tetracorder.cmds/tetracorder6.00a.cmds
+# 1) Library provisioning.
+#    Default: the finished libraries are already baked (libdata stage) — nothing to
+#    convolve. Opt-in (RECONVOLVE=1): re-convolve both libraries from the masters
+#    into the paths the restart references (for a new grid/sensor). Either way,
+#    step 2 syncs the restart protection and gates record alignment, so a
+#    misaligned library fails the build instead of silently yielding zero IDs.
+RUN if [ "${RECONVOLVE}" = "1" ]; then \
+      echo "RECONVOLVE=1: re-convolving libraries from masters" && \
+      tetrapy convolve-epoch \
+        --sensor "${SENSOR}" \
+        --wl /epoch/emit_wl.txt --fwhm /epoch/emit_fwhm.txt --units "${GRID_UNITS}" \
+        --spectral-lib /root/tetracorder/sl1/usgs \
+        --recipe-dir  /root/tetracorder/sl1/usgs/library06.conv \
+        --cmds-dir    /root/tetracorder/tetracorder.cmds/tetracorder6.00a.cmds ; \
+    else \
+      echo "baking finished delivered libraries (no convolution)" ; \
+    fi
 
-# 2) Validate the sensor-keyed config against the epoch channel count + outputs,
-#    AND assert the restart protection now matches the built libraries (fail-closed).
+# 2) Sync the runtime restart's device-protection numbers to the libraries that
+#    are actually present (iprtw/iprty = -(records-1)); without this specpr prompts
+#    on a protection mismatch and the container silently produces zero mineral IDs.
+RUN tetrapy sync-restart \
+      --cmds-dir /root/tetracorder/tetracorder.cmds/tetracorder6.00a.cmds \
+      --sensor "${SENSOR}" \
+      --std-lib /root/tetracorder/sl1/usgs/library06.conv/s06emitc \
+      --res-lib /root/tetracorder/sl1/usgs/rlib06/r06emitc
+
+# 3) Validate the sensor-keyed config against the epoch channel count, assert the
+#    restart protection matches the libraries, AND assert every [sprlb06]/[splib06]
+#    record number referenced in cmd.lib.setup is a valid data-start in the baked
+#    libraries (fail-closed record-alignment gate — catches the zero-ID class of bug
+#    at build time).
 RUN tetrapy verify-config \
       --cmds-dir /root/tetracorder/tetracorder.cmds/tetracorder6.00a.cmds \
       --sensor "${SENSOR}" --nchans "${NCHANS}" \

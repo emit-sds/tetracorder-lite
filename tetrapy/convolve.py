@@ -385,6 +385,81 @@ def cmds_to_csv(cmds_path, csv_path):
     return csv_path
 
 
+# Master-spectrometer channel count -> (inwave, inres) master record numbers.
+# This is the authoritative mapping the USGS generator ``mak.convolve.1.cmds`` uses:
+# it selects each spectrum's native wavelength/resolution grid by the record's
+# channel count. The record numbers are the master's own grid records (splib06b /
+# sprlb06b share this layout).
+CHANNELS_TO_GRID = {
+    3961: (6, 17),      # USGS Denver Beckman
+    2151: (28, 34),     # ASD Field FR 0.35-2.5um
+    4301: (96, 108),    # High-Res Field 0.35-2.5um
+    4595: (120, 133),   # Nicolet 1.12-216um
+    3325: (40, 50),     # Nicolet 1.3-5.2um
+    4280: (60, 72),     # Nicolet 1.3-150um
+    2138: (84, 90),     # AVIRIS 0.4-2.5um
+}
+
+
+def build_recipe_from_master(master, output_slug):
+    """Regenerate the convolution recipe rows from a master library.
+
+    Reproduces the USGS ``mak.convolve.1.cmds`` generator deterministically in
+    Python: every *mineral* record in the master (i.e. not a Wavelengths/Bandpass/
+    Resolution grid record) becomes one recipe row, in master order, whose
+    ``inwave``/``inres`` are the master grid records selected by that spectrum's
+    channel count (:data:`CHANNELS_TO_GRID`). Because :func:`build_from_recipe`
+    lays rows out at a fixed stride, emitting exactly the mineral records in master
+    order reproduces the delivered library's absolute record numbering.
+
+    ``output_slug`` (e.g. ``r06emitc``) is only used to build the ``=`` suffix in
+    the output title, matching the delivery's ``<title> r06emitc=<purity>`` form.
+
+    Returns a list of recipe rows (dicts with inwave/inres/recnum/title).
+    """
+    recs = load(master)
+    rows = []
+    for rn in mineral_records(recs):
+        nch = _itchan(recs[rn])
+        grid = CHANNELS_TO_GRID.get(nch)
+        if grid is None:
+            raise ValueError(
+                f"{master}: record {rn} ({_title(recs[rn])!r}) has {nch} channels "
+                f"with no known native grid — extend CHANNELS_TO_GRID"
+            )
+        inwave, inres = grid
+        rows.append({"inwave": inwave, "inres": inres, "recnum": rn,
+                     "title": _title(recs[rn])})
+    return rows
+
+
+def write_recipe_cmds(rows, cmds_path, *, sppad=4):
+    """Write recipe rows as a specpr-style ``conv.*.cmds`` script.
+
+    Emits the same block structure :func:`parse_cmds` reads back (``convolve
+    spectrum`` header, ``==[inwave]``/``==[inres]``/``==[Recnum]``/``==[Title]``,
+    and ``sppad`` padding markers), so the generated file round-trips through
+    :func:`read_recipe` and reproduces the delivered library via
+    :func:`build_from_recipe`.
+    """
+    lines = ["c", "c", "c", "c", "c", " ", " ", "==[FILEID]y", "==[Fout]v", "m"]
+    for r in rows:
+        lines.append("\\######## convolve spectrum")
+        lines.append(f"==[inwave]Y{r['inwave']}")
+        lines.append(f"==[inres]y{r['inres']}")
+        lines.append(f"==[Recnum] {r['recnum']}")
+        lines.append(f"==[Title]{r.get('title', '')}")
+        lines.append("<work/convolve.cmds.work")
+        lines.append("e;t  \\# go to display")
+        for i in range(1, sppad + 1):
+            lines.append(f"[sppad] t v  \\# add padding record {i}")
+        lines.append("e;m  \\# go to math")
+    lines.append("e;EX")
+    Path(cmds_path).write_text("\n".join(lines) + "\n")
+    print(f"Wrote {len(rows)} recipe rows -> {cmds_path}")
+    return cmds_path
+
+
 # ---------------------------------------------------------- specpr record build
 IGNORE_F4 = np.float32(IGNORE)
 
