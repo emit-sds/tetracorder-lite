@@ -109,15 +109,27 @@ RUN cd tetracorder/specpr &&\
     mkdir -p lib obj &&\
     # src.specpr errors about ratfor (??), manually making seems to fix it
     cd src.specpr/common && make && cd - &&\
-    # psplotdaemon does not compile due to unresolved errors, skip it
-    sed -i "234,245 s/^/#/" AAA.INSTALL.specpr+support-progs-linux-upgrade.1.7.sh &&\
+    # psplotdaemon does not compile (unresolved errors); skip its build block.
+    # Content-anchored (not line-numbered) so it survives engine line-number shifts:
+    # from the "$SPECPR/src.psplotdaemon" section marker through the blank line that
+    # ends the block (covers the make/make-install pair AND both `if [ $? ] exit 1`
+    # guards, so no guard runs against a stale $? after `make install` is masked).
+    sed -i '/src\.psplotdaemon/,/^$/ s/^/#/' AAA.INSTALL.specpr+support-progs-linux-upgrade.1.7.sh &&\
     yes "" | ./AAA.INSTALL.specpr+support-progs-linux-upgrade.1.7.sh install
 
 # Install tetracorder
 RUN cd tetracorder &&\
-    # Comment out the chown/chmod section (causes an error on some systems using network mounted filesystems)
-    sed -i "398,416 s/^/#/" AAA.INSTALL.spectroscopy-os-setup-linux.sh &&\
-    # Comment out forced installs
+    # Comment out the chown/chmod ownership loop (fails on network-mounted FS).
+    # Anchored to the ownership loop's `for i in $t1 $sl1` header through its `done`.
+    sed -i '/^for i in[[:space:]]*\$t1[[:space:]]*\$sl1/,/^done/ s/^/#/' AAA.INSTALL.spectroscopy-os-setup-linux.sh &&\
+    # Comment out the forced system-package install block ($aget of libx11-dev etc.,
+    # which fails in-container). This `if [ "$doinstall" = "1" ] ... fi` block has NO
+    # unique content anchor: the opener `if [ "$doinstall" = "1" ]` appears twice in
+    # a5's script (also at the earlier interactive prompt), and `fi` is not unique
+    # either. So this ONE patch stays a line range (a5's script: lines 231-254, the
+    # block opening `if [ "$doinstall" = "1" ]` at 231 through its closing `fi` at 254).
+    # NOTE: line range targets a5's install script (AAA.INSTALL.spectroscopy-os-setup-linux.sh);
+    # re-verify `sed -n '231,254p'` selects the doinstall/forced-install block on engine bump.
     sed -i "231,254 s/^/#/" AAA.INSTALL.spectroscopy-os-setup-linux.sh &&\
     yes "y" | ./AAA.INSTALL.spectroscopy-os-setup-linux.sh install &&\
     # Build tetracorder
@@ -125,9 +137,13 @@ RUN cd tetracorder &&\
     ## Build cube spectrum mode
     make install &&\
     ## Build single spectrum mode
-    ### Disable block A, enable block B parameter settings
-    sed -i "137,140 s/^/#/" multmap.h &&\
-    sed -i "144,147 s/^#//" multmap.h &&\
+    ### Disable block A (image-cube params), enable block B (single-spectrum params).
+    ### Anchored to the `# A` / `# B` marker comments and each block's `maxpi4=` line so
+    ### the toggle survives engine line-number shifts. Only the `parameter` lines in each
+    ### range are touched. NOTE: block B's marker is matched as `# B ` (trailing space) to
+    ### avoid also matching the `# B2` block that follows.
+    sed -i '/^# A$/,/maxpi4=131060/ { /parameter/ s/^/#/ }' multmap.h &&\
+    sed -i '/^# B /,/maxpi4=16000/ { /parameter/ s/^#// }' multmap.h &&\
     make installsingle
 
 # Prepare the python CLI
