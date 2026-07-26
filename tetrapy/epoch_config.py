@@ -86,12 +86,14 @@ def parse_deleted_channels(text):
     """Expand USGS DELETED.channels range syntax to a sorted unique channel list.
 
     Tokens: ``NtM`` (inclusive range), bare integers. A trailing ``c``/``C`` on
-    the last token, lone ``C`` lines, and ``#`` comments are ignored.
+    the last token, lone ``C`` lines, and ``#`` comments are ignored. USGS
+    ``\\#`` (backslash-hash) comment leads are treated the same as ``#``.
     """
     channels = set()
     for raw in text.splitlines():
-        line = raw.split("#", 1)[0].strip()
-        if not line or line in ("c", "C"):
+        # Strip USGS backslash-comment (``\#``) first, then a bare ``#``.
+        line = raw.split("\\#", 1)[0].split("#", 1)[0].strip()
+        if not line or line in ("c", "C", "\\"):
             continue
         for tok in line.split():
             t = tok.rstrip("cC")

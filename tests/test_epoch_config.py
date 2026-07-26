@@ -17,6 +17,22 @@ def test_parse_ignores_leading_C_lines():
     assert got[0] == 1 and 148 in got
 
 
+def test_parse_deleted_channels_a5_backslash_hash_comments():
+    text = (
+        "1t4 75t79 99t106 128t148 188t214 218 219t221 226  280t285c  # emit_c\n"
+        "\n"
+        "\\# deletion wavelengths:\n"
+        "\\# \n"
+        "\\# d   1t4     0.3810 - 0.4032254\n"
+        "\\# d 280t285   2.45599 - 2.4929\n"
+    )
+    got = parse_deleted_channels(text)
+    expected = sorted(set(range(1, 5)) | set(range(75, 80)) | set(range(99, 107))
+                      | set(range(128, 149)) | set(range(188, 215)) | {218}
+                      | set(range(219, 222)) | {226} | set(range(280, 286)))
+    assert got == expected
+
+
 def test_validate_ok(tmp_path):
     f = tmp_path / "delete_emit_c"
     f.write_text("1t4 280t285c  # emit_c\n")
