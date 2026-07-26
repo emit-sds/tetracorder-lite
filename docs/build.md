@@ -4,10 +4,12 @@ Base + libdata are built once; each epoch is a build-arg-parameterized final sta
 
 ```bash
 # Base image (rebuild only when engines/deps change)
-docker build --platform linux/amd64 --target base -t emit-tc-base:$(git rev-parse --short HEAD) .
+# NOTE: this repo's build file is `Containerfile`, so `-f Containerfile` is required
+# (docker defaults to `Dockerfile`, which does not exist here).
+docker build --platform linux/amd64 -f Containerfile --target base -t emit-tc-base:$(git rev-parse --short HEAD) .
 
 # Per-epoch image (EMIT emit_c, 285 ch, 2026-06-20 calibration)
-docker build --platform linux/amd64 --target epoch \
+docker build --platform linux/amd64 -f Containerfile --target epoch \
   --build-arg SENSOR=emit_c \
   --build-arg NCHANS=285 \
   --build-arg EPOCH_TAG=20260620 \
@@ -79,8 +81,24 @@ Before promoting a freshly built `emit-tc:<sensor>-<epoch>` image, run it agains
 known L2A scene and confirm output looks right:
 
 ```bash
-docker run --rm -v /path/to/known_scene:/data -v /tmp/out:/output emit-tc:emit_c-20260620
-# inspect /tmp/out/tetracorder for expected mineral group outputs
+docker run --rm -v /path/to/known_scene:/data -v "$PWD/out:/output" emit-tc:emit_c-20260620
+# inspect ./out/tetracorder for expected mineral group outputs
 ```
 This step is deliberately manual — we do not commit a fixture scene or run it in
 the build. The image tag records which library+config were baked.
+
+> **macOS / Docker Desktop caveat:** bind-mounting the `/output` target under
+> `/tmp` can silently fail to propagate the container's writes back to the host
+> (`/tmp` is a symlink to `/private/tmp`; Docker Desktop's file share drops it).
+> Use a repo-local path (e.g. `-v "$PWD/out:/output"`) or `/private/tmp/...`.
+> If output is missing on the host but the run reported `cmd.runtet complete`,
+> copy it out with `docker cp <container>:/output/tetracorder ./out` instead.
+
+### v6.00a5 acceptance (2026-07-25)
+Image `emit-tc:emit_c-20260620-a5` (v6.00a5 engine; baked `r06emitc`=1512 recs,
+`s06emitc`=8220 recs; restart `iprtw=-1511`/`iprty=-8219`; all three build gates
+passed) was run against `emit20230728t214153_rfl`. It reached `cmd.runtet complete`
+(exit 0) and produced **1258 mineral-group `.depth` rasters** across 39 groups with
+genuine non-zero identifications (e.g. `water.high.chlorophyll2.depth` max 11 /
+23 non-zero px) — not the silent zero-ID failure. The a5 `cmd.lib.setup.t6.00a5`
+config and the a5 1512-record research library are the same, aligned vintage.
