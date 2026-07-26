@@ -23,7 +23,6 @@ RUN apt-get -o APT::Sandbox::User=root update &&\
       ratfor \
       tcsh \
       csh \
-      gnuplot \
       gnuplot-x11 \
       imagemagick \
       tgif \
@@ -31,31 +30,7 @@ RUN apt-get -o APT::Sandbox::User=root update &&\
       alsa-utils \
       #~~ javac
       default-jdk \
-      #~~ extras installed by the install script
-      # glibc-doc \
-      # glibc-doc-reference \
-      # libxpm-dev \
-      # libxt-dev \
-      # libpng-dev \
-      # libjbig-dev:amd64 \
-      # libjbig0:amd64 \
-      # libjbig0:i386 \
-      # libjbig2dec0 \
-      # libjbig2dec0-dev \
-      # jbig2dec \
-      # jbigkit-bin \
-      # libjpeg8-dev \
-      # zlib1g \
-      # zlib1g-dev \
-      # zlib1g:i386 \
-      # inotify-tools \
-      # vim \
-      # vim-common \
-      # vim-runtime \
-      # vim-tiny \
-      # imagemagick \
-      # imagemagick-common \
-      # imagemagick-doc \
+      #~~ (extras the install script may reference are pulled transitively; none needed explicitly)
       #~ utilities
       curl \
       git \
@@ -168,10 +143,10 @@ ENV PATH="/root/.pixi/envs/default/bin/:$PATH"
 # ---------------------------------------------------------------------------
 FROM base AS libdata
 # Layer A: FINISHED convolved libraries (the USGS delivery) at their real paths.
-# Baked directly because cmd.lib.setup.t6.00a2 addresses spectra by ABSOLUTE specpr
+# Baked directly because cmd.lib.setup.t6.00a5 addresses spectra by ABSOLUTE specpr
 # record number (research refs up to 1338, standard up to 8208): the library the
 # runtime restart opens MUST contain those records as valid data-starts. The
-# delivered r06emitc (1410 recs) / s06emitc (8220 recs) satisfy that. (Re-convolving
+# delivered r06emitc (1512 recs) / s06emitc (8220 recs) satisfy that. (Re-convolving
 # from a stale recipe produced a 1104-rec lib where record 1116 was out of range and
 # tetracorder silently emitted zero mineral IDs — see docs/build.md.)
 COPY tetracorder/sl1/usgs/rlib06/r06emitc         /root/tetracorder/sl1/usgs/rlib06/r06emitc

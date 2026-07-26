@@ -32,7 +32,7 @@ two build-time gates. It does *not* re-convolve by default.
    addresses spectra by **absolute specpr record number** (research references up
    to 1338, standard up to 8208 for emit_c), so the library the runtime restart
    opens must contain those records as valid data-starts. The USGS delivery
-   (`r06emitc` = 1410 records, `s06emitc` = 8220 records) satisfies this.
+   (`r06emitc` = 1512 records, `s06emitc` = 8220 records) satisfies this.
 2. **`sync-restart`** — sets the restart file's device-protection numbers
    (`iprtw`, `iprty`) to `-(records - 1)` of the libraries actually baked, so
    specpr does not stall on a protection mismatch.
