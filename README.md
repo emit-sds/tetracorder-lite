@@ -218,3 +218,12 @@ tetracorder-lite/
   data/                 # mineral grouping matrix
   docs/                 # technical documentation
 ```
+
+## Documentation
+
+- [`docs/build.md`](docs/build.md) — building per-epoch images, build args, and the
+  build-time gates.
+- [`docs/adding-a-sensor.md`](docs/adding-a-sensor.md) — add a new sensor, recalibrate an
+  existing one, and version the resulting container.
+- [`docs/convolved-library-build.md`](docs/convolved-library-build.md) — the convolution
+  internals and format reference.

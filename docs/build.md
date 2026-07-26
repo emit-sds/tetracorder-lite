@@ -72,8 +72,11 @@ and research (`sprlb06b` → `r06<sensor>`) libraries onto the epoch grid from t
 `WL_FILE`/`FWHM_FILE` calibration deliverable. `sync-restart` and both
 `verify-config` gates then run against the freshly-built libraries — so a recipe
 that produces a misaligned library fails the build rather than silently yielding
-zero mineral IDs. (The convolution recipes must reproduce the config-aligned
-record layout; see the Phase-2 recipe-regeneration work.)
+zero mineral IDs. The convolution recipes must reproduce the config-aligned
+record layout.
+
+For the full procedure — adding a new sensor, recalibrating an existing one, and
+choosing the container tag — see [`adding-a-sensor.md`](adding-a-sensor.md).
 
 ## Recommended manual acceptance (smoke run) — NOT automated
 
