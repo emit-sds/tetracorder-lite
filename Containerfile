@@ -122,15 +122,11 @@ RUN cd tetracorder &&\
     # Comment out the chown/chmod ownership loop (fails on network-mounted FS).
     # Anchored to the ownership loop's `for i in $t1 $sl1` header through its `done`.
     sed -i '/^for i in[[:space:]]*\$t1[[:space:]]*\$sl1/,/^done/ s/^/#/' AAA.INSTALL.spectroscopy-os-setup-linux.sh &&\
-    # Comment out the forced system-package install block ($aget of libx11-dev etc.,
-    # which fails in-container). This `if [ "$doinstall" = "1" ] ... fi` block has NO
-    # unique content anchor: the opener `if [ "$doinstall" = "1" ]` appears twice in
-    # a5's script (also at the earlier interactive prompt), and `fi` is not unique
-    # either. So this ONE patch stays a line range (a5's script: lines 231-254, the
-    # block opening `if [ "$doinstall" = "1" ]` at 231 through its closing `fi` at 254).
-    # NOTE: line range targets a5's install script (AAA.INSTALL.spectroscopy-os-setup-linux.sh);
-    # re-verify `sed -n '231,254p'` selects the doinstall/forced-install block on engine bump.
-    sed -i "231,254 s/^/#/" AAA.INSTALL.spectroscopy-os-setup-linux.sh &&\
+    # Comment out the forced system-package install loop ($aget of libx11-dev etc.,
+    # which fails in-container). Anchored to the loop's unique `for j in libx11-dev`
+    # header through its `done`; the enclosing `if [ "$doinstall" = "1" ]; then ... fi`
+    # stays intact (now just two harmless echoes), so the script remains valid shell.
+    sed -i '/^\tfor j in libx11-dev/,/^\tdone/ s/^/#/' AAA.INSTALL.spectroscopy-os-setup-linux.sh &&\
     yes "y" | ./AAA.INSTALL.spectroscopy-os-setup-linux.sh install &&\
     # Build tetracorder
     cd tetracorder &&\
