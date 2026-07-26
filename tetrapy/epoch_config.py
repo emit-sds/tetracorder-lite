@@ -211,7 +211,7 @@ def _resolve_setup_file(cmds_dir, sensor):
     """Return the Path to the expert cmd.lib.setup file the sensor's run uses.
 
     The DATASET may name it via a ``lib=`` line; otherwise the shipped default for
-    this cmds tree (``cmd.lib.setup.t6.00a2``) is used. Validated to exist.
+    this cmds tree (``cmd.lib.setup.t6.00a5``) is used. Validated to exist.
     """
     cmds = Path(cmds_dir)
     dataset = cmds / "DATASETS" / sensor
@@ -221,10 +221,10 @@ def _resolve_setup_file(cmds_dir, sensor):
         if m:
             name = m.group(1)
     if name is None:
-        # cmd-setup-tetrun's default: lib=cmd.lib.setup.t6.00a2
-        matches = sorted(cmds.glob("cmd.lib.setup.t*a2"))
+        # cmd-setup-tetrun's default: lib=cmd.lib.setup.t6.00a5
+        matches = sorted(cmds.glob("cmd.lib.setup.t*a5"))
         if not matches:
-            raise ValueError(f"no cmd.lib.setup.t*a2 found in {cmds}")
+            raise ValueError(f"no cmd.lib.setup.t*a5 found in {cmds}")
         return matches[-1]
     setup = cmds / name
     if not setup.exists():

@@ -183,7 +183,7 @@ def _lib_with_data_starts(path, n_records, data_start_indices):
 def _setup_file(tmp_path, body):
     d = tmp_path / "cmds"
     d.mkdir(exist_ok=True)
-    p = d / "cmd.lib.setup.t6.00a2"
+    p = d / "cmd.lib.setup.t6.00a5"
     p.write_text(body)
     return p
 
@@ -236,10 +236,10 @@ def test_validate_record_alignment_skips_missing_library(tmp_path):
     assert n == 1  # only the splib06 ref was checkable
 
 
-def test_resolve_setup_file_defaults_to_t6a2(tmp_path):
+def test_resolve_setup_file_defaults_to_t6a5(tmp_path):
     cmds = tmp_path / "cmds"
     (cmds / "DATASETS").mkdir(parents=True)
     (cmds / "DATASETS" / "emit_c").write_text("restart= r1-emitc\n")  # no lib= line
-    (cmds / "cmd.lib.setup.t6.00a2").write_text("  a SMALL:  [splib06] 1 d\n")
+    (cmds / "cmd.lib.setup.t6.00a5").write_text("  a SMALL:  [splib06] 1 d\n")
     got = _resolve_setup_file(cmds, "emit_c")
-    assert got.name == "cmd.lib.setup.t6.00a2"
+    assert got.name == "cmd.lib.setup.t6.00a5"
