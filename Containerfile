@@ -107,37 +107,43 @@ RUN sed -i "s/rclark/root/g" tetracorder/AAA.INSTALL.spectroscopy-os-setup-linux
 # Install specpr
 RUN cd tetracorder/specpr &&\
     mkdir -p lib obj &&\
-    # src.specpr errors about ratfor (??), manually making seems to fix it
+    # specpr's common objects must be built by hand first: src.specpr otherwise
+    # fails with a spurious ratfor error during the scripted install.
     cd src.specpr/common && make && cd - &&\
-    # psplotdaemon does not compile (unresolved errors); skip its build block.
-    # Content-anchored (not line-numbered) so it survives engine line-number shifts:
-    # from the "$SPECPR/src.psplotdaemon" section marker through the blank line that
-    # ends the block (covers the make/make-install pair AND both `if [ $? ] exit 1`
-    # guards, so no guard runs against a stale $? after `make install` is masked).
+    # Skip the psplotdaemon build: it does not compile here (unresolved link
+    # errors) and tetracorder does not need it. Comment out its whole block --
+    # from the "$SPECPR/src.psplotdaemon" section marker to the next blank line --
+    # so the block's own `if [ $? ] ... exit 1` guards are masked too; otherwise a
+    # guard would fire on a stale exit status and abort the install. Match the
+    # marker (not fixed line numbers) so the patch holds across engine versions.
     sed -i '/src\.psplotdaemon/,/^$/ s/^/#/' AAA.INSTALL.specpr+support-progs-linux-upgrade.1.7.sh &&\
     yes "" | ./AAA.INSTALL.specpr+support-progs-linux-upgrade.1.7.sh install
 
 # Install tetracorder
 RUN cd tetracorder &&\
-    # Comment out the chown/chmod ownership loop (fails on network-mounted FS).
-    # Anchored to the ownership loop's `for i in $t1 $sl1` header through its `done`.
+    # Disable the script's chown/chmod ownership loop: it assumes a real user and
+    # fails on the container's root-owned filesystem. Comment the loop from its
+    # `for i in $t1 $sl1` header to its `done` (match the header, not line numbers,
+    # so it holds across engine versions).
     sed -i '/^for i in[[:space:]]*\$t1[[:space:]]*\$sl1/,/^done/ s/^/#/' AAA.INSTALL.spectroscopy-os-setup-linux.sh &&\
-    # Comment out the forced system-package install loop ($aget of libx11-dev etc.,
-    # which fails in-container). Anchored to the loop's unique `for j in libx11-dev`
-    # header through its `done`; the enclosing `if [ "$doinstall" = "1" ]; then ... fi`
-    # stays intact (now just two harmless echoes), so the script remains valid shell.
+    # Disable the forced system-package install loop: it runs the distro package
+    # manager for libx11-dev etc., which cannot install inside this build. Comment
+    # only the `for j in libx11-dev` ... `done` loop and leave the enclosing
+    # `if [ "$doinstall" = "1" ]; then ... fi` in place so the script stays valid
+    # shell (all required packages are already installed in the base stage above).
     sed -i '/^\tfor j in libx11-dev/,/^\tdone/ s/^/#/' AAA.INSTALL.spectroscopy-os-setup-linux.sh &&\
     yes "y" | ./AAA.INSTALL.spectroscopy-os-setup-linux.sh install &&\
     # Build tetracorder
     cd tetracorder &&\
     ## Build cube spectrum mode
     make install &&\
-    ## Build single spectrum mode
-    ### Disable block A (image-cube params), enable block B (single-spectrum params).
-    ### Anchored to the `# A` / `# B` marker comments and each block's `maxpi4=` line so
-    ### the toggle survives engine line-number shifts. Only the `parameter` lines in each
-    ### range are touched. NOTE: block B's marker is matched as `# B ` (trailing space) to
-    ### avoid also matching the `# B2` block that follows.
+    ## Build single-spectrum mode. multmap.h ships two parameter blocks: block A
+    ## sizes arrays for image cubes, block B for single spectra. Switch the header
+    ## to block B by commenting A's `parameter` lines and uncommenting B's, then
+    ## rebuild. Address each block by its `# A` / `# B` marker and its `maxpi4=`
+    ## bound (not line numbers) so the edit holds across engine versions. Block B's
+    ## marker must be matched as `# B ` with a trailing space, or it also catches
+    ## the unrelated `# B2` block that follows.
     sed -i '/^# A$/,/maxpi4=131060/ { /parameter/ s/^/#/ }' multmap.h &&\
     sed -i '/^# B /,/maxpi4=16000/ { /parameter/ s/^#// }' multmap.h &&\
     make installsingle
@@ -155,12 +161,15 @@ ENV PATH="/root/.pixi/envs/default/bin/:$PATH"
 # ---------------------------------------------------------------------------
 FROM base AS libdata
 # Layer A: FINISHED convolved libraries (the USGS delivery) at their real paths.
-# Baked directly because cmd.lib.setup.t6.00a5 addresses spectra by ABSOLUTE specpr
-# record number (research refs up to 1338, standard up to 8208): the library the
-# runtime restart opens MUST contain those records as valid data-starts. The
-# delivered r06emitc (1512 recs) / s06emitc (8220 recs) satisfy that. (Re-convolving
-# from a stale recipe produced a 1104-rec lib where record 1116 was out of range and
-# tetracorder silently emitted zero mineral IDs — see docs/build.md.)
+# Bake the delivered libraries directly rather than re-convolving, because
+# cmd.lib.setup.t6.00a5 addresses spectra by ABSOLUTE specpr record number
+# (research refs up to 1338, standard up to 8208): the library the runtime restart
+# opens MUST contain those records as valid data-starts. The delivered r06emitc
+# (1512 recs) / s06emitc (8220 recs) match the config's record layout; a library
+# convolved from a different-vintage recipe can shift or drop those records, and
+# tetracorder then exits 0 having produced zero mineral IDs. The build-time
+# record-alignment gate (step 3 of the epoch stage) guards against that; baking the
+# delivered libraries is the config-aligned default. See docs/build.md.
 COPY tetracorder/sl1/usgs/rlib06/r06emitc         /root/tetracorder/sl1/usgs/rlib06/r06emitc
 COPY tetracorder/sl1/usgs/library06.conv/s06emitc /root/tetracorder/sl1/usgs/library06.conv/s06emitc
 # Layer B: masters + convolution recipes — only needed for the opt-in RECONVOLVE
@@ -169,9 +178,12 @@ COPY tetracorder/sl1/usgs/library06.conv/splib06b /root/tetracorder/sl1/usgs/lib
 COPY tetracorder/sl1/usgs/rlib06/sprlb06b         /root/tetracorder/sl1/usgs/rlib06/sprlb06b
 COPY tetracorder/sl1/usgs/library06.conv/conv.s06emitc.cmds /root/tetracorder/sl1/usgs/library06.conv/conv.s06emitc.cmds
 COPY tetracorder/sl1/usgs/library06.conv/conv.r06emitc.cmds /root/tetracorder/sl1/usgs/library06.conv/conv.r06emitc.cmds
-# Layer C: sensor-keyed config templates are already inside tetracorder.cmds
-#          (copied in base): DATASETS/emit_c, restart_files/r1-emitc,
-#          DELETED.channels/delete_emit_c — committed, expert-curated, fixed.
+# Layer C: the sensor-keyed config lives inside tetracorder.cmds, already copied in
+#          the base stage: DATASETS/emit_c, restart_files/r1-emitc, and
+#          DELETED.channels/delete_emit_c. These are expert-curated artifacts checked
+#          into the repo; the build validates them (epoch step 3) but never rewrites
+#          them. The one runtime edit is the restart's device-protection numbers,
+#          synced to the baked libraries in epoch step 2.
 
 # ---------------------------------------------------------------------------
 # epoch: per-instrument/per-epoch convolution + config gate + baked setup
