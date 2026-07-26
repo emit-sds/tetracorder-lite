@@ -1478,7 +1478,7 @@
 	'        r*bd>   n1 n2  where n1 n2 are positive real numbers',/,
 	'                       note: bd is abs(bd) for positive features',/,
 	17x, 'Values < (or >) these ranges will reject that material',//,
-	17x, '       default = 0 (no lct/rct of rct/lct checking',/)
+	17x, '       default = 0 (no lct/rct or rct/lct checking',/)
 
 305     if (cmdverbose(-1) <= 1) write (ttyout,303)
 303     format (//,'NOT Features:',//,

@@ -424,7 +424,7 @@
 
 	pathgrp(0) = '                                                                        '
 
-	iversion = 6.00      # program version
+	iversion = 6.001      # program version (e.g. 6.001 is 6.00.1)
 
 	maskflag = 0    # no masking of pixels (default)
 	geoflag  = 0    # do not include geologic origins (default)

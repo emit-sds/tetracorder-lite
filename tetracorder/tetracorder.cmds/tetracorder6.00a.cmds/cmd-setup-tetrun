@@ -22,7 +22,7 @@ source=/t1/tetracorder.cmds/tetracorder6.00a.cmds             ######
 ####################################################################
 #### NOTE: THINGS TO CHANGE FOR NEW VERSIONS                  ######
                                                               ######
-     lib=cmd.lib.setup.t6.00a2                                ######
+     lib=cmd.lib.setup.t6.00a5                                ######
    start=cmds.start.t6.00a                                    ######
   starts=cmds.start.t6.00a.single                             ######
                                                               ######
@@ -86,6 +86,10 @@ shortcubeid='tet'  # short cube ID to add to output file names.
 
 longcubeid='tet'  # long cube ID to add to output file names.
 
+noredoverlayimages=0  # means make the red overlay images, = 1 of do not do this
+
+nodualimages=0        # eans make the dual overlay images, = 1 of do not do this
+
 if [ "$d" != "$source" ]
 then
 	echo "cmd-setup-tetrun may be pointing to the wrong directory"
@@ -101,11 +105,11 @@ echo " "
 
 usage()
 {
-	echo "Usage: cmd-setup-tetrun   sub_directory   data_set  cube image_cube sscalefactor [-t|-T|t|T mintemperature maxtemperature tempuniT] [-p|-P|p|P minpressure maxpressure pressure-unit]  [image gif|png|none] [shortcubeid idtext] [longcubeid longidtext] [autostart]"
+	echo "Usage: cmd-setup-tetrun   sub_directory   data_set  cube image_cube sscalefactor [-t|-T|t|T mintemperature maxtemperature tempuniT] [-p|-P|p|P minpressure maxpressure pressure-unit]   [image gif|png|none]  [shortcubeid idtext]  [longcubeid longidtext]  [geology]  [noredoverlayimages]  [nodualimages] [autostart]"
 	echo ""
 	echo "or"
 	echo ""
-	echo "Usage: cmd-setup-tetrun   sub_directory   data_set  singlespectrum follow|nofollow  [-t|-T|t|T mintemperature maxtemperature tempuniT] [-p|-P|p|P minpressure maxpressure pressure-unit] [longcubeid longidtext]  [autostart]"
+	echo "Usage: cmd-setup-tetrun   sub_directory   data_set  singlespectrum follow|nofollow  [-t|-T|t|T mintemperature maxtemperature tempuniT] [-p|-P|p|P minpressure maxpressure pressure-unit] [longcubeid longidtext]  [geology]  [autostart]"
 	echo ""
 	echo "sub_directory is the directory where the commands go,"
 	echo "			and it must not already exist."
@@ -589,6 +593,16 @@ do
 		dogeology="nogeology"
 	fi
 
+	if [ "$1" = "noredoverlayimages" ]
+	then
+		noredoverlayimages=1  # do not make the red overlay images
+	fi
+
+	if [ "$1" = "nodualimages" ]
+	then
+		nodualimages=1    # do not make the dual overlay iamges
+	fi
+
 	shift
 done
 
@@ -854,6 +868,24 @@ then
 	mv $tmCMD  ${dir}/AAA.info/CMD.setup
 	echo "$scalefactor" > ${dir}/AAA.info/cube-scale-factor
 	echo "$dataset"     > ${dir}/AAA.info/dataset
+	if [ ! -f "${dir}/AAA.info/CMDS-flags" ]
+	then
+		cp /dev/null ${dir}/AAA.info/CMDS-flags
+	fi
+
+	if [ "$noredoverlayimages" = 1 ]  # do not make the red overlay images
+	then
+		echo "noredoverlayimages" >> ${dir}/AAA.info/CMDS-flags
+	fi
+	if [ "$nodualimages" = 1 ]  # do not make the dual overlay iamges
+	then
+		echo "nodualimages" >> ${dir}/AAA.info/CMDS-flags
+	fi
+
+	if [ "$dogeology" = "geology" ]
+	then
+		echo "geology" >> ${dir}/AAA.info/CMDS-flags
+	fi
 
 	if [ -f "${source}/COLOR.channels/color-$dataset" ]
 	then
@@ -967,6 +999,27 @@ then
 	cp -a ${source}/cmds.geology/davinci.make-tet-classification-image-from-list ${dir}/cmds.geology
 fi
 
+if [ -f "${source}/cmds.geology/cmd.list.geologic.mineral.group" ]
+then
+	echo "cp -a ${source}/cmds.geology/cmd.list.geologic.mineral.group  ${dir}/cmds.geology"
+	cp -a ${source}/cmds.geology/cmd.list.geologic.mineral.group  ${dir}/cmds.geology
+fi
+if [ -f "${source}/cmds.geology/cmd.make-all.geologic.mineral.group.images" ]
+then
+	echo "cp -a ${source}/cmds.geology/cmd.make-all.geologic.mineral.group.images  ${dir}/cmds.geology"
+	cp -a ${source}/cmds.geology/cmd.make-all.geologic.mineral.group.images  ${dir}/cmds.geology
+fi
+if [ -f "${source}/cmds.geology/cmd.make-one.geologic.mineral.group.image" ]
+then
+	echo "cp -a ${source}/cmds.geology/cmd.make-one.geologic.mineral.group.image   ${dir}/cmds.geology"
+	cp -a ${source}/cmds.geology/cmd.make-one.geologic.mineral.group.image   ${dir}/cmds.geology
+fi
+if [ -f "${source}/cmds.geology/davinci.make-tet-mineral-group-image-from-list" ]
+then
+	echo "cp -a ${source}/cmds.geology/davinci.make-tet-mineral-group-image-from-list  ${dir}/cmds.geology"
+	cp -a ${source}/cmds.geology/davinci.make-tet-mineral-group-image-from-list  ${dir}/cmds.geology
+fi
+
 
 
 
@@ -1014,6 +1067,8 @@ else
 	if [ "$tetmode" = "cube" ]    # for mode = cube, create group and case directories for mapping results.
 	then
 		echo 'time  ./cmd.runtet cube ' "$cube band $band $imageout" ' >& cmd.runtet.out &'
+		echo " "
+		echo " Then run   tetmon   to monmitor the tetracorder output."
 	else
 		echo "$tetexesingle r1"
 		echo "<$starts"

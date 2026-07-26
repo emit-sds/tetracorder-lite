@@ -80,6 +80,7 @@
 
 	real*4  ngeocnt(maxpix,geochans)   # number of origins for each category
 	real*4  gweight(geochans)          # weight for geologic origin for each category
+	real*4  gweight2(geochans)         # weight for geologic origin for each category, use to normalize
 	real*4  geocub1(maxpix,geochans)   # temp array of cumulative geocube values before applying weights
 	real*4  xgeoorigin                 # temporary variable
 
@@ -792,14 +793,18 @@
 						do iig = 1, geochans {    # add up the origins from each group
 								       # need to multiply in confidence and weight factors.
 							# determine weight
-							gweight(iig) = abs(odepth(igeobest,xel)) *1.2
+							gweight(iig) = abs(odepth(igeobest,xel)) *1.6    # multiply by >1 because depth is typically small.
 							if (gweight(iig) > 1.0) gweight = 1.0
 							#gweight(iig) = sqrt(gweight(iig))
 
+							gweight2(iig) = abs(odepth(igeobest,xel)) +0.2   # used in the denominator, make sure
+													 # value is not too small so add a constant
+
 							xgeoorigin = geoorigin(iig, igeiindex1) * ofit(igeobest,xel) * matidconfidence(igeobest) * gweight(iig)
+
 							if (xgeoorigin > 0.0001) {   # only include results above zero
 								geocub(xel,iig) = geocub(xel,iig) + xgeoorigin
-								ngeocnt(xel,iig) =  ngeocnt(xel,iig) + gweight(iig)
+								ngeocnt(xel,iig) =  ngeocnt(xel,iig) + gweight2(iig)
 							}
 						}
 						do iig = 1, geochans {   # normalize the origins

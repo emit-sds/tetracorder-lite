@@ -73,6 +73,7 @@
 				'  Depth    F*D')
 		do igroup = 1, nzgroup {
 			if (nmatgrp(igroup) == 0) next
+			if (groupenable(igroup) == 0) next
 			ibest = grpbest(igroup)
 
 			# if fit or depth and f*d ar too low, say none
@@ -119,6 +120,7 @@
 		write (ttyout,107) yel,xel
 		do igroup = 1, nzgroup {
 			if (nmatgrp(igroup) == 0) next
+			if (groupenable(igroup) == 0) next
 			ibest = grpbest(igroup)
 
                         # if fit or depth and f*d ar too low, say none

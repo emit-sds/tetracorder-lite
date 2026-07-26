@@ -12,7 +12,7 @@ Run the command:
 
 with no options on the command line and it will tell you command line parameters and options needed.
 
-New command lin options in tetracorder 6:
+New command line options in tetracorder 6:
 
     longcubeid  a longer ID to prepend to color results and geology images
 

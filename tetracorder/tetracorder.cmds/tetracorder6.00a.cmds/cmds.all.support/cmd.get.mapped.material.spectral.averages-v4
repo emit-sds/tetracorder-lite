@@ -44,7 +44,7 @@ fi
 
 id=$1
 
-echo "WARNING: to ratio to a specttrally bland spectrum, you must hard code the spectrum to use"
+echo "WARNING: to ratio to a spectrally bland spectrum, you must hard code the spectrum to use"
 echo "         search for bland to see where to make the change"
 
 acube=$2
@@ -149,7 +149,7 @@ for i in \
 	group.14-16um/		\
 	group.16-19um/		\
 	group.19-22um/		\
-	group.ree/		\
+	group.ree_g21/		\
 	group.ch4gas-2.3um/	\
 	group.co2gas-2um/
 
@@ -181,15 +181,10 @@ do
 		ibland=" "
 		tg="gveg"               # for specpr output titile
 	fi
-	if [ $i = "group.ree/" ]
-	then
-		ibland=" "
-		tg="gree"               # for specpr output titile
-	fi
 	if [ $i = "group.ree_g21/" ]
 	then
 		ibland=" "
-		tg="gr21"               # for specpr output titile
+		tg="gree"               # for specpr output titile
 	fi
 	if [ $i = "group.1.5um-broad/" ]
 	then

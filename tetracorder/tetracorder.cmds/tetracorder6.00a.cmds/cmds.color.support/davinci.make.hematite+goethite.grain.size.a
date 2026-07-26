@@ -95,8 +95,12 @@ xdim   = dim(xcolor)
 
 # now add the colors
 
+# was group.1um/fe3+_goethite.coarsegr.ALL.fd.gif
+
 c=c_blue
-a = read_an_image("group.1um/fe3+_goethite.coarsegr.ALL.fd.gif")
+a = read_an_image("group.1um/fe3+_goethite.coarsegr.ws222.fd.gif")
+a = a+ read_an_image("group.1um/fe3+_goethite.medcoarsegr.mpcma2.fd.gif")
+
 
      xcolor= xcolor + a*( c /255.)
      a=0   # be sure array is cleared

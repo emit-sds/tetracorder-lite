@@ -41,7 +41,7 @@
 	integer*4 diaflg, ifils, ibest, lunresult, ttyout
 	integer*4 xel, jj, ii, intmp, igroup, imcase
 	integer*4 ntmpnotmat, ntmpnotfeat, idonothing
-	integer*4 tmplength
+	integer*4 tmplength, nmat0
 	character*8 inamr
 	character*40 ititl
 	character*50 tmptitle   # this should = length of mfile (in multmap.h)
@@ -224,7 +224,51 @@
 			'Mat Feat',
 			1x,'T    Fit   Depth',
 			'    f*d      Nrmlz')
-		  do jj = 1, nmats {
+
+		  nmat0 = nmatgrp(0)
+		  do jj = 1, nmat0 {   # group 0
+
+			    if (diaflg == 3) write (ttyout, 112) (otitle(jj)(1:32),
+				jj,ii,
+				imch(featimprt(ii,jj)+1),
+				zfit(ii,jj),
+				zdepth(ii,jj),
+				zfd(ii,jj),dln(ii,jj),
+				zcompf(ii,jj), mfile(jj),
+				ii=1,nfeat(jj))
+			    write (lunresult, 112) (otitle(jj)(1:32),
+				jj,ii,
+				imch(featimprt(ii,jj)+1),
+				zfit(ii,jj),
+				zdepth(ii,jj),
+				zfd(ii,jj),dln(ii,jj),
+				zcompf(ii,jj), mfile(jj),
+				ii=1,nfeat(jj))
+
+			    if (numnotfeat(jj) > 0) { # have NOT features
+				do intmp = 1, numnotfeat(jj) {
+					ntmpnotmat = notmat(intmp,jj)
+					ntmpnotfeat= notfeat(intmp,jj)
+					# NOT feature is possible
+					if (notflg(intmp,jj) > 0) {
+								# NOT is found
+
+					   if (diaflg == 3) write (ttyout,221) ntmpnotfeat,
+						ntmpnotmat, jj
+
+					   write (lunresult,221) ntmpnotfeat,
+						ntmpnotmat, jj
+					} else {
+
+					   if (diaflg == 3) write (ttyout,222) jj,
+						ntmpnotfeat, ntmpnotmat
+					   write (lunresult,222) jj,
+						ntmpnotfeat, ntmpnotmat
+					}
+				}
+			    }
+		  }
+		  do jj = 1, nmats {    # groups 1 to ....
 			if (group(jj) > -1 && groupenable(group(jj)) > 0 ) { # valid group
 			    if (diaflg == 3) write (ttyout, 112) (otitle(jj)(1:32),
 				jj,ii,

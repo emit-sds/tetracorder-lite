@@ -13,8 +13,27 @@ then
 	exit 1
 fi
 
-set -x
+#set -x
 
+gclass="geologic-origins/material-classification.txt"
+
+if [ -f "$gclass" ]
+then
+	echo "Found $gclass"
+else
+
+	echo "ERROR: not found: $gclass"
+	echo "run this program from you main mapping directory"
+	echo "exit 1"
+	exit 1
+fi
+
+# make:
+#        geologic-origins/material-classification-categories.txt
+#   and
+#        geologic-origins/material-classification-categories-count.txt
+
+# count may look something like this:
 #      3 aliphatichydrocarbon
 #      1 alkene_hydrocarbon
 #      1 alkyne_hydrocarbon
@@ -47,38 +66,13 @@ set -x
 #      4 sulfide
 #     12 tectosilicate
 
+cat $gclass | grep -v '^\\#' | grep -v '^zero' | cut -c 35-54 | sed -e 's/ *$//'  | sort | uniq -c > geologic-origins/material-classification-categories-count.txt
+
+cat $gclass | grep -v '^\\#' | grep -v '^zero' | cut -c 35-54 | sed -e 's/ *$//'  | sort -u > geologic-origins/material-classification-categories.txt
+
 aname=$1
 
-for i in aliphatichydrocarbon	\
-	alkene_hydrocarbon	\
-	alkyne_hydrocarbon	\
-	aromatic_hydrocarbon	\
-	biogenic	\
-	borate	\
-	carbonate	\
-	cyclosilicate	\
-	element	\
-	generic_fe2+	\
-	generic_fe2+fe3+	\
-	generic_fe3+	\
-	glass	\
-	halide	\
-	hydroxide	\
-	inosilicate	\
-	manmade	\
-	mixture	\
-	nesosilicate	\
-	nitrate	\
-	nitrile	\
-	organic	\
-	oxide	\
-	perchlorate	\
-	phyllosilicate	\
-	smectite	\
-	sorosilicate	\
-	sulfate	\
-	sulfide	\
-	tectosilicate
+for i in `cat geologic-origins/material-classification-categories.txt`
 do
 	echo " "
 	echo " "

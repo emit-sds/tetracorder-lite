@@ -25,76 +25,41 @@ Watch the training videos at:
 
 First complete the configuration for your system:
 
-There are 3 directories:
+Davinci programs start with the line:  #!/usr/bin/env -S davinci -f
+
+If you system is running a very old version of the env command, prior to
+version 8.30, the -S flag will not work.  You'll need to change every
+davinci script so that the first line is:
+#!/usr/local/bin/davinci -f
+
+Because no system in 2026+ should be running such an old version
+of the env command, we no longer supoport 2 versions of davinci scripts
+with the first line changed.    Directories with davinci scripts are:
+
+	cmds.all.support
         cmds.color.support
-        cmds.color.support-env-s
-        cmds.color.support-pre-env8.30
-
-The commands in cmds.color.support are what are used and the shipped version
-will work for most modern linux systems.  The versions in cmds.color.support-env-s
-have the first line and are copies of the files in cmds.color.support:
-
-#!/usr/bin/env -S davinci -f  
-
-and requires env version 8.30 or higher.
-Linux mint verion 20+ has env 8.30
+        davinci-cmds.for.usr.local.bin
+        usr.local.bin.progs
 
 Check you system with: env --version
+If you env command is old, please upgrade.  If youi can't do that,
+you'll need to change to first line of all davinci scripts.
 
-If you have an old env version and need the #!/usr/local/bin/davinci -f
-first line, do:
+The "#!/usr/bin/env -S davinci -f" is needed on cluster machines
+laike that being used to process EMIT and AVIRIS data at JPL.
 
-cp -a cmds.color.support-pre-env8.30/* cmds.color.support
-
-
-
-Similarly, for the scrips in directories:
-
-         davinci-cmds.for.usr.local.bin
-    and  davinci-cmds.for.usr.local.bin-pre-env8.30
-
-for env --version = 8.30 or later, do:
-
-cp -a davinci-cmds.for.usr.local.bin/*   /usr/local/bin
-
-and if an older env version, do:
-
-cp -a davinci-cmds.for.usr.local.bin-pre-env8.30/*  /usr/local/bin
-
-
-Similarly, for the scrips in directories:
-
-          cmds.all.support
-          cmds.all.support-env-s
-          cmds.all.support-pre-env8.30
-
-for env --version = 8.30 or later, you do not need to do anything.
-
-and if an older env version, do:
-
-cp -a cmds.all.support-pre-env8.30/* cmds.all.support
-
-Better would be to upgrade your version of the env command as the version
-that does not support the -S flag is many years old.
-
-
-The cmds.abundances directories have all the davinci scripts
-with  #!/usr/bin/env -S davinci -f
-and if you need to change to the old style, you will need to
-edit each script by hand.
-
-In future releases, the old scripts with
-#!/usr/local/bin/davinci -f
-may not be supported.
+############################
 
 The abundance models are described in more detail in:
 
-Clark, R. N., Swayze, G. A., Livo, K. E., Brodrick, P., Noe Dobrea, E.,
-Vijayarangan, S., Green, R.  O., Wettergreen, D., Garza, A. C., Hendrix,
-A., García-Pando, C. P., Pearson, N., Lane, M., González- Romero, A.,
-Querol, X. and the EMIT and TREX teams. 2023, Imaging spectroscopy: Earth
-and planetary remote sensing with the PSI Tetracorder and expert systems:
-from Rovers to EMIT and Beyond, Planetary Science Journal, in review.
+Clark, R. N., G. A. Swayze, K. E. Livo, P. Brodrick, E. Noe
+Dobrea, S. Vijayarangan, R. O. Green, D. Wettergreen,
+A. Candela, A. Hendrix, C. P. Garcia-Pando, N. Pearson,
+M. D. Lane, A. Gonzalez-Romero, X. Querol, and the EMIT and
+TREX teams, 2024, Imaging spectroscopy: Earth and planetary
+remote sensing with the PSI Tetracorder and expert systems
+from Rovers to EMIT and Beyond Planetary Science Journal 5:276,
+48pp. https://iopscience.iop.org/article/10.3847/PSJ/ad6c3a
 
 
 
@@ -149,6 +114,7 @@ Next you will need to add entries to the following directories:
      example, for  restart_files/r1-emita, change the lines:
                    (get the number of channels from the target spectrometer)
 
+	cd restart_files
         cp restart_files/r1-av18a  restart_files/r1_emitc   # name should be the same as set in the DATASETS
         edit  restart_files/r1_emitc   and change the follor to:
         iwfl=/sl1/usgs/rlib06/r06emitc                                                       
@@ -160,6 +126,8 @@ Next you will need to add entries to the following directories:
         nchans=          285  # num wave chans
 
 5) Look in the COLOR.channels directory and read one of the files.
+
+      cd COLOR.channels
    For example, color-aviris_1995:
       BASE     20 20 20  base-image.jpg    # base grayscale image
       COLOR1   30 20 10  color-visRGB.jpg  # visible color channels
@@ -201,13 +169,15 @@ The first option is the sub-directory where all results would be placed.
 
 Example:
 
-/t1/tetracorder.cmds/tetracorder5.26e.cmds/cmd-setup-tetrun   arches-np    aviris_1995 \
+/t1/tetracorder.cmds/tetracorder6.00a.cmds/cmd-setup-tetrun   arches-np    aviris_1995 \
               cube ../cube/cuprite.95.cal.rtgc.v  0.0005 -T 0 80 C     -P 0.9 1.1 bar  \
-              shortcubeid archs95a
+              shortcubeid archs95a  longcubeid arches-aviris95-t6.00a2  geology
 
-/t1/tetracorder.cmds/tetracorder5.26e.cmds/cmd-setup-tetrun   map-schrod1   MMM_09c \
+/t1/tetracorder.cmds/tetracorder6.00a.cmds/cmd-setup-tetrun   map-schrod1   MMM_09c \
               cube ../cubes/Schrodinger_UARFLRC  1.0  -T -100 140 C -P 0.00000001 0.0001 bar \
-              shortcubeid m3schrod1
+              shortcubeid m3schrod1   noredoverlayimages  nodualimages
+
+Note: shortcubeid, longcubeid, and geology are optional.
 
 
 Note the full path + filename to the cube must be less than 73 characters.

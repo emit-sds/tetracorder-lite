@@ -36,6 +36,7 @@
 \#    NOTMSNW16       splib06   6240       \# Melting_snow mSnw16 (slush) W1R1Fa
 \#    NOTH2OM5GPL]    splib06]  6354       \# Water+Montmor SWy-2+5.01g/l W1R1Fa
 \#    NOTH2OM16GPL]   splib06]  6348       \# Water+Montmor SWy-2+16.5g/l W1R1Fa
+\#    NOTWATER100     sprlb06   1464       \# water-20C-100cm-path-model
 \#
 \# SMALL:
 \#
@@ -57,6 +58,7 @@
 ==[NOTMSNW16]     [splib06]  xxxx \# Melting_snow mSnw16 (slush) W1R1Fa
 ==[NOTH2OM5GPL]   [splib06]  xxxx \# Water+Montmor SWy-2+5.01g/l W1R1Fa
 ==[NOTH2OM16GPL]  [splib06]  xxxx \# Water+Montmor SWy-2+16.5g/l W1R1Fa
+==[NOTWATER100]   [sprlb06]  xxxx \# water-20C-100cm-path-model
 \#
 \#################################################################################
 \#

@@ -29,6 +29,8 @@
 \# Material                   GO1 GO2 GO3 GO4 GO5  GO6  GO7  G08  G09  G10  G11
 \#
 zero                           0   0   0   0   0    0    0    0    0    0    0
+generic_soil                   0   0   0   0   0    0    0    0    0    0    0
+\#
 acid_mine_drainage             0   0   0   9   0    0    0    0    0    0    0
 actinolite                     0   0   9   0   0    0    0    0    0    0    0      \# was actinolit
 adularia                       0   0   0   0   0    0    0    0    0    0    0
@@ -149,7 +151,7 @@ halloysite                     0   0   0   0   9    0    0    0    0    0    0  
 hectorite                      9   0   0   0   9    0    0    0    0    0    0
 hedenbergite                   0   0   9   0   0    0    0    0    0    0    0
 hematite                       0   0   0   8   9    0    0    0    0    0    0  g04=0 2026-03-19a
-hematite_smallgrain            0   0   0   0   9    0    9    0    0    0    0  g04=0 2026-03-19a
+hematite_smallgrain            0   0   0   0   9    0    1    0    0    0    0  g04=0 2026-03-19a,, G07=1 2026-03-27
 \#
 \# Material                   GO1 GO2 GO3 GO4 GO5  GO6  GO7  G08  G09  G10  G11
 \#

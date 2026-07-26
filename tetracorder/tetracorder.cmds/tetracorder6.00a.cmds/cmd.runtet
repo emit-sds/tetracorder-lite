@@ -130,6 +130,25 @@ echo " "
 echo "cmd.runtet $*"
 echo " "
 
+if [ ! -d "AAA.info" ]
+then
+	mkdir AAA.info    # info directory 
+fi
+if [ -d "AAA.info" ]
+then
+	if [ -f "AAA.info/CMDS-executed" ]
+	then
+		echo "cmd.runtet started" `date` >> AAA.info/CMDS-executed
+	else
+		echo "cmd.runtet started" `date` > AAA.info/CMDS-executed
+	fi
+
+	if [ ! -f "AAA.info/CMDS-flags" ]
+	then
+		cp /dev/null AAA.info/CMDS-flags
+	fi
+fi
+
 ##### now run tetracorder ################
 # Normally, tetracorder is the production version in 
 # /usr/local/bin or the developmental version /src/local.
@@ -168,6 +187,13 @@ fi
 if [ "$tetmode" = "cube" ]
 then
 	makdual=1  # default is to make dual result+grayscale image output
+
+	echo "$pt r1" '<<EOI > tetracorder.out'  >> AAA.info/CMDS-executed
+	echo "     <$tetcmdsstart " >> AAA.info/CMDS-executed
+	echo "     e " >> AAA.info/CMDS-executed
+	echo "EOI " >> AAA.info/CMDS-executed
+	echo " " >> AAA.info/CMDS-executed
+	echo " " >> AAA.info/CMDS-executed
 
 	echo "$pt r1" '<<EOI > tetracorder.out'
 	time $pt r1 <<EOI > tetracorder.out 2>&1
@@ -301,14 +327,22 @@ EOI
 
 	if [ -f "geologic-origins/geologic_origins_cube.v" ]
 	then
+		echo "cd geologic-origins " >> AAA.info/CMDS-executed
 		cd geologic-origins
 
+		echo "davinci.make.envi.header.from.vicar geologic_origins_cube.v > geologic_origins_cube.v.hdr" >> AAA.info/CMDS-executed
+		echo "davinci.make.envi.header.from.vicar geologic_origins_cube.v > geologic_origins_cube.v.hdr"
 		davinci.make.envi.header.from.vicar geologic_origins_cube.v > geologic_origins_cube.v.hdr
 
 		echo " "
+		echo "./cmd.make.gifs.from.geocube" >> AAA.info/CMDS-executed
 		echo "./cmd.make.gifs.from.geocube"
 		./cmd.make.gifs.from.geocube
+
+		echo "cd .." >> AAA.info/CMDS-executed
 		cd ..
+
+		echo " " >> AAA.info/CMDS-executed
 
 	fi
 
@@ -320,6 +354,8 @@ EOI
 	ls -l $image1
 	head -1 $image1
 
+	echo "davinci.make.envi.header.from.vicar $image1 > AAA.info/image-envi-header-1band-bsq.hdr"
+	echo "davinci.make.envi.header.from.vicar $image1 > AAA.info/image-envi-header-1band-bsq.hdr"  >> AAA.info/CMDS-executed
 	davinci.make.envi.header.from.vicar $image1 > AAA.info/image-envi-header-1band-bsq.hdr
 
 	cat AAA.info/mapinfo.txt                   >> AAA.info/image-envi-header-1band-bsq.hdr
@@ -448,33 +484,48 @@ EOI
 	echo "##############################################"
 	echo " "
 	echo "./cmds.all.support/davinci.add.iron.oxides   started"  `date`
+	echo "./cmds.all.support/davinci.add.iron.oxides   started"  `date`  >> AAA.info/CMDS-executed
 	./cmds.all.support/davinci.add.iron.oxides
 
 	echo "./cmds.all.support/davinci.add.kaol+smect   started"  `date`
+	echo "./cmds.all.support/davinci.add.kaol+smect   started"  `date`  >> AAA.info/CMDS-executed
 	./cmds.all.support/davinci.add.kaol+smect
 
 	echo "./cmds.all.support/davinci.alunite+kaolinite.muscovite   started"  `date`
+	echo "./cmds.all.support/davinci.alunite+kaolinite.muscovite   started"  `date`  >> AAA.info/CMDS-executed
 	./cmds.all.support/davinci.alunite+kaolinite.muscovite
 
 	echo "./cmds.all.support/davinci.add.ALUNITE_COMP   started"  `date`
+	echo "./cmds.all.support/davinci.add.ALUNITE_COMP   started"  `date`  >> AAA.info/CMDS-executed
 	./cmds.all.support/davinci.add.ALUNITE_COMP
 
 	echo "./cmds.all.support/davinci.add.ALUN+PYROPH   started"  `date`
+	echo "./cmds.all.support/davinci.add.ALUN+PYROPH   started"  `date`  >> AAA.info/CMDS-executed
 	./cmds.all.support/davinci.add.ALUN+PYROPH
 
 	echo "./cmds.all.support/davinci.add.KAOL+MUSC   started"  `date`
+	echo "./cmds.all.support/davinci.add.KAOL+MUSC   started"  `date`>> AAA.info/CMDS-executed
 	./cmds.all.support/davinci.add.KAOL+MUSC
 
 	echo "./cmds.all.support/davinci.add.PYROPH+MUSC   started"  `date`
+	echo "./cmds.all.support/davinci.add.PYROPH+MUSC   started"  `date` >> AAA.info/CMDS-executed
 	./cmds.all.support/davinci.add.PYROPH+MUSC
 
 	echo "./cmds.all.support/davinci.add.TALCS   started"  `date`
+	echo "./cmds.all.support/davinci.add.TALCS   started"  `date`  >> AAA.info/CMDS-executed
 	./cmds.all.support/davinci.add.TALCS
 
 	echo "./cmds.all.support/davinci.add.generic_Fe2+   started"  `date`
+	echo "./cmds.all.support/davinci.add.generic_Fe2+   started"  `date`  >> AAA.info/CMDS-executed
 	./cmds.all.support/davinci.add.generic_Fe2+
 
+	echo " " >> AAA.info/CMDS-executed
+
 	############### make sure all newly generated images are compressed
+
+	echo "compressing all image files (gzip)" >> AAA.info/CMDS-executed
+	echo " " >> AAA.info/CMDS-executed
+
 	for i in `ls -d group.* case*`
 	do
 		echo "compressing files in $i "
@@ -577,10 +628,13 @@ EOI
 	echo "./cmds.all.support/cmd.add.geometry.info.to.envi.headers $cube"
 	echo " "
 
+	echo "./cmds.all.support/cmd.add.geometry.info.to.envi.headers $cube" >> AAA.info/CMDS-executed
 	./cmds.all.support/cmd.add.geometry.info.to.envi.headers $cube
 
+	echo " " >> AAA.info/CMDS-executed
 	###############
 
+	echo "date" >> AAA.info/CMDS-executed
 	date
 
 	echo " "
@@ -589,6 +643,7 @@ EOI
 	echo "Begin cluster analysis" `date`
 	echo "./cmds.all.support/cluster.analysis"
 	echo " "
+	echo "./cmds.all.support/cluster.analysis" >> AAA.info/CMDS-executed
 	./cmds.all.support/cluster.analysis
 
 	echo " "
@@ -597,6 +652,7 @@ EOI
 	echo "Generating pw commands of top materials" `date`
 	echo "./cmds.all.support/gen.pw.clustered25.cmds"
 	echo " "
+	echo "./cmds.all.support/gen.pw.clustered25.cmds"  >> AAA.info/CMDS-executed
 	./cmds.all.support/gen.pw.clustered25.cmds
 
 	echo " "
@@ -605,7 +661,10 @@ EOI
 	echo "Generating gamma stretched gif images" `date`
 	echo "./cmds.all.support/gen.fd.gif.images"
 	echo " "
+	echo "./cmds.all.support/gen.fd.gif.images"  >> AAA.info/CMDS-executed
 	./cmds.all.support/gen.fd.gif.images
+
+	echo " " >> AAA.info/CMDS-executed
 
 	if [ -f "$cube" ]
 	then
@@ -726,6 +785,7 @@ EOI
 				grayofile=`echo $BASE | awk '{ print $5 }'`
                                 graypngfile=`basename $grayofile .jpg`.png
 				echo "davinci.make.rgb.image.from.cube $cube $scalefactor2  $ch1 $ch2 $ch3  base-image/$grayofile  base-image/$graypngfile"
+				echo "davinci.make.rgb.image.from.cube $cube $scalefactor2  $ch1 $ch2 $ch3  base-image/$grayofile  base-image/$graypngfile"  >> AAA.info/CMDS-executed
 				davinci.make.rgb.image.from.cube $cube $scalefactor2  $ch1 $ch2 $ch3  base-image/$grayofile base-image/$graypngfile
 				ls -l base-image/$grayofile 
 
@@ -752,6 +812,7 @@ EOI
 				fi
 
 				echo "davinci.make.rgb.image.from.cube $cube $scalefactor2  $ch1 $ch2 $ch3  base-image/$color1ofile base-image/$color1pngfile $color1vfile"
+				echo "davinci.make.rgb.image.from.cube $cube $scalefactor2  $ch1 $ch2 $ch3  base-image/$color1ofile base-image/$color1pngfile $color1vfile"  >> AAA.info/CMDS-executed
 				davinci.make.rgb.image.from.cube $cube $scalefactor2  $ch1 $ch2 $ch3  base-image/$color1ofile  base-image/$color1pngfile   $color1vfile
 				ls -l base-image/$color1ofile
 
@@ -770,6 +831,7 @@ EOI
 				color2ofile=`echo $COLOR2 | awk '{ print $5 }'`
 				color2pngfile=`basename $color2ofile .jpg`.png
 				echo "davinci.make.rgb.image.from.cube $cube $scalefactor2  $ch1 $ch2 $ch3  base-image/$color2ofile base-image/$color2pngfile"
+				echo "davinci.make.rgb.image.from.cube $cube $scalefactor2  $ch1 $ch2 $ch3  base-image/$color2ofile base-image/$color2pngfile"  >> AAA.info/CMDS-executed
 				davinci.make.rgb.image.from.cube $cube $scalefactor2  $ch1 $ch2 $ch3  base-image/$color2ofile base-image/$color2pngfile
 				ls -l base-image/$color2ofile
 			else
@@ -778,6 +840,7 @@ EOI
 
 		fi
 
+		echo " " >> AAA.info/CMDS-executed
 
 
 		echo " "
@@ -791,6 +854,7 @@ EOI
 		echo "making color results" `date`
 		echo " "
 		echo "./cmds.color.support/make.color.results.all $longcubeid"
+		echo "./cmds.color.support/make.color.results.all $longcubeid"  >> AAA.info/CMDS-executed
 		./cmds.color.support/make.color.results.all $longcubeid
 
 		echo " "
@@ -799,6 +863,7 @@ EOI
 		echo "making color results overlayed on grey scale image" `date`
 		echo " "
 		echo "./cmds.color.support/cmd.make.colormap-overlay-on-bw-all"  `date`
+		echo "./cmds.color.support/cmd.make.colormap-overlay-on-bw-all"  `date`  >> AAA.info/CMDS-executed
 		./cmds.color.support/cmd.make.colormap-overlay-on-bw-all
 
 		if [ -f "base-image/color-visRGB.jpg" ]
@@ -813,37 +878,67 @@ EOI
 		###############################################
 		# geology: make geologic classification images
 
+		echo " " >> AAA.info/CMDS-executed
+
 		if [ -f "geologic-origins/geologic_origins_cube.v" ]
 		then
+			echo " "
+			echo "geologic-origins/geologic_origins_cube.v  cube found"
+
 			if [ -f "cmds.geology/cmd.make-all.geologic.classification.images" ]
 			then
 				echo " "
 				echo "./cmds.geology/cmd.make-all.geologic.classification.images $longcubeid"
+				echo "./cmds.geology/cmd.make-all.geologic.classification.images $longcubeid"  >> AAA.info/CMDS-executed
 				./cmds.geology/cmd.make-all.geologic.classification.images $longcubeid
 			fi
+			if [ -f "cmds.geology/cmd.make-all.geologic.mineral.group.images" ]
+			then
+				echo " "
+				echo "./cmds.geology/cmd.make-all.geologic.mineral.group.images $longcubeid"
+				echo "./cmds.geology/cmd.make-all.geologic.mineral.group.images $longcubeid"  >> AAA.info/CMDS-executed
+				./cmds.geology/cmd.make-all.geologic.mineral.group.images $longcubeid
+			fi
+		else
+			echo " "
+			echo "geologic-origins/geologic_origins_cube.v  cube NOT FOUND, skipping deologic origins calculations"
 
 		fi
 
 
 		############################
 
+		echo " " >> AAA.info/CMDS-executed
 
 		echo " "
 		echo "##############################################"    `date`
 		echo " "
-		echo "Generating gamma stretched jpeg results on gray background images" `date`
-		echo "./cmds.all.support/gen.fd.jpg.overlay+base.images $cube $aband $imageout"
-		echo " "
-		./cmds.all.support/gen.fd.jpg.overlay+base.images $cube $aband $imageout
+		echo "##############################################"    `date` >> AAA.info/CMDS-executed
+		echo " " >> AAA.info/CMDS-executed
+
+		noredoverlayimages=`grep noredoverlayimages AAA.info/CMDS-flags`
+		if [ -z "$noredoverlayimages" ]
+		then
+			echo "Generating gamma stretched jpeg results on gray background images" `date`
+			echo "./cmds.all.support/gen.fd.jpg.overlay+base.images $cube $aband $imageout"
+			echo " "
+			echo "./cmds.all.support/gen.fd.jpg.overlay+base.images $cube $aband $imageout"  >> AAA.info/CMDS-executed
+			./cmds.all.support/gen.fd.jpg.overlay+base.images $cube $aband $imageout
+		fi
 
 		if [ "$makdual" = 1 ]
 		then 
-			echo " "
-			echo "##############################################"
-			echo " "
-			echo "Generating gamma stretched dual jpeg results on gray background + results on black images" `date`
-			echo "./cmds.all.support/gen.fd.jpg.overlay+base-dual.images $cube $aband $imageout"
-			./cmds.all.support/gen.fd.jpg.overlay+base-dual.images $cube $aband $imageout
+			nodualimages=`grep nodualimages AAA.info/CMDS-flags`
+			if [ -z "$nodualimages" ]
+				then
+				echo " "
+				echo "##############################################"
+				echo " "
+				echo "Generating gamma stretched dual jpeg results on gray background + results on black images" `date`
+				echo "./cmds.all.support/gen.fd.jpg.overlay+base-dual.images $cube $aband $imageout"
+				echo "./cmds.all.support/gen.fd.jpg.overlay+base-dual.images $cube $aband $imageout"  >> AAA.info/CMDS-executed
+				./cmds.all.support/gen.fd.jpg.overlay+base-dual.images $cube $aband $imageout
+			fi
 		fi
 	else
 		echo "ERROR: cannot find image cube: $cube"
@@ -856,6 +951,7 @@ EOI
 	then
 		echo "making notzero directories and copy notzero jpeg results there" `date`
 		echo "./cmds.all.support/gen.fd.jpg.overlay+base-dual.images-notzero $imageout"
+		echo "./cmds.all.support/gen.fd.jpg.overlay+base-dual.images-notzero $imageout"  >> AAA.info/CMDS-executed
 		echo " "
 		./cmds.all.support/gen.fd.jpg.overlay+base-dual.images-notzero $imageout
 	fi
@@ -865,6 +961,8 @@ EOI
 	echo "#############################################"    `date`
 	echo " "
 	echo "computing masses " `date`
+	echo "./cmds.abundances/cmd.compute.abundances"
+	echo "./cmds.abundances/cmd.compute.abundances"  >> AAA.info/CMDS-executed
 	./cmds.abundances/cmd.compute.abundances
 	echo " "
 	echo "#############################################"

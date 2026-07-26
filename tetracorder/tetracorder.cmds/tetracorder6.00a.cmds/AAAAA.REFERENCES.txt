@@ -1,4 +1,3 @@
-
 The State of the Art in Imaging Spectroscopy Materials Mapping
 
 Detection and mapping of minerals, vegetation species, chemicals,
@@ -11,7 +10,9 @@ whether crystalline or amorphous solids, liquids and gases. What
 can be detected remotely is mainly a function of spectral range and
 resolution. Analysis of imaging spectrometer data sets is quite complex
 and the most advanced system system in existence is the Tetracorder
-system first described in detail in Clark et al. 2003.
+system first described in detail in Clark et al. 2003 with tetracorder 5
+described in  Clark et al., 2024, and geologic origins in Tetracorder 6,
+based on Noe Dobrea et al., 2025.
 
 Tetracorder is in use analyzing data from all over the Solar System,
 including mapping ice and other compounds on icy satellite surfaces in
@@ -29,10 +30,11 @@ sizes for some materials using the shape of the absorption features. The
 grain sizes and feature strengths can then be fed into radiative transfer
 models to derive component abundances.
 
-Tetracorder 5.x uses the U.S. Geological Survey digital spectral
+Tetracorder 5.x and 6.x uses the U.S. Geological Survey digital spectral
 library splib06a (Clark et al., 2007) plus additional spectra.
-The native and convolved spectral libraries are maintained on guthub
-(__________________).
+The native and convolved spectral libraries and Tetracorder
+source code are maintained on guthub
+(https://github.com/PSI-edu/spectroscopy-tetracorder).
 
 Tetracorder 5.x+ adapts to both environmental conditions as well
 as instrument capability. Previous versions had to be adapted by an
@@ -44,24 +46,55 @@ an environmental disaster, or a studying remote planets. This is now
 possible. Further, Tetracorder results are made into custom color-coded
 maps automatically.
 
+Tetracorder 6.x+ includes geologic origins mapping, class mapping (e.g
+map all sulfates, or hydroxides, or aromatic hydrocarbons) and
+geologic mineral group mapping the kaolinite-serpentine group.
+or chlorite group.
 
 
-Clark et a., 2003 is availabel as a pdf in:a AAA.REFERENCE.documents.dir
 
 Papers that use tetracorder can reference the following papers. 
+
+Clark, R. N., G. A. Swayze, K. E. Livo, P. Brodrick, E. Noe
+Dobrea, S. Vijayarangan, R. O. Green, D. Wettergreen,
+A. Candela, A. Hendrix, C. P. Garcia-Pando, N. Pearson,
+M. D. Lane, A. Gonzalez-Romero, X. Querol, and the EMIT and
+TREX teams, 2024, Imaging spectroscopy: Earth and planetary
+remote sensing with the PSI Tetracorder and expert systems
+from Rovers to EMIT and Beyond Planetary Science Journal 5:276,
+48pp. https://iopscience.iop.org/article/10.3847/PSJ/ad6c3a
+
 
 Clark, R.N., Swayze, G.A., Livo, K.E., Kokaly, R.F., Sutley, S.J., Dalton,
 J.B., McDougal, R.R., and Gent, C.A., 2003, Imaging spectroscopy:
 Earth and planetary remote sensing with the USGS Tetracorder and
 expert systems, Journal of Geophysical Research, Vol. 108(E12), 5131,
 doi:10.1029/2002JE001847, p. 5-1 to 5-44.
+NOTE: this paper is available as a pdf in: AAA.REFERENCE.documents.dir
 
 Clark, R.N., Swayze, G.A., Wise, R., Livo, E., Hoefen, T., Kokaly,
 R., Sutley, S.J., 2007, USGS digital spectral library splib06a:
 U.S. Geological Survey, Data Series 231.
+Data at: https://github.com/PSI-edu/spectroscopy-tetracorder
+
+############
+
+This paper describes the geologic origins which is now in
+Tetracorder 6 but with additions.
+
+Noe Dobrea, Eldar Z., Maria E. Banks, Roger N. Clark, David
+Wettergreen, Amanda Hendrix, Caitlin Ahrens, Ernie Bell,
+Abigail Breitfeld, Thomas F. Bristow, Sanlyn Buxner, Alberto
+Candela, Margaret Hansen, Greg Holsclaw, Paul Knightly, Georgiana
+Kramer, Nandita Kumari, Melissa D. Lane, Audrey Martin, McKayla
+Meier, Ruby Patterson, Neil Pearson, Thomas Prettyman, Greg
+A. Swayze, David Vaniman, Srinivasan Vijayarangan, Faith Vilas,
+Shawn P. Wright, 2025, Rover Science Autonomy in Planetary
+Exploration: Field Analog Tests, Planetary Science Journal
+6:51. https://iopscience.iop.org/article/10.3847/PSJ/adaa78
 
 
-
+###############33
 
 This paper evaluates the performance of the tetracorder core algorithm and
 is a knowledge base for strategy on which spectral features to use in

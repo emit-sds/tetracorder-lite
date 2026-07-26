@@ -11,8 +11,11 @@
 #   G10   Water Liquid or Ice
 #   G11   Fire /Thermal Emission
 
-actinolite               actinolite: Produced by low-grade regional or contact metamorphism
-                         of magnesium carbonate, mafic, or ultramafic rocks;
+actinolite                 https://www.mindat.org/min-18.html
+                         Geological Setting:
+                         actinolite: Produced by low-grade regional
+                         or contact metamorphism of magnesium
+                         carbonate, mafic, or ultramafic rocks;
                          Also in glaucophane-bearing blueschists.
 
 
@@ -38,7 +41,29 @@ azurite
 beidellite
 benzene
 biotite
-black_Mn_Coating
+
+black_Mn_Coating          https://en.wikipedia.org/wiki/Desert_varnish
+                          However, a 2008 microscopy study posited
+                          that desert varnish has already been
+                          reproduced with chemistry not involving
+                          life in the lab, and that the main
+                          component is actually silica and not clay
+                          as previously thought. The study notes that
+                          desert varnish is an excellent fossilizer
+                          for microbes and indicator of water. Desert
+                          varnish appears to have been observed by
+                          rovers on Mars, and if examined may contain
+                          fossilized life from Mars's wet period.[6]
+
+                           Perry, Randall; Sephton, Mark (6 September
+                           2008). "Solving the mystery of desert
+                           varnish with microscopy". Infocus (11):
+                           62–76. doi:10.22443/rms.inf.1.36
+
+                           An important characteristic of black
+                           desert varnish is that it has an unusually
+                           high concentration of manganese.
+
 bloedite
 bronzite
 brucite
@@ -63,7 +88,26 @@ calcite                   https://www.mindat.org/min-859.html
                           ??? origins table has G02 why?   make =2? 3/23/2026  RC
 
 carnallite
-chalcedony
+
+chalcedony                Tectosilicate mineral, Quartz group
+                          cryptocrystalline form of silica
+
+                             https://www.mindat.org/min-960.html
+                          Geological Setting:
+                          Very common.
+                          As nodules, vein fillings, crusts
+                          in volcanic rocks.  As sinter-like
+                          crusts in low- to medium temperature
+                          hydrothermal veins.  Main constituent in
+                          silica-rich marine sedimentary rocks.
+                          As nodular concretions and layers in
+                          limestones and marls.  As a metasomatic
+                          replacement in limestones and marls
+                          ("replacement chert").  As cement in
+                          sandstones.  Replacing other minerals
+                          in pseudomorphoses.  As a fossilizing
+                          material (petrified wood, coral agate).
+
 chalcopyrite
 chlorite
 chlorophyll
@@ -111,7 +155,35 @@ elbaite
 endellite
 enstatite
 epidote
-eugsterite
+
+eugsterite                     Vercouwen, L., 1981, Eugsterite, a new salt mineral,
+                               American Mineralogist,Volume 66, pages 632-636
+                               http://minsocam.org/ammin/AM66/AM66_632.pdf
+
+                                   Eugsteritehas been found in two
+                                   different regions.  It is seen
+                                   at two placesalong the shoreof
+                                   Lake Victo- ria, at Sindo and
+                                   Luanda, where it is found as a
+                                   surface mineral in association
+                                   with thenarditeand halite
+                                   (Table l). It is also found at
+                                   Kalacha, Turkana dis- trict,
+                                   eastof the Chalbi Desertin the
+                                   north of Kenya.  There vast
+                                   salt eflorescences occur and
+                                   eugsteriteis found in association
+                                   with halite and thenardite
+
+                                   Eugsterite is a very common
+                                   salt mineral which forms during
+                                   evaporation of nonalkaline
+                                   waters. The mineral is synthesized
+                                   easily at 600 while at room
+                                   temperature it did not form.
+
+
+
 fe2+_chlorite.thuringite
 fe2+fe3+_hematite_weath
 fe2+fe3+mix
@@ -175,7 +247,24 @@ hematite                      source: ?
                               activity. It is also usually the
                               cause of red soils all over the planet.
 
-hematite_smallgrain           G05 G07
+hematite_smallgrain           G07=low    G05 
+                              Sun et al., 2025, Colloidal origin of
+                              hematite in Pleistocene iron-rich
+                              sedimentary rocks from Milos
+                              Island, Greece: An analogue for
+                              Precambrian iron shuttle, Chemical
+                              Geology, Vol 698, 20 December 2025,
+                              https://www.sciencedirect.com/science/article/abs/pii/S0009254125005200
+                                    "Banded iron formations (BIFs)
+                                    are critical archives of Earth's
+                                    early biogeochemical cycles"
+
+                                    "Consequently, the presence of
+                                    hematite in ancient sediments
+                                    like BIFs does not necessarily
+                                    imply in situ Fe-oxidation or
+                                    associated microbial processes."
+
 
 hornblende
 howlite

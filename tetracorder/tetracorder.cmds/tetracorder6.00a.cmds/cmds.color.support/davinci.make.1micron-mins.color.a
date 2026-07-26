@@ -232,6 +232,7 @@ a = a + read_an_image("group.1um/fe3+_goethite.medcoarsegr.mpcma2.fd.gif")  # no
 
 ##### medium grained goethite
 
+#c= c_armygreen
 c= c_mudyellow
 a = read_an_image("group.1um/fe3+_goethite.medgr.ws222.fd.gif")
 a = a + read_an_image("group.1um/fe3+_goethite+qtz.medgr.gds240.fd.gif")

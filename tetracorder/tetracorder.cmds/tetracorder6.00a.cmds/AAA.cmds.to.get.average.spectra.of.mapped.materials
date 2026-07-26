@@ -1,8 +1,20 @@
 
-#### As of tetracorder5.27d, in the mapping directory after tetracorder runs,
-#    simple do:
+#### As of tetracorder 6, in the mapping directory after tetracorder runs,
+#    simply do:
 
-./cmd.get.average.spectra.of.mapped.materials
+./cmd.get.average.spectra.of.mapped.materials  dirs all   # gets spectra for all tetracorder results
+
+./cmd.get.average.spectra.of.mapped.materials  box a b c d  dirs all  # gets spectra for all
+								# tetracorder results within bounding pixel box
+								# a= upper left x,  b=upper left y, 
+								# c= lower right x, d= lower right y
+								# range: 1 to size of cube in pixels
+
+./cmd.get.average.spectra.of.mapped.materials  dirs  list_of_directories  # only do these directories,
+								# exmaple: group.1um group.2um case.veg.type
+
+./cmd.get.average.spectra.of.mapped.materials  box a b c d  dirs  list_of_directoriesa # bounding box,
+								# selected directories
 
 
 

@@ -1,12 +1,29 @@
-#!/usr/local/bin/davinci -f
+#!/usr/bin/env -S davinci -f  
 
-afile=$1
+###########################  was:  #!/usr/local/bin/davinci -f
 
-ofile=$2
+afile = $1
 
-alist=read_lines(filename=afile)
+ofile = $2
 
-alines = length(a)
+printf ("geology:  cmds.geology/davinci.make-tet-classification-image-from-list %s $s\n", afile, ofile)
+
+alist = read_lines(filename=afile)
+
+alines = length(alist)
+
+if ( alines == 0 ) {
+
+        printf ("     davinci.make-tet-classification-image-from-list input file list of images has no entries\n")
+        printf ("                        file: %s\n", afile)
+        printf ("          Making no outoput image\n")
+        printf ("     exit   davinci.make-tet-classification-image-from-list\n")
+        exit(1)
+} else {
+
+	printf ("davinci.make-tet-classification-image-from-list: file %s  has %d lines\n", afile, alines)
+}
+
 
 define read_an_image(1,1) {
 
@@ -49,9 +66,19 @@ for (i=1; i<=alines; i++) {
 
 bbb = byte(aout)
 
-ofileg = ofile + ".gif"
+bbbmom = moment(bbb)
+	printf ("output image min max mean = %f   %f  %f   %s\n", bbbmom[1,1,1], bbbmom[2,1,1], bbbmom[3,1,1], ofileg)
+
+if ( bbbmom[1,1,1] < 0.00001 && bbbmom[2,1,1] < 0.00001 ) {
+
+        printf ("     davinci.make-tet-classification-image-from-list input file list of images has no entries\n")
+        printf ("                        file: %s\n", afile)
+        printf ("          Making no outoput image\n")
+        printf ("     exit   davinci.make-tet-classification-image-from-list\n")
+        exit(1)
+}
+
+ofileg = ofile + "-class.gif"
 
 write (bbb,filename=ofileg, type=gif)
 
-bbbmom = moment(bbb)
-	printf ("output image min max mean = %f   %f  %f   %s\n", bbbmom[1,1,1], bbbmom[2,1,1], bbbmom[3,1,1], ofileg)

@@ -302,9 +302,9 @@ to 2 of the 4 bands used in gypsum identification are disabled due to
 the general nature of the EMIT atmospheric correction.
 
 10/2024 jarosite mitigation with 5.27f1:
-Tetracorder expert system 5.27f1 includes new measurements of nano-hematire and
+Tetracorder expert system 5.27f1 includes new measurements of nano-hematite and
 nano-goethite mixtures.  This has mostly solved the jarosite false positive problem.
-However, the may need to be additional reference spectra added.  If you envounter
+However, the may need to be additional reference spectra added.  If you encounter
 a large jarosite region, confirm the detection.  If you find it is a false positive,
 lets us know so we can determine what the deficiency is in the spectral
 libraries.
@@ -326,7 +326,7 @@ the presence of significant montmorillonite.
 
 Starting with 5.27e1 additional REE spectra were added (group 20 expanded), and
 the other groups with samarium and neodymium included have had the fit
-threshold raised to reduce flase positives (e.g. Group 1).  Samarium, in particular,
+threshold raised to reduce false positives (e.g. Group 1).  Samarium, in particular,
 is difficult because two diagnostic absorptions have similar positions
 and widths as water bands in vegetation, resulting in a lot of false
 positives.  While under much better control with fewer false positives,
@@ -340,13 +340,13 @@ January 2025 REE false positives:
 It has been determined that REEs have false positive detections in
 certain conditions, especially when spectra with strong curvature
 to the spectrum exists, like strong hematite absorptions.  Up to
-and including 5.27f1, straight line continuaa are used and the
+and including 5.27f1, straight line continua are used and the
 strong features like in hematite with a straight line continuum will
 show a small dip.  As a result, with hematite or goethite showing
 geologic exposure patterns, it appears that REE will show interesting
 geologic patterns,making them look like real detections, but they
 are false detections.  A solution to this problem is being worked.
-Currently curved continuaa are being tested to mitigate the problem.
+Currently curved continua are being tested to mitigate the problem.
 
 
 ######################################################################################
@@ -365,3 +365,50 @@ deleted to be used for another purpose.  Mapping a single narrow absorption
 feature, like the 0.6 micron Neodymium band results in a lot of false 
 positives, so group 20 was not effective for mapping REE.
 
+The curved continua reduced a lot of false REE positives, but some remain.
+Any REE detection needs to be checked to see if the spectral features
+are consistent with REE detections.  Known  false positives includes
+larger grained, strong feature hematite.  The spectral curvature
+can be too much for cubic spline continua to model, resulting in
+residual features that can be mistaken for REE features.
+A possible solution is to add a NOT hematite feature detection
+when the hematite absorptions are strong.
+
+######################################################################################
+##### Tetracorder 6  2026  6.00a5
+
+Added material lists, geologic origins, class lists.
+While this has been tested in multiple geologic environments,
+please confirm results and if you find discrepancies, please report them.
+
+Previous to Tetracorder 6, water was often confused with Fe2+ bearing minerals
+(e.g. group 4).  For example, iron-bearing feldspars, olivines and others
+mapped where water with a blue rise could mimic, in continuum-removed
+spectra, the Fe2+ features.  This is greatly improved in tetracorder
+6 with the addition of more water spectra and not features (not water absorptions)
+in the Fe2+ mineral spectra.  But it is not perfect, and depending on calibration,
+can result is some false identifications.  This can impact geologic origins
+and when that occurs, shows in some areas, e.g. as igneous origin, but is water.
+
+Snow and melting snow is significantly improved in Tetracorder 6 with
+the addition of more snow and melting snow spectra.  But water + vegetation
+is often confused with melting snow.  One solution is if you know that
+your scene was measured when the temperatures were above freezing throughout
+the scene, set the temperatures above freezing in the tetracorder setup.
+
+EMIT/AVIRIS and the JPL reflectance models: the JPL imaging spectroscopy group has made
+amazing strides in deriving surface reflectance with improved models
+of atmospheric transmission and scattering.  But one problem remains
+in tests so far: an artifact in the 2.3 micron region.  The result is 
+observed in some scenes as a false identification of prehnite and/or
+perchlorate.  The artifact could, in theory, shift the spectral structure
+to change identification of other minerals with 2.3 micron features
+(e.g. carbonates, chlorites, serpentines).  Not every scene tested
+has this problem, so a careful check is needed to see if your scene
+is affected.  One simple check is to display 
+the *color-results_prehnite-chlorite-mix+perchlorate+labels.jpg file.
+
+As always, check results for accuracy, and if errors are found determine
+if the problem is calibration to reflectance or a deficiency in Tetracorder
+or spectral libraries.  If Tetracorder or spectral libraries,
+please report the problem.

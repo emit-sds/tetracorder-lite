@@ -91,6 +91,8 @@ define read_an_image(1,1) {
 a      = read_an_image($1)
 xcolor = float(a*0)
 xdim   = dim(xcolor)
+dimx = xdim[1,,]
+dimy = xdim[2,,]
 
 
 ###################   begin custom section ##########################################
@@ -231,41 +233,69 @@ xcolorAGM = xcolor
 printf ("now overlay the xcolorAGM on top of xcolorABM\n")
 system("date")                                 # do this to see how section this loop takes
 
-dimx = xdim[1,,]
-dimy = xdim[2,,]
+# printf ("davinci.make.acid-minerals-buffering-minerals.a  TEST POINT 1\n")
 
 xcolor = xcolorABM   # xcolor is now the output color
                      # next put AGM on top
                      # and where both ABM and AGM in the same pixel, color = green
 
-vagm = xcolorAGM[,,1] + xcolorAGM[,,2] + xcolorAGM[,,3]
-vabm = xcolorABM[,,1] + xcolorABM[,,2] + xcolorABM[,,3]
+vagm = float(xcolorAGM[,,1] + xcolorAGM[,,2] + xcolorAGM[,,3])
+bbb  = cat(vagm, vagm, axis=z)  # make into 2-band image
+vagm = cat(bbb,  vagm, axis=z)  # make into 3-band image
 
-vagmvabm = (vagm + vabm) /6
+vagmdim = dim(vagm)
 
-vagmvabmratio = float(vagm) / float(vabm)
+vabm = float(xcolorABM[,,1] + xcolorABM[,,2] + xcolorABM[,,3])
+bbb  = cat(vabm, vabm, axis=z)  # make into 2-band image
+vabm = cat(bbb,  vabm, axis=z)  # make into 3-band image
+
+#vabmdim = dim(vabm)
+#printf ("dimensions: vabmdim = %d %d %d\n", vabmdim[1,,], vabmdim[2,,], vabmdim[3,,])
+
+vagmvabm = (vagm + vabm) /6.0   # the 6 is for 6 channels, 3 vagm + 3 vabm
+#vagmvabmdim = dim(vagmvabm)
+#printf ("dimensions: vagmvabm = %d %d %d\n", vabmdim[1,,], vabmdim[2,,], vabmdim[3,,])
+
+#cdim = dim(c_paleseagreen)
+#printf ("dimensions: c_paleseagreen = %d %d %d\n", cdim[1,,], cdim[2,,], cdim[3,,])
+
+vagmvabm33 = vagmvabm * (c_paleseagreen / 255.)
+vagmvabm66 = vagmvabm * (c_yellow / 255.)
+vagmvabmgr = vagmvabm * (c_green / 255.)
+
+#vagmvabm33dim = dim(vagmvabm33)
+#vagmvabm66dim = dim(vagmvabm66)
+#vagmvabmgrdim = dim(vagmvabmgr)
+#
+#printf ("dimensions: vagmvabm33dim = %d %d %d\n", vagmvabm33dim[1,,], vagmvabm33dim[2,,], vagmvabm33dim[3,,])
+#printf ("dimensions: vagmvabm66dim = %d %d %d\n", vagmvabm66dim[1,,], vagmvabm66dim[2,,], vagmvabm66dim[3,,])
+#printf ("dimensions: vagmvabmgrdim = %d %d %d\n", vagmvabmgrdim[1,,], vagmvabmgrdim[2,,], vagmvabmgrdim[3,,])
+
+vagmvabmratio = float(vagm[,,2]) / float(vabm[,,2])
 
 printf ("     computing color at each pixel: start loop\n")
 system("date")                                 # do this to see how long this loop takes
 for (iy=1; iy<=dimy; iy++) {
 	for (ix=1; ix<=dimx; ix++) {
 
-		if ( vagm[ix,iy,] > 0 && vabm[ix,iy,] == 0 ) {
+		if ( vagm[ix,iy,2] > 0 && vabm[ix,iy,2] == 0 ) {
 
 			xcolor[ix,iy,] = xcolorAGM[ix,iy,]
 
-		} else if ( vagm[ix,iy,] > 0 && vabm[ix,iy,] > 0 ) {
+		} else if ( vagm[ix,iy,2] > 0 && vabm[ix,iy,2] > 0 ) {
 
-			if ( vagmvabmratio < 0.33 ) {            # c_paleseagreen
+			if ( vagmvabmratio[ix,iy,] < 0.33 ) {            # c_paleseagreen
 
-				xcolor[ix,iy,] = vagmvabm[ix,iy,] * (c_paleseagreen / 255.)
+				xcolor[ix,iy,] = vagmvabm33[ix,iy,]
+				#printf ("davinci.make.acid-minerals-buffering-minerals.a  TEST vagmvabm33 found\n")
 
-			} else if ( vagmvabmratio > 0.66 ) {     # c_yellow
+			} else if ( vagmvabmratio[ix,iy,] > 0.66 ) {     # c_yellow
 
-				xcolor[ix,iy,] = vagmvabm[ix,iy,] * (c_yellow / 255.)
+				xcolor[ix,iy,] = vagmvabm66[ix,iy,]
+				#printf ("davinci.make.acid-minerals-buffering-minerals.a  TEST vagmvabm66 found\n")
 
 			} else {                                 # c_green
-				xcolor[ix,iy,] = vagmvabm[ix,iy,] * (c_green / 255.)
+				xcolor[ix,iy,] = vagmvabmgr[ix,iy,]
 			}
 		}
 	}

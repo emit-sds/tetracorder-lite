@@ -48,5 +48,14 @@ else
 
 	awk '{ print $2 }' ${ofile}-list.txt | sort -u  > $otmp
 
-	./cmds.geology/davinci.make-tet-classification-image-from-list  $otmp   $ofile
+	otmpn=`wc -l $otmp | awk '{ print $1 }'`
+
+	if [ "otmpn" = "0" ]
+	then
+		echo "      cmd.make-one.geologic.classification.image $classnam"
+		echo "ERROR:      $otmp has no entries; skipping classifications"
+	else
+
+		./cmds.geology/davinci.make-tet-classification-image-from-list  $otmp   $ofile
+	fi
 fi

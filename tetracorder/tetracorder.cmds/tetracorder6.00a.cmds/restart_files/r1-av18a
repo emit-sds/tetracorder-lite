@@ -23,10 +23,10 @@ iprts=             0  # device protection s
 # short 8 character names associated with file device letters
 #
 isavt=      *unasnd*  # file device letter v
-iwdgt=      r06av17a  # file device letter w
+iwdgt=      r06av18a  # file device letter w
 iwrkt=      *unasnd*  # file device letter d
 inmu=       *unasnd*  # file device letter u
-inmy=       s06av17a  # file device letter y
+inmy=       s06av18a  # file device letter y
 #
 # plot control values (real number format: ex. 0.23E+01)
 #

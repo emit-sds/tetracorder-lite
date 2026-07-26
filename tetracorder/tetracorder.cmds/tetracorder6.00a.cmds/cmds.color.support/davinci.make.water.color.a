@@ -109,6 +109,20 @@ xdim   = dim(xcolor)
 
 c= c_blue
 a = read_an_image("group.1um/water.low.chlorophyll.fd.gif")
+a = a+ read_an_image("group.1um/water.low.chlorophyll-blue1.fd.gif")
+a = a+ read_an_image("group.1um/water.turquoise-shallow.fd.gif")
+a = a+ read_an_image("group.1um/water-20C-10cm-path-model.fd.gif")
+a = a+ read_an_image("group.1um/water-20C-30cm-path-model.fd.gif")
+a = a+ read_an_image("group.1um/water-20C-100cm-path-model.fd.gif")
+
+
+     xcolor= xcolor + a*( c /255.)
+     a=0   # be sure array is cleared
+
+
+c= c_cyan
+a = read_an_image("group.1um/water+mont0.5gpl.fd.gif")        #  cyan
+a = a+ read_an_image("group.1um/water.low.chlorophyll-turquoise.fd.gif")
 
      xcolor= xcolor + a*( c /255.)
      a=0   # be sure array is cleared
@@ -119,13 +133,12 @@ a = read_an_image("group.1um/water.low.chlorophyll.fd.gif")
 
 c= c_green
 a = read_an_image("group.1um/water.high.chlorophyll.fd.gif")  #  green
+a = a+ read_an_image("group.1um/water.high.chlorophyll2.fd.gif")  #  green
+a = a+ read_an_image("group.1um/water-20C-10cm-path+chlrph-g.fd.gif")   #  green
+a = a+ read_an_image("group.1um/water-20C-100cm-path+chlrph-g.fd.gif")  #  green
+a = a+ read_an_image("group.1um/water-20C-300cm-path+chlrph-g.fd.gif")  #  green
+a = a+ read_an_image("group.1um/water-20C-100cm-path+chlrph-a.fd.gif")  #  green
 
-     xcolor= xcolor + a*( c /255.)
-     a=0   # be sure array is cleared
-
-
-c= c_cyan
-a = read_an_image("group.1um/water+mont0.5gpl.fd.gif")        #  cyan
 
      xcolor= xcolor + a*( c /255.)
      a=0   # be sure array is cleared
@@ -138,15 +151,30 @@ a = read_an_image("group.1um/water+mont1.67gpl.fd.gif")       #  yellow
      a=0   # be sure array is cleared
 
 
+c= c_mudyellow
+a = read_an_image("group.1um/water+mont5.01gpl.fd.gif")       #  c_mudyellow
+
+     xcolor= xcolor + a*( c /255.)
+     a=0   # be sure array is cleared
+
+
 c= c_magenta
-a = read_an_image("group.1um/water+mont5.01gpl.fd.gif")       #  magenta
+a = read_an_image("group.1um/water+mont16.5gpl.fd.gif")       #  c_magenta
+
+     xcolor= xcolor + a*( c /255.)
+     a=0   # be sure array is cleared
+
+
+c= c_purple
+a = a+ read_an_image("group.1um/water+mont100gpl.fd.gif")     # c_purple
 
      xcolor= xcolor + a*( c /255.)
      a=0   # be sure array is cleared
 
 
 c= c_orange
-a = read_an_image("group.1um/water+mont16.5gpl.fd.gif")       #  orange
+a = a+ read_an_image("group.1um/water+mont300gpl.fd.gif")     # c_orange
+
 
      xcolor= xcolor + a*( c /255.)
      a=0   # be sure array is cleared

@@ -49,9 +49,10 @@ water_liquid             \# one material per line (max 24ch) optional abundance
 
 end_list_materials
 
-identification_confidence  9  \# 0 to 9 scale.  Output will be scald 8-bit 0 - 255, 9=255
-                              \# 1 = position and shape match only
-                              \# 2 -9 = increasing diagnostic confidence 
+                                \# confidence is for material and classification
+identification_confidence  7  9  \# 0 to 9 scale.  Output will be scaled 8-bit 0 - 255, 9=255
+                                 \# 1 = position and shape match only
+                                 \# 2 -9 = increasing diagnostic confidence
 
 \# to overide feature  defaults include a defie features NNNNNN  block before the  default block
 

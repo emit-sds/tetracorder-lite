@@ -1,6 +1,6 @@
 #!/bin/sh
 
-expsys=cmd.lib.setup.t5.15a2
+expsys='../cmd.lib.setup.t6.00a5'
 
 # EMIT to detect 10 key minerals:
 # Montmorillonite, Kaolinite, Gypsum, Goethite, Calcite,

@@ -556,32 +556,34 @@ fi
 
 
 echo " "  ###########################################################################
-echo "########################## color-results_ree  ###########"
 
-c=${i}_color-results_ree.png        # REE features vs mineralogy
-cbw=${i}_color-results_ree+bw.png   # REE features vs mineralogy on B&W background
-if [ ! -f "color.results/$c" ]
-then
-	echo "cmds.color.support/davinci.make.ree.a $gbase ${c} $gbasebw"
-	cmds.color.support/davinci.make.ree.a $gbase ${c} $gbasebw ${cbw}
-	mv $c color.results
-	mv $cbw color.results
-else
-	echo "$c ALREADY EXISTS"
-fi
-# color map + key pairs:
-cm=color.results/$c
-ck="color.keys/key_ree.png"
-out="color.results+labels/${i}_color-results_ree+labels.png"
-cmds.color.support/davinci.cat.colormap+key-below    $cm  $ck $out
-
-# color map on B&W + key pairs:
-cm=color.results/$cbw
-ck="color.keys/key_ree.png"
-out="color.results+labels/${i}_color-results_ree-on-bw+labels.png"
-cmds.color.support/davinci.cat.colormap+key-below    $cm  $ck $out
-
-
+# this group 20 will be repurposed in Tetracorder 6.  April10, 2026 RNC
+#echo "########################## color-results_ree  ###########"
+#
+# c=${i}_color-results_ree.png        # REE features vs mineralogy
+# cbw=${i}_color-results_ree+bw.png   # REE features vs mineralogy on B&W background
+# if [ ! -f "color.results/$c" ]
+# then
+#	echo "cmds.color.support/davinci.make.ree.a $gbase ${c} $gbasebw"
+#	cmds.color.support/davinci.make.ree.a $gbase ${c} $gbasebw ${cbw}
+#	mv $c color.results
+#	mv $cbw color.results
+# else
+#	echo "$c ALREADY EXISTS"
+# fi
+# # color map + key pairs:
+# cm=color.results/$c
+# ck="color.keys/key_ree.png"
+# out="color.results+labels/${i}_color-results_ree+labels.png"
+# cmds.color.support/davinci.cat.colormap+key-below    $cm  $ck $out
+#
+# # color map on B&W + key pairs:
+# cm=color.results/$cbw
+# ck="color.keys/key_ree.png"
+# out="color.results+labels/${i}_color-results_ree-on-bw+labels.png"
+# cmds.color.support/davinci.cat.colormap+key-below    $cm  $ck $out
+#
+#
 echo " "  ###########################################################################
 echo "########################## color-results_ree.b-g21  ###########"
 
@@ -743,6 +745,26 @@ cmds.color.support/davinci.cat.colormap+key-below    $cm  $ck $out
 
 
 echo " "  ###########################################################################
+echo "########################## color-results_snow-grain-size-water.a   #####################"
+
+c=${i}_color-results_snow-grain-size-water.a.png
+if [ ! -f "color.results/$c" ]
+then
+	echo "cmds.color.support/davinci.snow-grain-size-water.a $gbase ${c}"
+	cmds.color.support/davinci.snow-grain-size-water.a $gbase ${c}
+	mv $c color.results
+else
+	echo "$c ALREADY EXISTS"
+fi
+# color map + key pairs:
+cm=color.results/$c
+ck="color.keys/key_snow-grain-size-water.a.png"
+out="color.results+labels/${i}_color-results_snow-grain-size-water.a.png"
+cmds.color.support/davinci.cat.colormap+key-below    $cm  $ck $out
+
+
+
+echo " "  ###########################################################################
 echo "########################## color-results_veg-spectral-type   ##################"
 
 c=${i}_color-results_veg-spectral-type.png
@@ -797,7 +819,7 @@ fi
 # color map + key pairs:
 cm=color.results/$c
 ck="color.keys/key_organics,veg-2um-a-1200w.png"
-out="color.results+labels/${i}_color-results_organics,veg-2um-a.png"
+out="color.results+labels/${i}_color-results_organics-veg-2um-a.png"
 cmds.color.support/davinci.cat.colormap+key-below    $cm  $ck $out
 
 
@@ -864,7 +886,7 @@ if [ "$xpixels" -gt "800" ]
 then
 	echo "Make presentation size images"
 
-	cmds.color.support/cmd.make.color.results.presentation.images
+	cmds.color.support/cmd.make.color.results.presentation.images-v2
 fi
 
 ###########################
