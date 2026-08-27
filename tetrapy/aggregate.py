@@ -19,6 +19,10 @@ Dims = dict(
     x = "crosstrack"
 )
 
+# Fill value stamped into nodata pixels, matching the L2B heritage products
+Fill = -9999.0
+
+
 def get_names(group):
     return SimpleNamespace(
         depth  = f"group_{group}_band_depth",
@@ -26,6 +30,42 @@ def get_names(group):
         uncert = f"group_{group}_band_depth_unc",
         fit    = f"group_{group}_fit",
     )
+
+
+def nodata_mask(rfl: xr.DataArray) -> np.ndarray:
+    """
+    Locate pixels carrying no usable reflectance.
+
+    Two sentinels are treated as nodata. ENVI-declared fill (``-9999``) covers
+    orthorectified products, and an all-zero spectrum covers frames dropped by the
+    onboard cloud screening: EMIT L2A writes those as exact zeros in raw space even
+    though the header advertises ``-9999``, so a fill-only test never fires on them.
+
+    Both tests require the whole spectrum to match, so a pixel with a single bad
+    channel stays valid data rather than being discarded.
+
+    Parameters
+    ----------
+    rfl : xarray.DataArray
+        Observed reflectance as ``(y, x, band)``.
+
+    Returns
+    -------
+    numpy.ndarray
+        Boolean ``(y, x)`` mask, True where the pixel carries no usable data.
+    """
+    data = rfl.data
+
+    fill = (data == Fill).all(axis=-1)
+    zero = (data == 0).all(axis=-1)
+    mask = fill | zero
+
+    Logger.info(
+        f"Nodata mask: {mask.sum()}/{mask.size} pixels ({mask.mean():.2%}) "
+        f"[{fill.sum()} fill, {zero.sum()} all-zero]"
+    )
+
+    return mask
 
 
 def save(ds: xr.Dataset, file: str | Path) -> None:
@@ -46,11 +86,15 @@ def save(ds: xr.Dataset, file: str | Path) -> None:
 
     if file.suffix == ".nc":
         Logger.info(f"Saving {file}")
-        ds.to_netcdf(file)
+        # Declare the fill so readers mask it instead of reading it back as data.
+        ds.to_netcdf(file, encoding={var: {"_FillValue": Fill} for var in ds})
     elif file.suffix == ".tif":
         Logger.info(f"Saving {file}")
         # GeoTIFF has no concept of named dimensions; point rioxarray at ours.
-        ds.rio.set_spatial_dims(x_dim=Dims["x"], y_dim=Dims["y"]).rio.to_raster(file)
+        ds = ds.rio.set_spatial_dims(x_dim=Dims["x"], y_dim=Dims["y"])
+        for var in ds:
+            ds[var].rio.write_nodata(Fill, inplace=True)
+        ds.rio.to_raster(file)
     else:
         Logger.error(f"File extension unrecognized, must be either .nc or .tif, got: {file.suffix}")
 
@@ -252,6 +296,7 @@ def aggregate(
     uncert: xr.DataArray | None = None,
     libs: dict[str, dict] | None = None,
     ref: pd.DataFrame | None = None,
+    mask: np.ndarray | None = None,
 ) -> tuple[xr.Dataset | None, xr.Dataset | None]:
     """
     Aggregate one tetracorder group into band-depth / mineral-id maps.
@@ -283,6 +328,11 @@ def aggregate(
         given, the mineral-id band uses that index instead of the running block
         counter; a material missing from the matrix is assigned a negative id and
         logged.
+    mask : numpy.ndarray, optional
+        Boolean ``(y, x)`` nodata mask from :func:`nodata_mask`. Pixels it marks are
+        stamped with ``Fill`` in every output band after the block loop. Without it
+        nodata pixels keep the zero-seeded value and are indistinguishable from real
+        pixels where nothing was detected.
 
     Returns
     -------
@@ -308,6 +358,10 @@ def aggregate(
     # Tracking statistics
     c = 0
     t = len(blocks)
+
+    # Union of every block's valid pixels, so the summary below can tell a pixel
+    # that was masked out from one that was simply never detected
+    claimed = None
 
     mins = None
     minuncert = None
@@ -342,6 +396,10 @@ def aggregate(
         if not valid.any():
             Logger.debug(f"[{i:03}/{t:03}] - No valid data for {name}")
             continue
+
+        if claimed is None:
+            claimed = np.zeros(valid.shape, dtype=bool)
+        claimed |= valid.data
 
         # Copy shape (and downtrack/crosstrack coords) from first valid input
         if mins is None:
@@ -389,6 +447,31 @@ def aggregate(
         Logger.debug(f"[{i:03}/{t:03}] + [ID: {idx}] Added {name}")
 
     Logger.debug(f"{c}/{t} ({c / t:.1%}) Blocks successfully aggregated")
+
+    if mins is None:
+        return None, None
+
+    if mask is None:
+        Logger.warning(f"Group {group}: no nodata mask supplied, nodata pixels will read as 0")
+        return mins, minuncert
+
+    # This has to happen after the block loop, not inside it. The accumulators are
+    # seeded with zeros and only written where a block is valid, so until the input
+    # mask is stamped over them a nodata pixel is indistinguishable from a real
+    # pixel where nothing was detected.
+    if claimed is not None:
+        unclaimed = ~claimed
+        Logger.info(
+            f"Group {group}: {int((unclaimed & mask).sum())} nodata pixels flagged {Fill:.0f}, "
+            f"{int((unclaimed & ~mask).sum())} valid pixels with no detection left at 0"
+        )
+        if overlap := int((claimed & mask).sum()):
+            Logger.warning(f"Group {group}: {overlap} masked pixels were claimed by a block, overriding to {Fill:.0f}")
+
+    for ds in (mins, minuncert):
+        for var in ds:
+            ds[var].data[mask] = Fill
+
     return mins, minuncert
 
 
@@ -415,7 +498,10 @@ def build(
         precedence over ``output``; the extension of each path decides its format.
     rfl, rfluncert : str, optional
         Paths to the observed reflectance and reflectance-uncertainty rasters. Both
-        must be given to enable band-depth uncertainty calculation.
+        must be given (and exist, alongside the libraries) to enable band-depth
+        uncertainty calculation. ``rfl`` alone drives the nodata mask, which is
+        applied regardless of whether uncertainty is calculated; without it nodata
+        pixels are indistinguishable from real zeros in the products.
     reflib, reslib : str, optional
         Paths to the convolved reference (``splib06``) and research (``sprlb06``)
         specpr libraries. Only read when uncertainty is being calculated.
@@ -439,13 +525,37 @@ def build(
     if reference:
         reference = pd.read_csv(reference)
 
-    libs = None
-    if None not in (rfl, rfluncert, reflib, reslib):
-        Logger.info("Loading reflectance products")
+    # Resolved before rfl is replaced by its loaded DataArray, because truthiness on
+    # a DataArray is elementwise and would raise here. Tested by truthiness rather
+    # than `is not None` because the config loader is a default_box Box: an absent or
+    # null key arrives as an empty Box, so the inputs are never literally None.
+    uncertainty = all((rfl, rfluncert, reflib, reslib))
+    if uncertainty:
+        # The shipped config carries placeholder paths, so being set is not proof of
+        # being present. Degrade to no-uncertainty rather than dying on a missing file
+        # the caller never intended to supply -- the nodata mask does not depend on it.
+        if missing := [str(f) for f in (rfluncert, reflib, reslib) if not Path(f).exists()]:
+            Logger.warning(f"Skipping uncertainty, inputs not found: {', '.join(missing)}")
+            uncertainty = False
+    supplied = bool(rfl)
+
+    # The nodata mask depends only on the reflectance, so load it whenever one is
+    # given rather than gating it on the uncertainty inputs being complete too
+    mask = None
+    if supplied:
+        Logger.info("Loading reflectance")
 
         # Transpose to stay consistent with the tetracorder products
         with xr.open_dataset(rfl, engine="rasterio") as ds:
             rfl = ds["band_data"].transpose("y", "x", "band").load()
+
+        mask = nodata_mask(rfl)
+    else:
+        Logger.warning("No reflectance supplied, nodata pixels cannot be flagged")
+
+    libs = None
+    if uncertainty:
+        Logger.info("Loading reflectance uncertainty")
 
         with xr.open_dataset(rfluncert, engine="rasterio") as ds:
             rfluncert = ds["band_data"].transpose("y", "x", "band").load()
@@ -454,9 +564,12 @@ def build(
             "sprlb06": read_library(reslib),
             "splib06": read_library(reflib),
         }
+    else:
+        # Never hand aggregate() an unloaded path
+        rfluncert = None
 
-    mins1, uncert1 = aggregate(tc, 1, rfl, rfluncert, libs, reference)
-    mins2, uncert2 = aggregate(tc, 2, rfl, rfluncert, libs, reference)
+    mins1, uncert1 = aggregate(tc, 1, rfl, rfluncert, libs, reference, mask)
+    mins2, uncert2 = aggregate(tc, 2, rfl, rfluncert, libs, reference, mask)
 
     # Variables: group_1_band_depth, group_1_mineral_id, group_2_band_depth, group_2_mineral_id
     mins = xr.merge([mins1, mins2], compat="override")
