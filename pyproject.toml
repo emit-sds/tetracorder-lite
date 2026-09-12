@@ -1,48 +1,12 @@
 [project]
-name = "tetrapy"
-version = "1.0.2"
-description = "..."
+name = "tetracorder-lite"
+version = "1.1.0"
+description = "Containerized USGS Tetracorder (v6) for EMIT mineral identification"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "click>=8.4.1",
-    "gdal>=3.13.2",
-    "numpy>=2.2.6",
-    "pandas>=2.3.3",
-    "python-box[all]>=7.4.1",
-    "rich>=13.0.0",
-    "rioxarray>=0.19.0",
-    "scipy>=1.15.3",
-    "spectral>=0.25",
-    "xarray>=2025.6.1",
+    "tetrapy[docs]",
 ]
 
-[project.scripts]
-tetrapy = "tetrapy.__main__:cli"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-packages = ["tetrapy"]
-
-[tool.pixi.workspace]
-channels = ["conda-forge"]
-platforms = ["linux-64"]
-
-[tool.pixi.pypi-dependencies]
-tetrapy = { path = ".", editable = true }
-
-[tool.pixi.tasks]
-
-# emit-sds-l2b dependencies
-[tool.pixi.dependencies]
-numpy = ">=1.26"
-gdal = ">=3.13.1,<4"
-libgdal-core = ">=3.13.1,<4"
-proj = ">=9.0"
-pyyaml = ">=6.0.3,<7"
-pandas = ">=3.0.3,<4"
-scipy = ">=1.18.0,<2"
-matplotlib = ">=3.11.0,<4"
+[tool.uv.sources]
+tetrapy = { git="https://github.com/jammont/tetrapy", branch="main" }

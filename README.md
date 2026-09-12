@@ -1,9 +1,10 @@
 # tetracorder-lite
 
-Containerized USGS Tetracorder (v6) for EMIT mineral identification, with a Python
-CLI (`tetrapy`) that drives the full pipeline — convolving the spectral library for a
-new calibration epoch, setting up and running tetracorder, and aggregating the results
-into L2B mineral products — from a single YAML config.
+Containerized USGS Tetracorder (v6) for EMIT mineral identification, driven by the
+[`tetrapy`](https://github.com/jammont/tetrapy) Python CLI, which runs the full
+pipeline — convolving the spectral library for a new calibration epoch, setting up and
+running tetracorder, and aggregating the results into L2B mineral products — from a
+single YAML config.
 
 Note - this is not the authoritative version of Tetracorder. Please see [here](https://github.com/PSI-edu/spectroscopy-tetracorder)
 if that's what you're after.  This version is what is used by EMIT - the core code is consistent,
@@ -43,7 +44,7 @@ docker build --platform linux/amd64 -f Containerfile -t tetracorder-lite .
 ```
 
 The image compiles specpr + Tetracorder (Fortran/ratfor), installs DaVinci, and
-sets up the `tetrapy` Python environment via pixi.
+sets up the [`tetrapy`](https://github.com/jammont/tetrapy) Python environment via uv.
 
 ## The pipeline
 
@@ -189,30 +190,26 @@ technical reference on the convolution.
 
 ## Development
 
-The Python CLI lives in `tetrapy/`. Managed with [pixi](https://pixi.sh):
+The `tetrapy` Python CLI lives in its own repository:
+[github.com/jammont/tetrapy](https://github.com/jammont/tetrapy). This project pulls it
+in as a git dependency (see [`pyproject.toml`](pyproject.toml)) and is managed with
+[uv](https://docs.astral.sh/uv/):
 
 ```sh
-pixi install
-pixi run tetrapy --help
+uv sync --all-extras
+uv run tetrapy --help
 ```
 
 ## Project structure
 
 ```
 tetracorder-lite/
-  Containerfile          # container build (specpr + tetracorder + pixi/tetrapy)
-  pyproject.toml         # Python project config (pixi workspace)
+  Containerfile          # container build (specpr + tetracorder + uv/tetrapy)
+  pyproject.toml         # Python project config (pulls in tetrapy as a git dependency)
   config.yml             # pipeline configuration consumed by `tetrapy run`
-  tetrapy/               # Python CLI
-    __main__.py          #   click CLI entrypoint (run + per-stage commands)
-    config.py            #   YAML config loader, CLI patching, ${...} interpolation
-    tetra.py             #   tetracorder setup/run + library convolution & integration
-    convolve.py          #   recipe-driven convolved-library builder (pure Python)
-    aggregate.py         #   L2B mineral/uncertainty product aggregation
-    tetracorder.py       #   expert-system command-file decoder
-    conv/                #   specpr / ENVI convolution internals
-    templates/           #   tetracorder integration file templates
-    data/                #   mineral grouping matrices
   tetracorder/           # vendored tetracorder + specpr source tree
   docs/                  # technical documentation
 ```
+
+The `tetrapy` CLI itself (config loader, convolution, tetracorder setup/run,
+aggregation) is developed in the [tetrapy repository](https://github.com/jammont/tetrapy).
