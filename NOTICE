@@ -6,8 +6,7 @@ The original work in this repository (the tetrapy package, Containerfile,
 configuration, documentation and tests) is licensed under the Apache License,
 Version 2.0; see LICENSE.
 
-This repository and the container image built from it also include or install
-the third-party components below. Each is distributed under its own license,
+This repository also includes the third-party components below. Each is distributed under its own license,
 not the Apache License. Those licenses govern the components they cover, and
 nothing in LICENSE changes them.
 
@@ -47,28 +46,3 @@ Source:    Copied from spectroscopy-tetracorder (see above).
            https://doi.org/10.3133/ds231
            sprlb06 is the companion research library distributed with
            Tetracorder.
-
-
-DaVinci
--------
-Location:  not in this repository; the Containerfile installs it into the
-           container image from ASU's prebuilt package
-Upstream:  Arizona State University, Mars Space Flight Facility,
-           https://davinci.asu.edu
-Source:    https://oss.mars.asu.edu/svn/davinci/davinci/trunk
-License:   GNU General Public License, version 2
-
-Tetracorder's colour products and browse images are DaVinci scripts
-(tetracorder/tetracorder.cmds/*/davinci-cmds.for.usr.local.bin/). They run as
-programs interpreted by DaVinci and are not linked into it.
-
-
-Container images
-----------------
-A container image built from this repository is an aggregate of separate
-programs. Each program keeps its own license: tetrapy (Apache-2.0),
-Tetracorder/specpr (GPL-3.0 with the PSI conditions), DaVinci (GPL-2.0), and
-the Ubuntu, conda-forge and PyPI packages in the image (their own licenses).
-The corresponding source for the GPL components is available at the upstream
-locations above. The Tetracorder/specpr source is also in this repository at
-the commit the image was built from.
