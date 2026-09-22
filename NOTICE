@@ -1,0 +1,74 @@
+tetracorder-lite
+Copyright (c) 2026 California Institute of Technology ("Caltech").
+U.S. Government sponsorship acknowledged.
+
+The original work in this repository (the tetrapy package, Containerfile,
+configuration, documentation and tests) is licensed under the Apache License,
+Version 2.0; see LICENSE.
+
+This repository and the container image built from it also include or install
+the third-party components below. Each is distributed under its own license,
+not the Apache License. Those licenses govern the components they cover, and
+nothing in LICENSE changes them.
+
+
+Tetracorder, specpr and the Tetracorder command files
+-----------------------------------------------------
+Location:  tetracorder/  (vendored source, compiled into the container image)
+Upstream:  https://github.com/PSI-edu/spectroscopy-tetracorder
+Copyright: (c) 1975-2026 Roger N. Clark, Planetary Science Institute (PSI),
+           and colleagues named in the code.
+License:   GNU General Public License, version 3 (tetracorder/COPYING), plus
+           the conditions in the license.txt files throughout tetracorder/:
+             - redistributions must keep the copyright notice, conditions and
+               disclaimer;
+             - the names of Roger N. Clark, PSI and contributors may not be
+               used to endorse or promote derived products without prior
+               written permission;
+             - translations or recodings into other languages must be made
+               available, with source, for free.
+
+The files under tetracorder/ were copied from the upstream repository and
+adapted for a containerized build. Their license.txt files are kept unchanged.
+tetracorder/COPYING is the GPL-3.0 text from the upstream repository's
+LICENSE file.
+
+tetracorder/specpr/src.specpr/mingw-regex/ is covered by the GNU Lesser General
+Public License, version 2.1 (see COPYING.LIB in that directory).
+
+
+Spectral libraries
+------------------
+Location:  tetracorder/sl1/usgs/library06.conv/  (splib06b, sprlb06b)
+Source:    Copied from spectroscopy-tetracorder (see above).
+           splib06 is the USGS Digital Spectral Library:
+           Clark, R.N., et al., 2007, USGS digital spectral library splib06a:
+           U.S. Geological Survey, Digital Data Series 231,
+           https://doi.org/10.3133/ds231
+           sprlb06 is the companion research library distributed with
+           Tetracorder.
+
+
+DaVinci
+-------
+Location:  not in this repository; the Containerfile installs it into the
+           container image from ASU's prebuilt package
+Upstream:  Arizona State University, Mars Space Flight Facility,
+           https://davinci.asu.edu
+Source:    https://oss.mars.asu.edu/svn/davinci/davinci/trunk
+License:   GNU General Public License, version 2
+
+Tetracorder's colour products and browse images are DaVinci scripts
+(tetracorder/tetracorder.cmds/*/davinci-cmds.for.usr.local.bin/). They run as
+programs interpreted by DaVinci and are not linked into it.
+
+
+Container images
+----------------
+A container image built from this repository is an aggregate of separate
+programs. Each program keeps its own license: tetrapy (Apache-2.0),
+Tetracorder/specpr (GPL-3.0 with the PSI conditions), DaVinci (GPL-2.0), and
+the Ubuntu, conda-forge and PyPI packages in the image (their own licenses).
+The corresponding source for the GPL components is available at the upstream
+locations above. The Tetracorder/specpr source is also in this repository at
+the commit the image was built from.

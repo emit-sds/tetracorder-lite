@@ -3,6 +3,8 @@ name = "tetrapy"
 version = "1.0.2"
 description = "..."
 readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
 requires-python = ">=3.10"
 dependencies = [
     "click>=8.4.1",
@@ -21,7 +23,7 @@ dependencies = [
 tetrapy = "tetrapy.__main__:cli"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
