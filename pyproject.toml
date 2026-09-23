@@ -3,6 +3,7 @@ name = "tetrapy"
 version = "1.0.2"
 description = "..."
 readme = "README.md"
+license = "Apache-2.0"
 requires-python = ">=3.10"
 dependencies = [
     "click>=8.4.1",

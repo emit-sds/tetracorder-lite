@@ -216,3 +216,20 @@ tetracorder-lite/
   tetracorder/           # vendored tetracorder + specpr source tree
   docs/                  # technical documentation
 ```
+
+## License
+
+The original work in this repository is licensed under the
+[Apache License, Version 2.0](LICENSE). Copyright (c) 2026 California Institute of
+Technology ("Caltech"). U.S. Government sponsorship acknowledged.
+
+Third-party components keep their own licenses (details in [NOTICE](NOTICE)):
+
+| Component | Where | License |
+|---|---|---|
+| Tetracorder, specpr, command files ([PSI-edu/spectroscopy-tetracorder](https://github.com/PSI-edu/spectroscopy-tetracorder)) | `tetracorder/` | [GPL-3.0](tetracorder/COPYING) + PSI conditions in each `license.txt` |
+| USGS splib06 / sprlb06 spectral libraries | `tetracorder/sl1/` | from spectroscopy-tetracorder |
+
+The Containerfile also downloads third-party software at build time, including
+[DaVinci](https://davinci.asu.edu) (GPL-2.0-or-later) from ASU. That software is not
+part of this repository and keeps its own license.
