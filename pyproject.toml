@@ -1,13 +1,12 @@
 [project]
 name = "tetrapy"
-version = "1.0.2"
-description = "..."
+version = "1.1.0"
+description = "Containerized USGS Tetracorder (v6) for EMIT mineral identification"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10"
 dependencies = [
     "click>=8.4.1",
-    "gdal>=3.13.2",
     "numpy>=2.2.6",
     "pandas>=2.3.3",
     "python-box[all]>=7.4.1",
