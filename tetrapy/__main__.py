@@ -95,6 +95,15 @@ def tetrun(ctx: click.Context, **kwargs: Any) -> None:
     pl.tetrun(c)
 
 
+@cli.command(context_settings=CS, help=pl.postprocess.__doc__)
+@click.pass_context
+@Config
+@Section
+def postprocess(ctx: click.Context, **kwargs: Any) -> None:
+    c = init(ctx=ctx, **kwargs)
+    pl.postprocess(c)
+
+
 @cli.command(context_settings=CS, help=pl.aggregate.__doc__)
 @click.pass_context
 @Config
