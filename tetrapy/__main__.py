@@ -22,6 +22,7 @@ Section = click.option("-s", "--section", help="Subsection of the yaml to load r
 
 
 @click.group()
+@click.version_option()
 def cli() -> None:
     """
     Tetracorder-lite: containerized USGS Tetracorder for mineral identification.
@@ -94,6 +95,15 @@ def tetrun(ctx: click.Context, **kwargs: Any) -> None:
     pl.tetrun(c)
 
 
+@cli.command(context_settings=CS, help=pl.postprocess.__doc__)
+@click.pass_context
+@Config
+@Section
+def postprocess(ctx: click.Context, **kwargs: Any) -> None:
+    c = init(ctx=ctx, **kwargs)
+    pl.postprocess(c)
+
+
 @cli.command(context_settings=CS, help=pl.aggregate.__doc__)
 @click.pass_context
 @Config
@@ -107,7 +117,8 @@ def aggregate(ctx: click.Context, **kwargs: Any) -> None:
 @click.pass_context
 @Config
 @Section
-def preview(ctx: click.Context, **kwargs: Any) -> None:
+@click.option("--noflow", is_flag=True, help="Disables the YAML flow style which condenses lists to [a, b] notation")
+def preview(ctx: click.Context, noflow=False, **kwargs: Any) -> None:
     """
     Preview the final, interpolated configuration.
 
@@ -115,8 +126,14 @@ def preview(ctx: click.Context, **kwargs: Any) -> None:
     overrides) and displays it in YAML format without executing any
     pipeline stages. Useful for debugging config issues.
     """
+    ctx.args += ["--log.file", "None", "--log.config", "None"]
     c = init(ctx=ctx, **kwargs)
-    Logger.info(f"Configuration:\n{c.to_yaml()}")
+
+    if noflow:
+        import yaml
+        Logger.info(yaml.dump(c.to_dict(), default_flow_style=None, sort_keys=False, width=120))
+    else:
+        Logger.info(c.to_yaml())
 
 
 if __name__ == "__main__":

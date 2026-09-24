@@ -539,7 +539,7 @@ def build(
         reference = pd.read_csv(reference)
 
     libs = None
-    if None not in (rfl, rfluncert, reflib, reslib):
+    if all((rfl, rfluncert, reflib, reslib)):
         Logger.info("Loading reflectance products")
 
         # Transpose to stay consistent with the tetracorder products

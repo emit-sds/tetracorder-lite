@@ -1,7 +1,6 @@
 # Davinci only offers AMD support, no ARM
 # Newer versions of ubuntu do not have some older packages like libcfitsio9 (davinci dep)
 FROM --platform=linux/amd64 ubuntu:22.04
-# COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 USER root
 RUN apt-get update &&\
@@ -57,6 +56,7 @@ RUN apt-get update &&\
       # imagemagick-common \
       # imagemagick-doc \
       #~ utilities
+      ca-certificates \
       curl \
       git \
       &&\
@@ -146,10 +146,11 @@ RUN cd tetracorder &&\
     sed -i "144,147 s/^#//" multmap.h &&\
     make installsingle
 
-# Prepare the python CLI
-ENV PIXI_HOME="/pixi"
-ENV PATH="/pixi/bin:/root/.pixi/envs/default/bin:$PATH"
-RUN curl -fsSL https://pixi.sh/install.sh | sh &&\
-    pixi install
+# Setup the python environment
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+ENV PATH="/root/.local/bin/:$PATH"
+RUN uv sync --all-extras
+ENV PATH="/root/.venv/bin/:$PATH"
 
 CMD ["tetrapy"]

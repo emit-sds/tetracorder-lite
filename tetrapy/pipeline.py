@@ -10,8 +10,8 @@ The individual stages are also exposed as standalone ``tetrapy`` subcommands (se
 
 Stage order, as run by ``tetrapy run``:
 ``export_matrix`` -> ``convolve`` -> ``sensor`` -> ``setup`` -> ``tetrun`` ->
-``aggregate`` -> ``daac``. Each stage is gated by its own ``enabled`` flag in the
-config.
+``postprocess`` -> ``aggregate``. Each stage is gated by its own ``enabled`` flag in
+the config.
 """
 
 import logging
@@ -61,18 +61,20 @@ def run(c: Box) -> None:
     3. sensor - Integrate convolved library into tetracorder command tree
     4. setup - Configure tetracorder run (cmd-setup-tetrun)
     5. tetrun - Execute tetracorder (cmd.runtet)
-    6. aggregate - Aggregate outputs into L2B mineral/uncertainty products
+    6. postprocess - Convert matched outputs to COGs and/or prune paths
+    7. aggregate - Aggregate outputs into L2B mineral/uncertainty products
 
     After all stages complete, output directory permissions are set to
     ``ugo+rwX,o-w`` (group-writable, world-readable).
     """
-    pl = globals()
+    pl = globals() # Just reuse the below functions
     steps = [
         "export_matrix",
         "convolve",
         "sensor",
         "setup",
         "tetrun",
+        "postprocess",
         "aggregate",
     ]
     steps = [step for step in steps if c[step].enabled]
@@ -205,6 +207,28 @@ def tetrun(c: Box) -> None:
         rfl     = c.data.rfl,
         output  = c.output.tetracorder,
         args    = c.tetrun.args,
+    )
+
+
+@utils.log_elapse
+def postprocess(c: Box) -> None:
+    """
+    Post-process the tetracorder output tree: build COGs and/or prune paths.
+
+    Two config-gated operations run against ``postprocess.tetracorder``. When
+    ``postprocess.cogs`` is set, the rasters matched by ``postprocess.cogs.glob``
+    (e.g. ``*.depth.gz`` / ``*.fit.gz``) are repackaged as tiled + DEFLATE-compressed
+    COGs, mirroring the subdirectory tree under ``postprocess.cogs.output`` (existing
+    COGs overwritten unless ``postprocess.cogs.skip_existing`` is set). When
+    ``postprocess.remove`` is set, the paths matched by its glob strings are deleted;
+    removal runs after COG conversion.
+    """
+    from tetrapy import postprocess
+
+    postprocess.run(
+        tetracorder = c.postprocess.tetracorder,
+        cogs        = c.postprocess.cogs,
+        remove      = c.postprocess.remove,
     )
 
 

@@ -55,6 +55,7 @@ flag in the config, so you can run any subset:
 | Convolve | `convolve` | Convolve the reference + research master libraries onto the scene's instrument grid and integrate them into tetracorder |
 | Setup | `setup` | Configure a tetracorder run (`cmd-setup-tetrun`) |
 | Tetrun | `tetrun` | Execute the configured run (`cmd.runtet`) |
+| Postprocess | `postprocess` | Convert matched tetracorder outputs into COGs and/or delete matched paths |
 | Aggregate | `aggregate` | Aggregate tetracorder outputs into L2B mineral/uncertainty products |
 
 After Setup initializes the output directory, the resolved config is written to
@@ -93,6 +94,22 @@ setup:
 tetrun:
   enabled: False
   args:    ["band", "20", "gif"]
+
+postprocess:
+  enabled:     True
+  tetracorder: ${output}                  # Glob root for both cogs and remove
+  cogs:                                   # Convert matched rasters to COGs (omit to skip)
+    output:        ${output}/cogs         # Mirrored destination root
+    skip_existing: False                  # False == overwrite existing COGs
+    glt:           ${data.glt}            # EMIT L1B GLT ENVI; orthorectify onto its map grid (omit for raw)
+    glob:                                 # Rasters to convert (relative to tetracorder)
+      - "group.*/*.depth.gz"
+      - "group.*/*.fit.gz"
+      - "results.masses/*.png"           # 8-bit PNG products (same grid as the rasters)
+  remove:                                 # Paths (files/dirs) to delete (omit to skip)
+    - "results.group*"
+    - "results.dual*"
+    - "results.case*"
 
 aggregate:
   enabled:     False
@@ -146,6 +163,7 @@ stages are also exposed as standalone subcommands for debugging or partial runs:
 | `convolve` | Convolve + integrate the spectral libraries for a scene's grid |
 | `setup` | Configure a tetracorder run only (`cmd-setup-tetrun`) |
 | `tetrun` | Execute a previously-configured run (`cmd.runtet`) |
+| `postprocess` | Convert matched tetracorder outputs into COGs and/or delete matched paths |
 | `aggregate` | Aggregate tetracorder outputs into L2B mineral/uncertainty products |
 | `goc` | Convert group outputs to EMIT L2B NetCDF format |
 

@@ -13,8 +13,10 @@ output:
   tetracorder: ${output.base}/tetracorder
   tetrapy: ${output.base}/aggregate
 data:
-  rfl: /data/rfl # Data, not header
-  rfluncert: /data/rfluncert # Data, not header
+  # Data, not header files
+  rfl: /data/rfl
+  rfluncert: /data/rfluncert
+  glt: /data/glt # When set, COGs are orthorectified onto its map grid (omit for raw)
 #
 # Tetracorder settings
 #
@@ -68,6 +70,21 @@ setup:
 tetrun:
   enabled: True
   args: ["band", "20", "gif"]
+postprocess:
+  enabled: True
+  tetracorder: ${output.tetracorder}
+  cogs:
+    output: ${output.tetrapy}/cogs/
+    skip_existing: False
+    glt: ${data.glt}
+    glob:
+      - "results.masses/*.png"
+  remove:
+    - "results.group*"
+    - "results.dual*"
+    - "results.case*"
+    - "color.results+labels"
+    - "color.results-envi"
 aggregate:
   enabled: True
   tetracorder: ${output.tetracorder}
