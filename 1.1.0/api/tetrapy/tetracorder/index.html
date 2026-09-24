@@ -1,0 +1,2539 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://github.com/jammont/tetrapy/1.1.0/api/tetrapy/tetracorder/">
+      
+      
+        <link rel="prev" href="../tetra/">
+      
+      
+        <link rel="next" href="../utils/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Tetracorder - Tetrapy</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/mkapi-common.css">
+    
+      <link rel="stylesheet" href="../../../css/mkapi-material.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/icons.css">
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Tetracorder - Tetrapy" />
+<meta property="og:image" content="https://github.com/jammont/tetrapy/1.1.0/assets/images/social/api/tetrapy/tetracorder.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://github.com/jammont/tetrapy/1.1.0/api/tetrapy/tetracorder/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Tetracorder - Tetrapy" />
+<meta property="twitter:image" content="https://github.com/jammont/tetrapy/1.1.0/assets/images/social/api/tetrapy/tetracorder.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tetrapy.tetracorder" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Tetrapy" class="md-header__button md-logo" aria-label="Tetrapy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Tetrapy
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tetracorder
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jammont/tetrapy/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jammont/tetrapy
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Tetrapy" class="md-nav__button md-logo" aria-label="Tetrapy" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Tetrapy
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jammont/tetrapy/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jammont/tetrapy
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../index.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../installation.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pipeline.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../configuration.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developers/contributing.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../developers/documentation.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tetrapy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    tetrapy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1_2" id="__nav_6_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tetrapy.conv
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    tetrapy.conv
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conv/convolve/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Convolve
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conv/library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Library
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conv/specpr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specpr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aggregate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aggregate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postprocess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Postprocess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sensor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sensor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tetra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tetra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tetracorder
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tetracorder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tetracorder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="tetracorder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TetraDecoder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.decode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.parse_block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_block
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.get_groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.cast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.match_ref" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_ref
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.export_csv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        export_csv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.parse_variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.parse_not_ratios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_not_ratios
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.parse_group_paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_group_paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.extract_blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tetracorder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="tetracorder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TetraDecoder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.decode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        decode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.parse_block" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_block
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.get_groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.cast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cast
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.match_ref" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match_ref
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.export_csv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        export_csv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.parse_variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_variables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.parse_not_ratios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_not_ratios
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.parse_group_paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_group_paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.tetracorder.TetraDecoder.extract_blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+      
+        
+  
+  
+    
+    
+      
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Reference
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    tetrapy
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Tetracorder</h1>
+
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder">
+<span class="mkapi-object-link">
+
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">module</span>
+<span class="mkapi-object-name"><a href="./#tetrapy.tetracorder" title="tetrapy.tetracorder">tetrapy.tetracorder</a></span>
+</p>
+<div class="mkapi-document">
+<p>Decoder for the tetracorder "expert system" command file (<code>cmd.lib.setup.*</code>).</p>
+<p>Tetracorder's expert system file is a plain-text description of every material it
+maps: which library spectrum identifies it, the spectral features (continuum
+endpoints) that define it, and the fit/depth constraints applied.</p>
+<p>The main class :class:<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder"><code>TetraDecoder</code></a> parses these expert system files into structured
+dictionaries and provides methods to export the data to various formats (CSV, DataFrame).
+It automatically resolves variable references from companion files (<code>cmd.lib.setup.variables</code>,
+<code>cmds.start.*</code>) when they are present.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle examples">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Examples</span>
+</p>
+<div class="mkapi-section-content">
+<p>Basic usage to decode an expert system file:</p>
+<div class="mkapi-example-input highlight"><pre><span></span><code><span class="n">decoder</span> <span class="o">=</span> <span class="n">TetraDecoder</span><span class="p">(</span><span class="s2">&quot;cmd.lib.setup.t5.51d&quot;</span><span class="p">)</span>
+<span class="n">decoder</span><span class="o">.</span><span class="n">blocks</span>  <span class="c1"># List of decoded material records</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">.</span><span class="n">table</span><span class="p">()</span>  <span class="c1"># Get as pandas DataFrame</span>
+</code></pre></div>
+<p>Decode specific groups and export to CSV:</p>
+<div class="mkapi-example-input highlight"><pre><span></span><code><span class="n">decoder</span> <span class="o">=</span> <span class="n">TetraDecoder</span><span class="p">(</span><span class="s2">&quot;cmd.lib.setup.t5.51d&quot;</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">decoder</span><span class="o">.</span><span class="n">export_csv</span><span class="p">(</span><span class="s2">&quot;output.csv&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="s2">&quot;reference_matrix.csv&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Access decoded records programmatically:</p>
+<div class="mkapi-example-input highlight"><pre><span></span><code><span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">decoder</span><span class="o">.</span><span class="n">blocks</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">block</span><span class="p">[</span><span class="s2">&quot;library&quot;</span><span class="p">],</span> <span class="n">block</span><span class="p">[</span><span class="s2">&quot;record&quot;</span><span class="p">])</span>
+</code></pre></div>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle classes">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Classes</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Decode a Tetracorder expert system file into structured per-material records.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder">
+<span class="mkapi-object-link">
+
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">class</span>
+<span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">path</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Union">Union</span>[str, <span class="mkapi-tooltip" title="pathlib.Path">Path</span>]</span><span class="mkapi-comma">, </span><span class="mkapi-arg">groups</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Tuple">Tuple</span>[int, ...]</span><span class="mkapi-equal"> = </span><span class="mkapi-default">(1, 2)</span><span class="mkapi-comma">, </span><span class="mkapi-arg">decode</span><span class="mkapi-colon">: </span><span class="mkapi-ann">bool</span><span class="mkapi-equal"> = </span><span class="mkapi-default">True</span><span class="mkapi-comma">, </span><span class="mkapi-arg">raise_casts</span><span class="mkapi-colon">: </span><span class="mkapi-ann">bool</span><span class="mkapi-equal"> = </span><span class="mkapi-default">True</span><span class="mkapi-paren">)</span></span>
+</p>
+<div class="mkapi-document">
+<p>Decode a Tetracorder expert system file into structured per-material records.</p>
+<p>The expert system file (<code>cmd.lib.setup.&lt;version&gt;</code>) is organized into "group
+blocks", one per mapped material. Each block names the library spectrum used to
+identify the material, the spectral features (continuum endpoints plus fit/depth
+thresholds) that define it, the constituent constraints applied, and the output
+file the mapper writes. :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.decode" title="tetrapy.tetracorder.TetraDecoder.decode"><code>decode</code></a> walks the file and turns every block whose
+<code>group</code> is in <code>only</code> into a plain <code>dict</code> (see :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.parse_block" title="tetrapy.tetracorder.TetraDecoder.parse_block"><code>parse_block</code></a> for the
+schema); the results are stored on :attr:<code>blocks</code>.</p>
+<p>Several fields in the file are written as <code>[NAME]</code> references to variables
+defined in the companion <code>cmd.lib.setup.variables</code> file, and output paths are
+keyed by group directory in <code>cmds.start.*</code>. When those sidecar files are found
+next to the expert system file they are parsed up front (:attr:<span class="mkapi-tooltip" title="tetrapy.tetracorder.TetraDecoder.vars"><code>vars</code></span>,
+:attr:<span class="mkapi-tooltip" title="tetrapy.tetracorder.TetraDecoder.groups"><code>groups</code></span>) and substituted in during decoding.</p>
+<h3 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">#</a></h3>
+<p>path : str or Path
+    Path to the Tetracorder expert system file (<code>cmd.lib.setup.&lt;version&gt;</code>).
+    May also be a directory, in which case the first file matching
+    <code>cmd.lib.setup.t*</code> inside it is used.
+groups : tuple[int, ...], optional
+    Group numbers to decode. Blocks belonging to any other group are parsed
+    but set aside in :attr:<code>ignored</code> rather than :attr:<code>blocks</code>. Defaults to
+    <code>(1, 2)</code> (the group 1 / group 2 minerals of the EMIT L2B product).
+    Pass an empty/falsy value to keep every group found in :attr:<span class="mkapi-tooltip" title="tetrapy.tetracorder.TetraDecoder.groups"><code>groups</code></span>.
+decode : bool, default=True
+    Whether to immediately decode the file upon initialization. If False, the
+    file can be decoded later by calling :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.decode" title="tetrapy.tetracorder.TetraDecoder.decode"><code>decode</code></a>.
+raise_casts : bool, default=True
+    Whether to raise exceptions when type casting fails in :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.cast" title="tetrapy.tetracorder.TetraDecoder.cast"><code>cast</code></a>. If
+    False, failed casts return the original value instead of raising an error.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle attributes">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Attributes</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">file</span> : 
+<span class="mkapi-item-type"><span class="mkapi-tooltip" title="pathlib.Path">Path</span></span> <span class="mkapi-dash">&mdash;</span>
+Resolved path to the expert system file being decoded.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">vars</span> : 
+<span class="mkapi-item-type">dict[str, str] or None</span> <span class="mkapi-dash">&mdash;</span>
+Variable name -&gt; value map from <code>cmd.lib.setup.variables</code>, or <code>None</code> if
+that file was not found.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">groups</span> : 
+<span class="mkapi-item-type">dict[int, str]</span> <span class="mkapi-dash">&mdash;</span>
+Group number -&gt; output directory prefix, from <code>cmds.start.*</code>.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">only</span> : 
+<span class="mkapi-item-type">tuple[int, ...]</span> <span class="mkapi-dash">&mdash;</span>
+Group numbers to keep; blocks in other groups go to :attr:<code>ignored</code>.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">blocks</span> : 
+<span class="mkapi-item-type">list[dict]</span> <span class="mkapi-dash">&mdash;</span>
+Decoded material records for the kept groups (populated by :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.decode" title="tetrapy.tetracorder.TetraDecoder.decode"><code>decode</code></a>).</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">ignored</span> : 
+<span class="mkapi-item-type">list[dict]</span> <span class="mkapi-dash">&mdash;</span>
+Decoded records whose group was not in :attr:<span class="mkapi-tooltip" title="tetrapy.tetracorder.TetraDecoder.only"><code>only</code></span>.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle methods">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Methods</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder.decode" title="tetrapy.tetracorder.TetraDecoder.decode">decode</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Read the expert system file and parse every group block.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder.parse_block" title="tetrapy.tetracorder.TetraDecoder.parse_block">parse_block</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Parse a single group block into a material record.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder.get_groups" title="tetrapy.tetracorder.TetraDecoder.get_groups">get_groups</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Return the decoded records belonging to the given groups.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder.cast" title="tetrapy.tetracorder.TetraDecoder.cast">cast</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Cast a value (or each item of a list) to <code>dtype</code>, tolerating failures.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder.table" title="tetrapy.tetracorder.TetraDecoder.table">table</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Collect the decoded records into a tabular form, one row per material.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder.match_ref" title="tetrapy.tetracorder.TetraDecoder.match_ref">match_ref</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Align the decoded records to a reference matrix's stable <code>index</code> column.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder.export_csv" title="tetrapy.tetracorder.TetraDecoder.export_csv">export_csv</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Write the decoded records to a CSV file, one row per material.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder.parse_variables" title="tetrapy.tetracorder.TetraDecoder.parse_variables">parse_variables</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Parse ==[NAME] value... definitions from a command file.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder.parse_not_ratios" title="tetrapy.tetracorder.TetraDecoder.parse_not_ratios">parse_not_ratios</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Parse the <code>cmd.lib.setup.nots-ratios</code> "not feature" definitions.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder.parse_group_paths" title="tetrapy.tetracorder.TetraDecoder.parse_group_paths">parse_group_paths</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Parse the per-group output directories from a <code>cmds.start.*</code> file.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.tetracorder.TetraDecoder.extract_blocks" title="tetrapy.tetracorder.TetraDecoder.extract_blocks">extract_blocks</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Split the expert system lines into group blocks.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder.decode">
+<span class="mkapi-object-link">
+<span class="mkapi-parent-toggle" title="Toggle class names">
+<i class="fa-solid fa-square-plus"></i>
+</span>
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder.decode" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">method</span>
+<span class="mkapi-object-parent">
+<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a><span class="mkapi-dot">.</span></span><span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder.decode" title="tetrapy.tetracorder.TetraDecoder.decode">decode</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="typing.List">List</span>[dict]</span></span>
+</p>
+<div class="mkapi-document">
+<p>Read the expert system file and parse every group block.</p>
+<p>The file is read line by line into :attr:<code>lines</code>, split into blocks by
+:meth:<a href="./#tetrapy.tetracorder.TetraDecoder.extract_blocks" title="tetrapy.tetracorder.TetraDecoder.extract_blocks"><code>extract_blocks</code></a>, and each block is parsed by :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.parse_block" title="tetrapy.tetracorder.TetraDecoder.parse_block"><code>parse_block</code></a>.
+Parsed blocks are sorted into :attr:<code>blocks</code> (group in :attr:<span class="mkapi-tooltip" title="tetrapy.tetracorder.TetraDecoder.only"><code>only</code></span>) or
+:attr:<code>ignored</code> (any other group).</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">list[dict]</span> <span class="mkapi-dash">&mdash;</span>
+The kept blocks, i.e. :attr:<code>blocks</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder.parse_block">
+<span class="mkapi-object-link">
+<span class="mkapi-parent-toggle" title="Toggle class names">
+<i class="fa-solid fa-square-plus"></i>
+</span>
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder.parse_block" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">method</span>
+<span class="mkapi-object-parent">
+<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a><span class="mkapi-dot">.</span></span><span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder.parse_block" title="tetrapy.tetracorder.TetraDecoder.parse_block">parse_block</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">block</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.List">List</span>[str]</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return">dict</span></span>
+</p>
+<div class="mkapi-document">
+<p>Parse a single group block into a material record.</p>
+<p>Each block is a list of stripped, comment-free lines (as produced by
+:meth:<a href="./#tetrapy.tetracorder.TetraDecoder.extract_blocks" title="tetrapy.tetracorder.TetraDecoder.extract_blocks"><code>extract_blocks</code></a>). Recognized directives are pulled out into a <code>dict</code>;
+any <code>[NAME]</code> references are substituted with their values from :attr:<span class="mkapi-tooltip" title="tetrapy.tetracorder.TetraDecoder.vars"><code>vars</code></span>.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">block</span> : 
+<span class="mkapi-item-type">list[str]</span> <span class="mkapi-dash">&mdash;</span>
+Lines of one group block from the expert system file.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">dict</span> <span class="mkapi-dash">&mdash;</span>
+A material record with any of the following keys, depending on which
+directives the block contains:</p>
+<p><code>group</code> : int
+    Group number the material belongs to.
+<code>use</code> : str
+    Whether the entry is active (<code>"yes"</code>/<code>"no"</code>).
+<code>name</code> : str
+    Short material name (first token after <code>TITLE=</code>).
+<code>title</code> : str
+    Full material title.
+<code>library</code> : str
+    Spectral library ID the reference record lives in (e.g. <code>splib06</code>).
+<code>record</code> : int
+    Record number of the reference spectrum within <code>library</code>.
+<code>filename</code> : str
+    Output base file name written by the mapper.
+<code>path</code> : str
+    <code>filename</code> prefixed with its group output directory, when the group
+    directory is known from :attr:<span class="mkapi-tooltip" title="tetrapy.tetracorder.TetraDecoder.groups"><code>groups</code></span>.
+<code>data_type_scaling</code> : float
+    Scaling applied to the 8-bit (<code>0-255</code>) output DN.
+<code>features</code> : list[dict]
+    Spectral features. Each feature has <code>feature_type</code> (<code>DLw</code>/<code>MLw</code>/
+    <code>OLw</code>), a 4-element <code>continuum</code> (left/right window endpoints), and
+    one list per fit/depth constraint keyword found on the feature line
+    (e.g. <code>ct</code>, <code>rcbblc&lt;</code>).
+<code>constituent_constraints</code> : dict[str, list[float]]
+    Per-block constraint keyword -&gt; values (e.g. <code>FD-FIT&gt;</code>, <code>FITALL&gt;</code>).</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder.get_groups">
+<span class="mkapi-object-link">
+<span class="mkapi-parent-toggle" title="Toggle class names">
+<i class="fa-solid fa-square-plus"></i>
+</span>
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder.get_groups" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">method</span>
+<span class="mkapi-object-parent">
+<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a><span class="mkapi-dot">.</span></span><span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder.get_groups" title="tetrapy.tetracorder.TetraDecoder.get_groups">get_groups</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">groups</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[int]</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="typing.List">List</span>[dict]</span></span>
+</p>
+<div class="mkapi-document">
+<p>Return the decoded records belonging to the given groups.</p>
+<p>Filters :attr:<code>blocks</code> (the kept records) by group number.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">groups</span> : 
+<span class="mkapi-item-type"><span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[int]</span> <span class="mkapi-dash">&mdash;</span>
+Group numbers to select.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">list[dict]</span> <span class="mkapi-dash">&mdash;</span>
+Records from :attr:<code>blocks</code> whose <code>group</code> is in <code>groups</code>. See
+:meth:<a href="./#tetrapy.tetracorder.TetraDecoder.parse_block" title="tetrapy.tetracorder.TetraDecoder.parse_block"><code>parse_block</code></a> for the per-record schema.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder.cast">
+<span class="mkapi-object-link">
+<span class="mkapi-parent-toggle" title="Toggle class names">
+<i class="fa-solid fa-square-plus"></i>
+</span>
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder.cast" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">method</span>
+<span class="mkapi-object-parent">
+<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a><span class="mkapi-dot">.</span></span><span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder.cast" title="tetrapy.tetracorder.TetraDecoder.cast">cast</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">dtype</span><span class="mkapi-colon">: </span><span class="mkapi-ann">type</span><span class="mkapi-comma">, </span><span class="mkapi-arg">val</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Any">Any</span></span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="typing.Any">Any</span></span></span>
+</p>
+<div class="mkapi-document">
+<p>Cast a value (or each item of a list) to <code>dtype</code>, tolerating failures.</p>
+<p>Applies <code>dtype</code> to <code>val</code> (or elementwise if <code>val</code> is a list). When a
+conversion fails, the original value is kept unless <code>raise_casts</code> was set on
+the decoder, in which case the error propagates. Used to coerce the numeric
+fields parsed out of the expert system while leaving unparseable tokens (e.g.
+unresolved <code>[NAME]</code> references) intact.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">dtype</span> : 
+<span class="mkapi-item-type">type</span> <span class="mkapi-dash">&mdash;</span>
+The target type/callable applied to each value (e.g. <code>float</code>).</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">val</span> : 
+<span class="mkapi-item-type"><span class="mkapi-tooltip" title="typing.Any">Any</span></span> <span class="mkapi-dash">&mdash;</span>
+A single value or a list of values to cast.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type"><span class="mkapi-tooltip" title="typing.Any">Any</span></span> <span class="mkapi-dash">&mdash;</span>
+The cast value, or a list of cast values when <code>val</code> is a list.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder.table">
+<span class="mkapi-object-link">
+<span class="mkapi-parent-toggle" title="Toggle class names">
+<i class="fa-solid fa-square-plus"></i>
+</span>
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder.table" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">method</span>
+<span class="mkapi-object-parent">
+<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a><span class="mkapi-dot">.</span></span><span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder.table" title="tetrapy.tetracorder.TetraDecoder.table">table</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">groups</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Optional">Optional</span>[<span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[int]]</span><span class="mkapi-equal"> = </span><span class="mkapi-default">None</span><span class="mkapi-comma">, </span><span class="mkapi-arg">columns</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Tuple">Tuple</span>[str, ...]</span><span class="mkapi-equal"> = </span><span class="mkapi-default">('id', 'group', 'library', 'record', 'title', 'path')</span><span class="mkapi-comma">, </span><span class="mkapi-arg">pandas</span><span class="mkapi-colon">: </span><span class="mkapi-ann">bool</span><span class="mkapi-equal"> = </span><span class="mkapi-default">True</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="typing.Union">Union</span>[<span class="mkapi-tooltip" title="pandas">pd</span>.<span class="mkapi-tooltip" title="pandas.core.frame.DataFrame">DataFrame</span>, <span class="mkapi-tooltip" title="typing.List">List</span>[list]]</span></span>
+</p>
+<div class="mkapi-document">
+<p>Collect the decoded records into a tabular form, one row per material.</p>
+<p>Selects one row per material across both :attr:<code>blocks</code> and :attr:<code>ignored</code>
+whose group is in <code>groups</code> (so records outside :attr:<span class="mkapi-tooltip" title="tetrapy.tetracorder.TetraDecoder.only"><code>only</code></span> can be included
+by widening <code>groups</code>), keeping only the fields named in <code>columns</code>.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">groups</span> : 
+<span class="mkapi-item-type"><span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[int], optional</span> <span class="mkapi-dash">&mdash;</span>
+Group numbers to include. Defaults to :attr:<span class="mkapi-tooltip" title="tetrapy.tetracorder.TetraDecoder.only"><code>only</code></span> (the groups that were
+decoded into :attr:<code>blocks</code>).</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">columns</span> : 
+<span class="mkapi-item-type">tuple[str, ...], optional</span> <span class="mkapi-dash">&mdash;</span>
+Record keys to emit as columns, in order. Every named key must be present
+on each included record (see :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.parse_block" title="tetrapy.tetracorder.TetraDecoder.parse_block"><code>parse_block</code></a> for available keys).
+Defaults to <code>("group", "library", "record", "title", "path")</code>.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">pandas</span> : 
+<span class="mkapi-item-type">bool, default=True</span> <span class="mkapi-dash">&mdash;</span>
+If True, return a :class:<span class="mkapi-tooltip" title="pandas.core.frame.DataFrame"><code>pandas.DataFrame</code></span>. If False, return a list of
+rows with <code>columns</code> as the leading header row.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">pandas.<span class="mkapi-tooltip" title="pandas.core.frame.DataFrame">DataFrame</span> or list[list]</span> <span class="mkapi-dash">&mdash;</span>
+A DataFrame of the selected records when <code>pandas</code> is True; otherwise a
+list of rows whose first element is the <code>columns</code> header.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder.match_ref">
+<span class="mkapi-object-link">
+<span class="mkapi-parent-toggle" title="Toggle class names">
+<i class="fa-solid fa-square-plus"></i>
+</span>
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder.match_ref" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">method</span>
+<span class="mkapi-object-parent">
+<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a><span class="mkapi-dot">.</span></span><span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder.match_ref" title="tetrapy.tetracorder.TetraDecoder.match_ref">match_ref</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">matrix</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Union">Union</span>[str, <span class="mkapi-tooltip" title="pathlib.Path">Path</span>]</span><span class="mkapi-comma">, </span><span class="mkapi-arg">nu</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Optional">Optional</span>[<span class="mkapi-tooltip" title="pandas">pd</span>.<span class="mkapi-tooltip" title="pandas.core.frame.DataFrame">DataFrame</span>]</span><span class="mkapi-equal"> = </span><span class="mkapi-default">None</span><span class="mkapi-comma">, </span><span class="mkapi-arg">keys</span><span class="mkapi-colon">: </span><span class="mkapi-ann">list[str]</span><span class="mkapi-equal"> = </span><span class="mkapi-default">['id']</span><span class="mkapi-comma">, </span><span class="mkapi-arg">sortby</span><span class="mkapi-colon">: </span><span class="mkapi-ann">str</span><span class="mkapi-equal"> = </span><span class="mkapi-default">None</span><span class="mkapi-comma">, </span><span class="mkapi-arg">clean_titles</span><span class="mkapi-colon">: </span><span class="mkapi-ann">bool</span><span class="mkapi-equal"> = </span><span class="mkapi-default">False</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="pandas">pd</span>.<span class="mkapi-tooltip" title="pandas.core.frame.DataFrame">DataFrame</span></span></span>
+</p>
+<div class="mkapi-document">
+<p>Align the decoded records to a reference matrix's stable <code>index</code> column.</p>
+<p>Merges the <code>index</code> column from an existing reference matrix CSV onto the
+decoded table, matching on <code>record</code> / <code>library</code> so each material keeps the
+index it had in the reference. Records with no match in the reference are
+treated as new and assigned fresh indices continuing past the reference's max,
+and the additions are logged.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">matrix</span> : 
+<span class="mkapi-item-type">str or <span class="mkapi-tooltip" title="pathlib.Path">Path</span></span> <span class="mkapi-dash">&mdash;</span>
+Path to the reference matrix CSV. It must contain <code>record</code>, <code>library</code>,
+and <code>index</code> columns (column names are matched case-insensitively).</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">nu</span> : 
+<span class="mkapi-item-type">pandas.<span class="mkapi-tooltip" title="pandas.core.frame.DataFrame">DataFrame</span>, optional</span> <span class="mkapi-dash">&mdash;</span>
+The table to align. Defaults to :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.table" title="tetrapy.tetracorder.TetraDecoder.table"><code>table</code></a> (the decoded records). Must
+contain <code>record</code> and <code>library</code> columns.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">keys</span> : 
+<span class="mkapi-item-type">list[str], default=["record", "library", "group"]</span> <span class="mkapi-dash">&mdash;</span>
+Column names to use as the merge key when matching records between the
+reference matrix and the new table.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">sortby</span> : 
+<span class="mkapi-item-type">str, optional</span> <span class="mkapi-dash">&mdash;</span>
+Column name to sort the output by. If None (default), the order is
+preserved from the input.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">clean_titles</span> : 
+<span class="mkapi-item-type">bool, default=False</span> <span class="mkapi-dash">&mdash;</span>
+Whether to remove family identifiers (substrings containing <code>=</code>) from
+the <code>title</code> column.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">pandas.<span class="mkapi-tooltip" title="pandas.core.frame.DataFrame">DataFrame</span></span> <span class="mkapi-dash">&mdash;</span>
+<code>nu</code> with a leading <code>index</code> column carrying the reference indices, and
+newly-assigned indices for records absent from the reference.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder.export_csv">
+<span class="mkapi-object-link">
+<span class="mkapi-parent-toggle" title="Toggle class names">
+<i class="fa-solid fa-square-plus"></i>
+</span>
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder.export_csv" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">method</span>
+<span class="mkapi-object-parent">
+<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a><span class="mkapi-dot">.</span></span><span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder.export_csv" title="tetrapy.tetracorder.TetraDecoder.export_csv">export_csv</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">file</span><span class="mkapi-colon">: </span><span class="mkapi-ann">str</span><span class="mkapi-comma">, </span><span class="mkapi-arg">groups</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Optional">Optional</span>[<span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[int]]</span><span class="mkapi-equal"> = </span><span class="mkapi-default">None</span><span class="mkapi-comma">, </span><span class="mkapi-arg">columns</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Tuple">Tuple</span>[str, ...]</span><span class="mkapi-equal"> = </span><span class="mkapi-default">('id', 'group', 'library', 'record', 'title', 'path')</span><span class="mkapi-comma">, </span><span class="mkapi-arg">reference</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Optional">Optional</span>[<span class="mkapi-tooltip" title="typing.Union">Union</span>[str, <span class="mkapi-tooltip" title="pathlib.Path">Path</span>]]</span><span class="mkapi-equal"> = </span><span class="mkapi-default">None</span><span class="mkapi-comma">, </span><span class="mkapi-star">**</span><span class="mkapi-arg">kwargs</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return">None</span></span>
+</p>
+<div class="mkapi-document">
+<p>Write the decoded records to a CSV file, one row per material.</p>
+<p>Emits one row per material across both :attr:<code>blocks</code> and :attr:<code>ignored</code>
+whose group is in <code>groups</code>, so records outside :attr:<span class="mkapi-tooltip" title="tetrapy.tetracorder.TetraDecoder.only"><code>only</code></span> can be exported
+by widening <code>groups</code>.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">file</span> : 
+<span class="mkapi-item-type">str</span> <span class="mkapi-dash">&mdash;</span>
+Destination path for the CSV file.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">groups</span> : 
+<span class="mkapi-item-type"><span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[int], optional</span> <span class="mkapi-dash">&mdash;</span>
+Group numbers to include. Defaults to :attr:<span class="mkapi-tooltip" title="tetrapy.tetracorder.TetraDecoder.only"><code>only</code></span> (the groups that were
+decoded into :attr:<code>blocks</code>).</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">columns</span> : 
+<span class="mkapi-item-type">tuple[str, ...], optional</span> <span class="mkapi-dash">&mdash;</span>
+Record keys to emit as columns, in order. Every named key must be present
+on each included record (see :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.parse_block" title="tetrapy.tetracorder.TetraDecoder.parse_block"><code>parse_block</code></a> for available keys).
+Defaults to <code>("group", "library", "record", "title", "path")</code>.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">reference</span> : 
+<span class="mkapi-item-type">str or <span class="mkapi-tooltip" title="pathlib.Path">Path</span>, optional</span> <span class="mkapi-dash">&mdash;</span>
+Path to a reference matrix CSV. When given, a stable <code>index</code> column is
+added by aligning to it via :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.match_ref" title="tetrapy.tetracorder.TetraDecoder.match_ref"><code>match_ref</code></a> (matching on
+<code>record</code> / <code>library</code>).</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">**kwargs</span>
+ <span class="mkapi-dash">&mdash;</span>
+Additional keyword arguments passed to :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.match_ref" title="tetrapy.tetracorder.TetraDecoder.match_ref"><code>match_ref</code></a> (e.g. <code>sortby</code>,
+<code>clean_titles</code>).</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">None</span> <span class="mkapi-dash">&mdash;</span>
+Writes output to the file specified by <code>file</code>. No value is returned.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder.parse_variables">
+<span class="mkapi-object-link">
+<span class="mkapi-parent-toggle" title="Toggle class names">
+<i class="fa-solid fa-square-plus"></i>
+</span>
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder.parse_variables" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">staticmethod</span>
+<span class="mkapi-object-parent">
+<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a><span class="mkapi-dot">.</span></span><span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder.parse_variables" title="tetrapy.tetracorder.TetraDecoder.parse_variables">parse_variables</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">file</span><span class="mkapi-colon">: </span><span class="mkapi-ann">str</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="typing.Dict">Dict</span>[str, str]</span></span>
+</p>
+<div class="mkapi-document">
+<p>Parse ==[NAME] value... definitions from a command file.</p>
+<p>This function extracts variable definitions from tetracorder command files,
+which use a special ==[NAME] syntax to define parameters. The values are
+returned as strings to preserve formatting and precision.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">file</span> : 
+<span class="mkapi-item-type">str</span> <span class="mkapi-dash">&mdash;</span>
+Path to the command file to parse.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type"><span class="mkapi-tooltip" title="typing.Dict">Dict</span>[str, str]</span> <span class="mkapi-dash">&mdash;</span>
+Mapping of variable names to their string values (whitespace-stripped).
+If a variable is defined multiple times, the last definition wins.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle examples">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Examples</span>
+</p>
+<div class="mkapi-section-content">
+<p>Given a file with content:
+    ==[THRESHOLD] 0.5
+    ==[VALUES] 1.0 2.0 3.0
+    ==[THRESHOLD] 0.8</p>
+<div class="mkapi-example-input highlight"><pre><span></span><code><span class="n">parse_variables</span><span class="p">(</span><span class="s2">&quot;cmd.file&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="mkapi-example-output highlight"><pre><span></span><code>{&#39;THRESHOLD&#39;: &#39;0.8&#39;, &#39;VALUES&#39;: &#39;1.0 2.0 3.0&#39;}
+</code></pre></div>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder.parse_not_ratios">
+<span class="mkapi-object-link">
+<span class="mkapi-parent-toggle" title="Toggle class names">
+<i class="fa-solid fa-square-plus"></i>
+</span>
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder.parse_not_ratios" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">staticmethod</span>
+<span class="mkapi-object-parent">
+<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a><span class="mkapi-dot">.</span></span><span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder.parse_not_ratios" title="tetrapy.tetracorder.TetraDecoder.parse_not_ratios">parse_not_ratios</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">file</span><span class="mkapi-colon">: </span><span class="mkapi-ann">str</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="typing.Dict">Dict</span>[str, <span class="mkapi-tooltip" title="typing.Dict">Dict</span>[str, str]]</span></span>
+</p>
+<div class="mkapi-document">
+<p>Parse the <code>cmd.lib.setup.nots-ratios</code> "not feature" definitions.</p>
+<p>These entries use a <code>==[NAME] [SOURCE] value...</code> syntax, grouping variable
+definitions under a source library key (e.g. <code>rec1</code>, <code>Bckm</code>). Values are
+kept as whitespace-stripped strings.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">file</span> : 
+<span class="mkapi-item-type">str</span> <span class="mkapi-dash">&mdash;</span>
+Path to the <code>cmd.lib.setup.nots-ratios</code> file.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">dict[str, dict[str, str]]</span> <span class="mkapi-dash">&mdash;</span>
+Nested mapping <code>{source: {name: value}}</code>. If a name is repeated within
+a source, the last definition wins.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder.parse_group_paths">
+<span class="mkapi-object-link">
+<span class="mkapi-parent-toggle" title="Toggle class names">
+<i class="fa-solid fa-square-plus"></i>
+</span>
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder.parse_group_paths" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">staticmethod</span>
+<span class="mkapi-object-parent">
+<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a><span class="mkapi-dot">.</span></span><span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder.parse_group_paths" title="tetrapy.tetracorder.TetraDecoder.parse_group_paths">parse_group_paths</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">file</span><span class="mkapi-colon">: </span><span class="mkapi-ann">str</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="typing.Dict">Dict</span>[int, str]</span></span>
+</p>
+<div class="mkapi-document">
+<p>Parse the per-group output directories from a <code>cmds.start.*</code> file.</p>
+<p>Group directories are defined with a <code>==[DIRg&lt;N&gt;]&lt;path&gt;</code> syntax, e.g.
+<code>==[DIRg1]group.1um/</code>. These prefixes are prepended to each block's output
+filename in :meth:<a href="./#tetrapy.tetracorder.TetraDecoder.parse_block" title="tetrapy.tetracorder.TetraDecoder.parse_block"><code>parse_block</code></a>.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">file</span> : 
+<span class="mkapi-item-type">str</span> <span class="mkapi-dash">&mdash;</span>
+Path to the <code>cmds.start.*</code> file.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type"><span class="mkapi-tooltip" title="typing.Dict">Dict</span>[int, str]</span> <span class="mkapi-dash">&mdash;</span>
+Mapping of group number to its output directory prefix.</p>
+</li>
+</ul>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.tetracorder.TetraDecoder.extract_blocks">
+<span class="mkapi-object-link">
+<span class="mkapi-parent-toggle" title="Toggle class names">
+<i class="fa-solid fa-square-plus"></i>
+</span>
+
+<a href="../../../src/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder.extract_blocks" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span><span class="mkapi-object-kind">staticmethod</span>
+<span class="mkapi-object-parent">
+<a href="./#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder">TetraDecoder</a><span class="mkapi-dot">.</span></span><span class="mkapi-object-name"><a href="./#tetrapy.tetracorder.TetraDecoder.extract_blocks" title="tetrapy.tetracorder.TetraDecoder.extract_blocks">extract_blocks</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">lines</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[str]</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="typing.Iterator">Iterator</span>[<span class="mkapi-tooltip" title="typing.List">List</span>[str]]</span></span>
+</p>
+<div class="mkapi-document">
+<p>Split the expert system lines into group blocks.</p>
+<p>A block opens on a line matching <code>group &lt;N&gt;</code> and closes on the line
+starting with <code>endaction</code>. Within a block, trailing <code>\#</code> comments are
+stripped (except on <code>TITLE</code> lines, where <code>#</code> may be significant) and blank
+lines are dropped, so each yielded block is a list of meaningful lines only.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">lines</span> : 
+<span class="mkapi-item-type"><span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[str]</span> <span class="mkapi-dash">&mdash;</span>
+Stripped lines of the expert system file.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle yields">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Yields</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">list[str]</span> <span class="mkapi-dash">&mdash;</span>
+One group block, from its <code>group &lt;N&gt;</code> line through <code>endaction</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+  
+
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences, as well as to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="github" checked>
+      <span class="task-list-indicator"></span>
+      GitHub
+    </label>
+  </li>
+
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Manage settings</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.expand", "navigation.path"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../javascript/mkapi.js"></script>
+      
+    
+  </body>
+</html>
