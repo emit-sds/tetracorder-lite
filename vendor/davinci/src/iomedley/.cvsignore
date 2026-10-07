@@ -1,0 +1,9 @@
+*.o
+*.a
+cscope.out
+configure
+config.status
+config.log
+config.cache
+Makefile
+iom_config.h

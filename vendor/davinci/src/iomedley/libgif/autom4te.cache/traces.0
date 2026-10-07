@@ -1,0 +1,148 @@
+m4trace:configure.in:2: -1- m4_pattern_forbid([^_?A[CHUM]_])
+m4trace:configure.in:2: -1- m4_pattern_forbid([_AC_])
+m4trace:configure.in:2: -1- m4_pattern_forbid([^LIBOBJS$], [do not use LIBOBJS directly, use AC_LIBOBJ (see section 'AC_LIBOBJ vs LIBOBJS'])
+m4trace:configure.in:2: -1- m4_pattern_allow([^AS_FLAGS$])
+m4trace:configure.in:2: -1- m4_pattern_forbid([^_?m4_])
+m4trace:configure.in:2: -1- m4_pattern_forbid([^dnl$])
+m4trace:configure.in:2: -1- m4_pattern_forbid([^_?AS_])
+m4trace:configure.in:2: -1- m4_pattern_allow([^SHELL$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PATH_SEPARATOR$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^exec_prefix$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^prefix$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^program_transform_name$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^bindir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^sbindir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^libexecdir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^datarootdir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^datadir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^sysconfdir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^sharedstatedir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^localstatedir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^runstatedir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^includedir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^oldincludedir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^docdir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^infodir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^htmldir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^dvidir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^pdfdir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^psdir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^libdir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^localedir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^mandir$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^DEFS$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^ECHO_C$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^ECHO_N$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^ECHO_T$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^build_alias$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^host_alias$])
+m4trace:configure.in:2: -1- m4_pattern_allow([^target_alias$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^CFLAGS$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^LDFLAGS$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^ac_ct_CC$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^EXEEXT$])
+m4trace:configure.in:5: -1- m4_pattern_allow([^OBJEXT$])
+m4trace:configure.in:6: -1- m4_pattern_allow([^RANLIB$])
+m4trace:configure.in:8: -1- _m4_warn([obsolete], [The macro 'AC_AIX' is obsolete.
+You should run autoupdate.], [./lib/autoconf/specific.m4:722: AC_AIX is expanded from...
+configure.in:8: the top level])
+m4trace:configure.in:8: -1- AC_DEFUN([_AC_Header_stdio_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" stdio.h ]AS_TR_SH([stdio.h]) AS_TR_CPP([HAVE_stdio.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:8: -1- AC_DEFUN([_AC_Header_stdlib_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" stdlib.h ]AS_TR_SH([stdlib.h]) AS_TR_CPP([HAVE_stdlib.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:8: -1- AC_DEFUN([_AC_Header_string_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" string.h ]AS_TR_SH([string.h]) AS_TR_CPP([HAVE_string.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:8: -1- AC_DEFUN([_AC_Header_inttypes_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" inttypes.h ]AS_TR_SH([inttypes.h]) AS_TR_CPP([HAVE_inttypes.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:8: -1- AC_DEFUN([_AC_Header_stdint_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" stdint.h ]AS_TR_SH([stdint.h]) AS_TR_CPP([HAVE_stdint.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:8: -1- AC_DEFUN([_AC_Header_strings_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" strings.h ]AS_TR_SH([strings.h]) AS_TR_CPP([HAVE_strings.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:8: -1- AC_DEFUN([_AC_Header_sys_stat_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" sys/stat.h ]AS_TR_SH([sys/stat.h]) AS_TR_CPP([HAVE_sys/stat.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:8: -1- AC_DEFUN([_AC_Header_sys_types_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" sys/types.h ]AS_TR_SH([sys/types.h]) AS_TR_CPP([HAVE_sys/types.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:8: -1- AC_DEFUN([_AC_Header_unistd_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" unistd.h ]AS_TR_SH([unistd.h]) AS_TR_CPP([HAVE_unistd.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:8: -1- m4_pattern_allow([^STDC_HEADERS$])
+m4trace:configure.in:8: -1- AC_DEFUN([_AC_Header_wchar_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" wchar.h ]AS_TR_SH([wchar.h]) AS_TR_CPP([HAVE_wchar.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:8: -1- AC_DEFUN([_AC_Header_minix_config_h], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
+  [" minix/config.h ]AS_TR_SH([minix/config.h]) AS_TR_CPP([HAVE_minix/config.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_ALL_SOURCE$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_DARWIN_C_SOURCE$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_GNU_SOURCE$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_HPUX_ALT_XOPEN_SOCKET_API$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_NETBSD_SOURCE$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_OPENBSD_SOURCE$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_POSIX_PTHREAD_SEMANTICS$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^__STDC_WANT_IEC_60559_ATTRIBS_EXT__$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^__STDC_WANT_IEC_60559_BFP_EXT__$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^__STDC_WANT_IEC_60559_DFP_EXT__$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^__STDC_WANT_IEC_60559_EXT__$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^__STDC_WANT_IEC_60559_FUNCS_EXT__$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^__STDC_WANT_IEC_60559_TYPES_EXT__$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^__STDC_WANT_LIB_EXT2__$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^__STDC_WANT_MATH_SPEC_FUNCS__$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_TANDEM_SOURCE$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_MINIX$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_POSIX_SOURCE$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_POSIX_1_SOURCE$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^__EXTENSIONS__$])
+m4trace:configure.in:8: -1- m4_pattern_allow([^_XOPEN_SOURCE$])
+m4trace:configure.in:11: -1- m4_pattern_allow([^XMKMF$])
+m4trace:configure.in:11: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.in:11: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.in:11: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.in:12: -1- _m4_warn([obsolete], [The macro 'AC_HEADER_STDC' is obsolete.
+You should run autoupdate.], [./lib/autoconf/headers.m4:663: AC_HEADER_STDC is expanded from...
+configure.in:12: the top level])
+m4trace:configure.in:12: -1- m4_pattern_allow([^GREP$])
+m4trace:configure.in:12: -1- m4_pattern_allow([^EGREP$])
+m4trace:configure.in:13: -1- m4_pattern_allow([^HAVE_FCNTL_H$])
+m4trace:configure.in:16: -1- m4_pattern_allow([^const$])
+m4trace:configure.in:19: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.in:20: -1- _m4_warn([obsolete], [The macro 'AC_FUNC_SETVBUF_REVERSED' is obsolete.  Remove it and all references to SETVBUF_REVERSED.], [./lib/autoconf/functions.m4:1785: AC_FUNC_SETVBUF_REVERSED is expanded from...
+configure.in:20: the top level])
+m4trace:configure.in:21: -1- AC_DEFUN([_AC_Func_vprintf], [m4_divert_text([INIT_PREPARE],
+  [AS_VAR_APPEND([ac_func_]]_AC_LANG_ABBREV[[_list],
+  [" vprintf ]AS_TR_CPP([HAVE_vprintf])["])])_AC_FUNCS_EXPANSION(_AC_LANG_ABBREV)])
+m4trace:configure.in:21: -1- m4_pattern_allow([^HAVE_DOPRNT$])
+m4trace:configure.in:24: -1- m4_pattern_allow([^CFLAGS$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^LDFLAGS$])
+m4trace:configure.in:27: -1- _m4_warn([obsolete], [AC_OUTPUT should be used without arguments.
+You should run autoupdate.], [])
+m4trace:configure.in:27: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.in:27: -1- m4_pattern_allow([^LTLIBOBJS$])

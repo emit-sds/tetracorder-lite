@@ -1,0 +1,4 @@
+perl:Depends=perl:any
+shlibs:Depends=davinci, libc6 (>= 2.34), libcfitsio9 (>= 3.480~), libcurl3-nss (>= 7.23.1), libhdf5-103-1, libjbig0 (>= 2.0), liblzma5 (>= 5.1.1alpha+20120614), libpng16-16 (>= 1.6.2-1), libreadline8 (>= 6.0), zlib1g (>= 1:1.1.4)
+misc:Depends=
+misc:Pre-Depends=

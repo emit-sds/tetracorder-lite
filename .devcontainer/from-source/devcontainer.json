@@ -1,0 +1,61 @@
+{
+  // Same demo, but building the image from this branch's Containerfile rather
+  // than pulling one -- for when the build itself is what you are testing, since
+  // a published image hides regressions like a dropped exec bit. Expect a long
+  // first create; a prebuild is the comfortable way to use it.
+  "name": "Tetracorder demo (build from source)",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "hostRequirements": {
+    "cpus": 8,
+    "memory": "16gb",
+    "storage": "64gb"
+  },
+  // TETRACORDER_IMAGE is a local build tag, not a registry reference.
+  // TETRACORDER_SCENE_URL is absent so common.sh derives it from the repo.
+  "containerEnv": {
+    "TETRACORDER_BUILD": "1",
+    "TETRACORDER_IMAGE": "tetracorder-lite:local"
+  },
+  // Nothing here fetches, builds or runs anything -- get-started.sh takes each
+  // step on request. This only installs the banner pointing at it.
+  "onCreateCommand": ".devcontainer/scripts/install-welcome.sh",
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "Tetracorder results",
+      "onAutoForward": "notify",
+      "protocol": "http"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        // Mermaid in START-HERE.md; VS Code's preview has none built in. This
+        // one works in the web client too.
+        "bierner.markdown-mermaid"
+      ],
+      // Layout for a demo: the file tree and a terminal, nothing else.
+      "settings": {
+        // No Welcome tab; codespaces.openFiles below replaces the README.
+        "workbench.startupEditor": "none",
+        // Hide the Chat/agent side bar; the toggle still works.
+        "workbench.secondarySideBar.defaultVisibility": "hidden",
+        // Open Editors is noise here.
+        "explorer.openEditors.visible": 0,
+        // START-HERE.md renders; every other .md still opens as source.
+        "workbench.editorAssociations": {
+          "**/START-HERE.md": "vscode.markdown.preview.editor"
+        }
+      }
+    },
+    "codespaces": {
+      // The only thing that opens by itself. Web client only -- the desktop
+      // app ignores this, so open it by hand there.
+      "openFiles": [".devcontainer/START-HERE.md"]
+    }
+  }
+}
