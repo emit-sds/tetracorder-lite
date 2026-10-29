@@ -25,6 +25,11 @@ jobs:
         with:
           version: "0.9.25"
           python-version: "3.12"
+          enable-cache: true
+          # Pruning drops pre-built wheels, which is every dependency here
+          prune-cache: false
+          # Per-job key so jobs with different dependency sets don't clobber each other
+          cache-suffix: package
 
       - name: Build package
         shell: bash
@@ -50,6 +55,9 @@ jobs:
         with:
           version: "0.9.25"
           python-version: "3.12"
+          enable-cache: true
+          prune-cache: false
+          cache-suffix: pytests
 
       - name: Install dependencies
         run: uv sync --locked
