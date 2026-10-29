@@ -57,7 +57,7 @@ def init(config: str, section: str, ctx: click.Context) -> Box:
         file = Path(c.log.file)
         file.parent.mkdir(parents=True, exist_ok=True)
 
-        fh = logging.FileHandler(file, mode="w" if c.log.append else "a")
+        fh = logging.FileHandler(file, mode="a" if c.log.append else "w")
         fh.setLevel(logging.DEBUG)
 
         fmt = "%(asctime)s | %(levelname)-7s | %(name)s | %(message)s"

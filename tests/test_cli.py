@@ -1,5 +1,6 @@
 import logging
 
+import click
 import pytest
 from click.testing import CliRunner
 
@@ -32,6 +33,30 @@ def test_preview_applies_overrides(runner, caplog):
         result = runner.invoke(cli, ["preview", str(synthetic.REPO / "config.yml"), "--output.base", "/elsewhere"])
     assert result.exit_code == 0, result.output
     assert "/elsewhere/aggregate/agg.nc" in caplog.text
+
+
+@pytest.mark.parametrize("append, expected", [(False, "new\n"), (True, "old\nnew\n")])
+def test_log_append(tmp_path, monkeypatch, append, expected):
+    """``log.append: False`` resets the log file; ``True`` appends to it."""
+    import tetrapy
+
+    log = tmp_path / "tetrapy.log"
+    log.write_text("old\n")
+    config = tmp_path / "config.yml"
+    config.write_text(f"log: {{file: {log}, append: {append}, config: null, level: INFO}}\n")
+
+    # init() hands its handlers to basicConfig, which is a no-op once the root logger
+    # has handlers (e.g. pytest's), so capture the file handler it builds instead
+    handlers = []
+    monkeypatch.setattr(tetrapy.logging, "basicConfig", lambda **kw: handlers.extend(kw["handlers"]))
+    tetrapy.init(str(config), None, click.Context(cli))
+
+    (fh,) = [h for h in handlers if isinstance(h, logging.FileHandler)]
+    fh.setFormatter(logging.Formatter("%(message)s"))
+    fh.emit(logging.makeLogRecord({"msg": "new"}))
+    fh.close()
+
+    assert log.read_text() == expected
 
 
 def test_preview_noflow(runner, caplog):

@@ -7,6 +7,8 @@ that calls ``fake_tetracorder.py`` instead. The scene has known minerals planted
 known pixels, so the final L2B products can be checked against the truth.
 """
 
+import re
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -187,7 +189,7 @@ def test_pipeline_setup_and_tetrun(pipeline_run):
     out = pipeline_run["tetracorder"]
 
     runtet = (out / "cmd.runtet").read_text()
-    assert "time" not in runtet
+    assert not re.search(r"^\s*time\s", runtet, re.MULTILINE)
     assert "> tetracorder.out" not in runtet
 
     log = (out / "tetracorder.out").read_text()

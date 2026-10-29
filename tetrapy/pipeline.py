@@ -173,8 +173,8 @@ def setup(c: Box) -> None:
     Invokes the tetracorder setup script to initialize the output directory for the
     configured version/mode/sensor and scene reflectance, applying the post-setup
     patches (geology flag, CPU count, ``cmd.runtet`` fixups). Any pre-existing
-    output directory contents are cleared first (except ``logs/``), which the
-    setup script requires to be absent.
+    output directory is removed first, which the setup script requires to be
+    absent.
     """
     from tetrapy import tetra
 

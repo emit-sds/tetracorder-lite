@@ -326,8 +326,9 @@ CMDS_START = "\n".join(
 
 # Stand-in for cmd-setup-tetrun: lays out the run directory the way the real script
 # does (expert system, start file, variables, restart file, cmd.runtet, TETNCPU.txt).
-# The cmd.runtet it writes carries the quirks tetrapy patches out (a `time` prefix and
-# a tetracorder.out redirect).
+# The cmd.runtet it writes carries the quirks tetrapy patches out (an indented `time`
+# prefix and a tetracorder.out redirect), plus a comment mentioning "runtime" that the
+# patch must leave alone.
 SETUP_SCRIPT = """\
 #!/bin/bash
 set -e
@@ -340,7 +341,11 @@ cp "$here/restart_files/r1-$sensor" "$out/r1"
 cp "$here/DISABLE/$sensor" "$out/DISABLE"
 echo 1 > "$out/TETNCPU.txt"
 cat > "$out/cmd.runtet" <<'EOF'
-time "$FAKE_TC_PYTHON" "$FAKE_TC_SCRIPT" "$1" "$2" > tetracorder.out 2>&1
+# runtime grows with scene size
+if true
+then
+	time "$FAKE_TC_PYTHON" "$FAKE_TC_SCRIPT" "$1" "$2" > tetracorder.out 2>&1
+fi
 EOF
 echo "setup complete: $out $sensor $mode $rfl"
 """

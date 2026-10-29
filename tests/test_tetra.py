@@ -1,12 +1,16 @@
 """The setup/run drivers, against the synthetic command tree's stand-in scripts."""
 
 import os
+import re
 import subprocess
 
 import pytest
 
 import synthetic
 from tetrapy import tetra
+
+
+SHIPPED = synthetic.REPO / f"tetracorder/tetracorder.cmds/tetracorder{synthetic.VERSION}.cmds"
 
 
 @pytest.fixture
@@ -32,12 +36,36 @@ def run_dir(tmp_path, tc_root, cmds, scene):
 class TestSetup:
     def test_patches(self, run_dir):
         runtet = (run_dir / "cmd.runtet").read_text()
-        assert "time" not in runtet
+        assert '\t"$FAKE_TC_PYTHON" "$FAKE_TC_SCRIPT" "$1" "$2" 2>&1\n' in runtet
+        assert "# runtime grows with scene size" in runtet   # "time" outside a command kept
         assert "tetracorder.out" not in runtet
-        assert "2>&1" in runtet
 
         assert (run_dir / "TETNCPU.txt").read_text() == "3"
         assert "nogeology\nmode cube" in (run_dir / f"cmds.start.t{synthetic.VERSION}").read_text()
+
+    @pytest.mark.skipif(not (SHIPPED / "cmd.runtet").exists(), reason="vendored cmd.runtet not available")
+    def test_patches_shipped_runtet(self, tmp_path, tc_root, cmds, scene):
+        """The patch removes only the real script's `time` prefix and redirect."""
+        (cmds / f"restart_files/r1-{synthetic.SENSOR}").write_text("restart")
+        (cmds / f"DISABLE/{synthetic.SENSOR}").write_text("")
+        shipped = (SHIPPED / "cmd.runtet").read_text()
+        setup = cmds / "cmd-setup-tetrun"
+        setup.write_text(setup.read_text().replace(
+            "cat > \"$out/cmd.runtet\" <<'EOF'", f"cp {SHIPPED / 'cmd.runtet'} \"$out/cmd.runtet\"\ncat > /dev/null <<'EOF'"
+        ))
+
+        out = tmp_path / "out"
+        tetra.setup_tetrun(str(tc_root), synthetic.VERSION, str(out), synthetic.SENSOR, rfl=str(scene[0]), args=[])
+        patched = (out / "cmd.runtet").read_text()
+
+        assert "\t$pt r1 <<EOI 2>&1\n" in patched
+        assert not re.search(r"^\s*time\s", patched, re.MULTILINE)
+        # Every other line is untouched
+        changed = [
+            (a, b) for a, b in zip(shipped.splitlines(), patched.splitlines()) if a != b
+        ]
+        assert len(shipped.splitlines()) == len(patched.splitlines())
+        assert all("tetracorder.out" in a for a, _ in changed)
 
     def test_geology_flag(self, tmp_path, tc_root, cmds, scene):
         (cmds / f"restart_files/r1-{synthetic.SENSOR}").write_text("restart")
