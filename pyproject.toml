@@ -35,6 +35,7 @@ docs = [
 [dependency-groups]
 dev = [
     "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
 ]
 
 [project.scripts]
@@ -51,4 +52,15 @@ filterwarnings = [
     "ignore::rasterio.errors.NotGeoreferencedWarning",
     "ignore:datetime.datetime.utcfromtimestamp:DeprecationWarning:dateutil",
     "ignore:Setting the shape on a NumPy array:DeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["tetrapy"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+exclude_also = [
+    'if __name__ == "__main__":',
 ]
