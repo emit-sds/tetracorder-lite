@@ -3,7 +3,7 @@ name: Build
 on:
   pull_request:
     branches-ignore: ["gh-pages"]
-    paths: ["tetrapy/**", "pyproject.toml", ".github/**"]
+    paths: ["tetrapy/**", "tests/**", "pyproject.toml", "uv.lock", ".github/**"]
   workflow_dispatch:
 
 concurrency:
@@ -35,3 +35,24 @@ jobs:
 
       - name: Smoke test (source distribution)
         run: uv run --isolated --no-project --with dist/*.tar.gz tetrapy --version
+
+  # Unit tests + the synthetic end-to-end pipeline run (no container needed)
+  pytests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.25"
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Run pytests
+        run: uv run pytest -v
