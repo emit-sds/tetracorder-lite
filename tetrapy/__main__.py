@@ -130,8 +130,17 @@ def preview(ctx: click.Context, noflow=False, **kwargs: Any) -> None:
     c = init(ctx=ctx, **kwargs)
 
     if noflow:
-        import yaml
-        Logger.info(yaml.dump(c.to_dict(), default_flow_style=None, sort_keys=False, width=120))
+        # ruamel.yaml (installed by python-box[all]) rather than PyYAML, which is not a dependency
+        from io import StringIO
+        from ruamel.yaml import YAML
+
+        yaml = YAML()
+        yaml.default_flow_style = None
+        yaml.width = 120
+
+        stream = StringIO()
+        yaml.dump(c.to_dict(), stream)
+        Logger.info(stream.getvalue())
     else:
         Logger.info(c.to_yaml())
 

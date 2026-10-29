@@ -50,3 +50,9 @@ tetracorder/tetracorder.cmds/tetracorder6.00a.cmds/**/*tetrapy*
 tetracorder/sl1/usgs/tetrapy
 reslib
 reflib
+
+# Coverage reports
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/

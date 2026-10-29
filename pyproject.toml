@@ -31,3 +31,31 @@ tetrapy = "tetrapy.__main__:cli"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = [
+    # Synthetic rasters are intentionally ungeoreferenced
+    "ignore::rasterio.errors.NotGeoreferencedWarning",
+    "ignore:datetime.datetime.utcfromtimestamp:DeprecationWarning:dateutil",
+    "ignore:Setting the shape on a NumPy array:DeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["tetrapy"]
+branch = true
+# Required by the PR coverage comment action, which reads .coverage from another path
+relative_files = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+exclude_also = [
+    'if __name__ == "__main__":',
+]

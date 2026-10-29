@@ -431,7 +431,10 @@ class TetraDecoder:
         # Update index of missing entries
         nul = nu["index"].isnull()
 
-        off = nu["index"].max() + 1
+        # Continue past the reference's max (not just the matched rows') so a new record
+        # never reuses the index of one that was dropped; start at 1 if nothing matched
+        top = og["index"].max()
+        off = 1 if pd.isna(top) else int(top) + 1
         rng = range(off, off + nul.sum())
 
         if sortby:
