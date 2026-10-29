@@ -4,11 +4,19 @@ on:
   pull_request:
     branches-ignore: ["gh-pages"]
     paths: ["tetrapy/**", "tests/**", "pyproject.toml", "uv.lock", ".github/**"]
+  # Records the coverage baseline that PR comments compare against
+  push:
+    branches: ["main"]
+    paths: ["tetrapy/**", "tests/**", "pyproject.toml", "uv.lock", ".github/**"]
   workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref || github.ref }}
   cancel-in-progress: true
+
+# Jobs opt in to what they need
+permissions:
+  contents: read
 
 jobs:
   # Test building the package
@@ -19,6 +27,7 @@ jobs:
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: false
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -42,11 +51,15 @@ jobs:
   # Unit tests + the synthetic end-to-end pipeline run (no container needed)
   pytests:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write # Post/update the coverage comment on same-repo PRs
+      contents: write # Push the main baseline to the coverage data branch
     steps:
       - uses: actions/checkout@v6
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: false
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -79,3 +92,21 @@ jobs:
             htmlcov/
             coverage.xml
           retention-days: 14
+
+      # On PRs: builds the coverage comment, posting it directly when allowed, otherwise
+      # writing it to a file for coverage.yml to post. On main: saves the baseline.
+      - name: Coverage comment
+        id: coverage_comment
+        if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref_name == 'main')
+        uses: py-cov-action/python-coverage-comment-action@e5fb2218463c3377f3504b0c5b5646ed53da7a2f # v4.5
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
+          ACTIVITY: ${{ github.event_name == 'push' && 'save_coverage_data_files' || 'process_pr' }}
+
+      - name: Store coverage comment for coverage.yml
+        if: steps.coverage_comment.outputs.COMMENT_FILE_WRITTEN == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          # Names coverage.yml expects (the action's defaults)
+          name: python-coverage-comment-action
+          path: python-coverage-comment-action.txt

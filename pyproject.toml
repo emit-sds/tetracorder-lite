@@ -57,6 +57,8 @@ filterwarnings = [
 [tool.coverage.run]
 source = ["tetrapy"]
 branch = true
+# Required by the PR coverage comment action, which reads .coverage from another path
+relative_files = true
 
 [tool.coverage.report]
 show_missing = true
