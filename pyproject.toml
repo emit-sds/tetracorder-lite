@@ -25,6 +25,11 @@ docs = [
   "mkdocs-material[imaging]>=9.7.1",
 ]
 
+[dependency-groups]
+dev = [
+  "pytest>=8",
+]
+
 [project.scripts]
 tetrapy = "tetrapy.__main__:cli"
 

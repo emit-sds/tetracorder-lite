@@ -7,7 +7,8 @@ the handful of per-sensor files the command tree looks up by name:
 
 - ``restart_files/r1-{name}`` — the specpr restart file pointing at the convolved
   reference / research libraries.
-- ``DELETED.channels/delete_{name}`` — the channels to drop for this sensor.
+- ``DELETED.channels/delete_{name}`` — the channels to drop for this sensor, given
+  as channel numbers or as wavelength ranges resolved against the scene's grid.
 - ``DISABLE/{name}`` — which analysis groups and cases are enabled vs. disabled.
 - ``COLOR.channels/color-{name}`` — the color-composite channel definitions.
 
@@ -17,12 +18,15 @@ file self-consistently matches the scene being mapped.
 """
 
 import logging
+import re
 from pathlib import Path
-from typing import Iterable, List, Union
+from typing import Iterable, List, Mapping, Sequence, Union
 
+import numpy as np
 import xarray as xr
 from box import Box
 
+from tetrapy.conv.library import NM_PER_UM, read_grid
 from tetrapy.tetracorder import TetraDecoder
 
 
@@ -215,6 +219,232 @@ def parse_list(vals: Iterable[Union[int, str]]) -> List[int]:
     return ret
 
 
+def parse_channels(spec: str) -> List[int]:
+    """
+    Expand a tetracorder deleted-channels spec into a sorted list of channel numbers.
+
+    The spec is whitespace-separated tokens, each a single 1-based channel ``N`` or an
+    inclusive range ``NtM``. The terminating ``c`` (standalone or attached to the last
+    token, e.g. ``280t285c``) and any ``# comment`` are ignored.
+
+    Parameters
+    ----------
+    spec : str
+        Deleted-channels spec, e.g. ``"1t4 75t79 218 280t285c"``.
+
+    Returns
+    -------
+    list[int]
+        Sorted, de-duplicated channel numbers.
+
+    Raises
+    ------
+    ValueError
+        If a token is malformed or a range is reversed.
+
+    Examples
+    --------
+    >>> parse_channels("1t3 7 9t10c")
+    [1, 2, 3, 7, 9, 10]
+    """
+    spec = str(spec).split("#", 1)[0].strip()
+    if spec.endswith("c"):
+        spec = spec[:-1]
+
+    chans = set()
+    for token in spec.split():
+        if not (m := re.fullmatch(r"(\d+)(?:t(\d+))?", token)):
+            raise ValueError(f"Invalid deleted channel token {token!r} in {spec!r}")
+        a = int(m.group(1))
+        b = int(m.group(2) or a)
+        if a > b:
+            raise ValueError(f"Reversed deleted channel range {token!r}")
+        chans.update(range(a, b+1))
+
+    return sorted(chans)
+
+
+def format_channels(chans: Iterable[int]) -> str:
+    """
+    Compress channel numbers into tetracorder range syntax.
+
+    Consecutive runs become ``NtM`` and isolated channels stay as plain numbers. No
+    terminating ``c`` is added.
+
+    Parameters
+    ----------
+    chans : Iterable[int]
+        Channel numbers, in any order; duplicates are ignored.
+
+    Returns
+    -------
+    str
+        The compressed spec, e.g. ``"1t4 218 280t285"``.
+
+    Examples
+    --------
+    >>> format_channels([3, 1, 2, 7, 9, 10])
+    '1t3 7 9t10'
+    """
+    chans = sorted(set(chans))
+    runs = []
+    for ch in chans:
+        if runs and ch == runs[-1][1] + 1:
+            runs[-1][1] = ch
+        else:
+            runs.append([ch, ch])
+    return " ".join(f"{a}t{b}" if a != b else f"{a}" for a, b in runs)
+
+
+def wavelength_channels(
+    ranges: Iterable[Sequence[float]],
+    wavelengths: np.ndarray,
+    units: str = "um",
+) -> List[int]:
+    """
+    Find the channels whose centre wavelength falls inside any of the given ranges.
+
+    Parameters
+    ----------
+    ranges : Iterable[Sequence[float]]
+        Inclusive ``[min, max]`` wavelength ranges, in ``units``.
+    wavelengths : numpy.ndarray
+        Band-centre wavelengths of the scene grid, in microns.
+    units : str, default="um"
+        Units of ``ranges``: ``"um"`` (or ``"µm"``) or ``"nm"``.
+
+    Returns
+    -------
+    list[int]
+        Sorted 1-based channel numbers matched by any range.
+
+    Raises
+    ------
+    ValueError
+        If ``units`` is unknown, a value's magnitude does not fit ``units``, or a range
+        is not an ordered ``[min, max]`` pair.
+
+    Notes
+    -----
+    A range that matches no channels is logged as a warning, as it usually means a
+    typo or the wrong units.
+    """
+    units = str(units).lower()
+    if units in ("um", "µm", "micron", "microns"):
+        scale = 1.0
+    elif units == "nm":
+        scale = NM_PER_UM
+    else:
+        raise ValueError(f"Unknown deleted_channels units {units!r}, expected 'um' or 'nm'")
+
+    wavelengths = np.asarray(wavelengths)
+    chans = set()
+    for rng in ranges:
+        if len(rng) != 2:
+            raise ValueError(f"Wavelength range must be [min, max], got {list(rng)}")
+        lo, hi = map(float, rng)
+        if lo > hi:
+            raise ValueError(f"Reversed wavelength range {[lo, hi]}")
+        if scale == 1.0 and hi > 100:
+            raise ValueError(f"Wavelength range {[lo, hi]} looks like nm but units is {units!r}")
+        if scale == NM_PER_UM and hi < 10:
+            raise ValueError(f"Wavelength range {[lo, hi]} looks like um but units is {units!r}")
+
+        idx = np.flatnonzero((wavelengths >= lo / scale) & (wavelengths <= hi / scale))
+        if not idx.size:
+            Logger.warning(
+                f"Deleted wavelength range {[lo, hi]} {units} matched no channels "
+                f"(scene grid {wavelengths.min():.4f}-{wavelengths.max():.4f} um); "
+                f"check for a typo or the wrong units"
+            )
+        chans.update(int(i) + 1 for i in idx)
+
+    return sorted(chans)
+
+
+def resolve_deleted_channels(
+    spec: Union[str, int, Mapping],
+    rfl: Union[str, Path],
+    nchans: int,
+) -> List[int]:
+    """
+    Resolve a ``sensor.deleted_channels`` config value to channel numbers.
+
+    Parameters
+    ----------
+    spec : str or Mapping
+        Either a tetracorder channel spec string (see :func:`parse_channels`), or a
+        mapping with keys:
+
+        ``wavelengths`` : list[[float, float]], optional
+            Inclusive wavelength ranges, matched against band centres of the scene grid.
+        ``units`` : str, default="um"
+            Units of ``wavelengths``: ``"um"`` or ``"nm"``.
+        ``channels`` : str, optional
+            Extra 1-based channel numbers in tetracorder spec syntax.
+    rfl : str or Path
+        Scene reflectance raster; its ``.hdr`` supplies the wavelength grid. Only read
+        when ``wavelengths`` is given.
+    nchans : int
+        Number of channels in the scene; every resolved channel must be within
+        ``[1, nchans]``.
+
+    Returns
+    -------
+    list[int]
+        Sorted, de-duplicated channel numbers to delete.
+
+    Raises
+    ------
+    TypeError
+        If ``spec`` is neither a string nor a mapping.
+    ValueError
+        If the spec is malformed, wavelength ranges are given but the header has no
+        usable wavelength grid, or a channel is outside ``[1, nchans]``.
+    """
+    if isinstance(spec, int):
+        spec = str(spec)
+
+    if isinstance(spec, str):
+        chans = parse_channels(spec)
+    elif isinstance(spec, Mapping):
+        if unknown := set(spec) - {"units", "wavelengths", "channels"}:
+            raise ValueError(
+                f"Unknown sensor.deleted_channels keys {sorted(unknown)}, "
+                f"expected 'units', 'wavelengths' and/or 'channels'"
+            )
+
+        chans = []
+        if ranges := spec.get("wavelengths"):
+            try:
+                grid = read_grid(rfl)
+            except (OSError, ValueError) as e:
+                raise ValueError(
+                    f"sensor.deleted_channels.wavelengths requires a wavelength grid in "
+                    f"the header of {rfl}: {e}"
+                ) from e
+            if grid.nbands != nchans:
+                raise ValueError(
+                    f"Header of {rfl} has {grid.nbands} wavelengths but the raster has "
+                    f"{nchans} bands"
+                )
+            chans += wavelength_channels(ranges, grid.wavelengths, spec.get("units") or "um")
+
+        if channels := spec.get("channels"):
+            chans += parse_channels(channels)
+
+        chans = sorted(set(chans))
+    else:
+        raise TypeError(
+            f"sensor.deleted_channels must be a string or a mapping, got {type(spec).__name__}"
+        )
+
+    if bad := [ch for ch in chans if not 1 <= ch <= nchans]:
+        raise ValueError(f"Deleted channels {bad} are outside [1, {nchans}]")
+
+    return chans
+
+
 def build(path: Path, sensor: Box, rfl: Union[str, Path]) -> None:
     """
     Write the per-sensor tetracorder integration files for a convolved library.
@@ -239,15 +469,19 @@ def build(path: Path, sensor: Box, rfl: Union[str, Path]) -> None:
         ``reflib`` / ``reslib`` : str
             Paths to the convolved reference / research specpr libraries, written
             into the restart file.
-        ``deleted_channels`` : str
-            specpr channel-deletion spec (e.g. ``"1t4 75t79 ... 226c"``).
+        ``deleted_channels`` : str or mapping
+            Either a specpr channel-deletion spec (e.g. ``"1t4 75t79 ... 226c"``), or
+            a mapping of ``wavelengths`` ranges (in ``units``, default ``um``) plus
+            optional ``channels``, resolved against the scene's wavelength grid (see
+            :func:`resolve_deleted_channels`).
         ``enable.groups`` / ``enable.cases`` : list
             Analysis groups and cases to enable (as accepted by :func:`parse_list`);
             everything else is disabled.
         ``colors`` : list[str]
             Lines for the color-channels file.
     rfl : str or Path
-        Scene reflectance raster; its band count sets ``nchans`` in the restart file.
+        Scene reflectance raster; its band count sets ``nchans`` in the restart file,
+        and its ``.hdr`` supplies the grid for wavelength-based ``deleted_channels``.
 
     Notes
     -----
@@ -282,8 +516,25 @@ def build(path: Path, sensor: Box, rfl: Union[str, Path]) -> None:
     Logger.debug(f"+ Wrote {file}")
 
     # DELETED.channels/
+    spec = sensor.deleted_channels
+    chans = resolve_deleted_channels(spec, rfl, nchans)
+    deleted = format_channels(chans)
+
+    if isinstance(spec, Mapping):
+        Logger.info(
+            f"Resolved deleted channels from wavelengths {spec.get('wavelengths') or []} "
+            f"({spec.get('units') or 'um'}) and channels {spec.get('channels') or ''!r}"
+        )
+    Logger.info(f"Deleting {len(chans)} of {nchans} channels: {deleted}")
+
+    if (size := len(f"{deleted} c")) >= 80:
+        Logger.warning(
+            f"Deleted channels list is {size} characters; tetracorder expects it "
+            f"(including the trailing c) to be under 80"
+        )
+
     file = path / "DELETED.channels" / f"delete_{sensor.name}"
-    file.write_text(f"{sensor.deleted_channels} c # {sensor.name}")
+    file.write_text(f"{deleted} c # {sensor.name}")
     Logger.debug(f"+ Wrote {file}")
 
     # DATASETS/

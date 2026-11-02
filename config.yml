@@ -53,7 +53,16 @@ convolve:
 sensor:
   enabled: True
   name: tetrapy
-  deleted_channels: "1t4 75t79 99t106 128t148 188t214 218 219t221 226 280t285c"
+  deleted_channels:
+    units: um                   # um | nm; inclusive ranges matched against band centres
+    wavelengths:
+      - [0.38, 0.405]           # detector edge
+      - [0.93, 0.963]           # 0.94 um water band
+      - [1.11, 1.164]           # 1.13 um water band
+      - [1.327, 1.477]          # 1.4 um water band
+      - [1.770, 1.968]          # 1.9 um water band
+      - [2.455, 2.50]           # detector edge
+    channels: "218 219t221 226" # EMIT-specific isolated channels near 2.0 um
   enable:
     groups: [1-5, 18, 20-22, 37-38]
     cases: [1-6]
