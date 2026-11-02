@@ -997,6 +997,50 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tetrapy.sensor.parse_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.sensor.format_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        format_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.sensor.wavelength_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        wavelength_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.sensor.resolve_deleted_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve_deleted_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tetrapy.sensor.build" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1168,6 +1212,50 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tetrapy.sensor.parse_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.sensor.format_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        format_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.sensor.wavelength_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        wavelength_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrapy.sensor.resolve_deleted_channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve_deleted_channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tetrapy.sensor.build" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1278,7 +1366,8 @@ the handful of per-sensor files the command tree looks up by name:</p>
 <ul>
 <li><code>restart_files/r1-{name}</code> — the specpr restart file pointing at the convolved
   reference / research libraries.</li>
-<li><code>DELETED.channels/delete_{name}</code> — the channels to drop for this sensor.</li>
+<li><code>DELETED.channels/delete_{name}</code> — the channels to drop for this sensor, given
+  as channel numbers or as wavelength ranges resolved against the scene's grid.</li>
 <li><code>DISABLE/{name}</code> — which analysis groups and cases are enabled vs. disabled.</li>
 <li><code>COLOR.channels/color-{name}</code> — the color-composite channel definitions.</li>
 </ul>
@@ -1299,6 +1388,26 @@ file self-consistently matches the scene being mapped.</p>
 <p><span class="mkapi-item-name"><a href="./#tetrapy.sensor.parse_list" title="tetrapy.sensor.parse_list">parse_list</a></span>
  <span class="mkapi-dash">&mdash;</span>
 Expand a mixed list of ints and <code>"a-b"</code> range strings into a flat int list.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.sensor.parse_channels" title="tetrapy.sensor.parse_channels">parse_channels</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Expand a tetracorder deleted-channels spec into a sorted list of channel numbers.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.sensor.format_channels" title="tetrapy.sensor.format_channels">format_channels</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Compress channel numbers into tetracorder range syntax.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.sensor.wavelength_channels" title="tetrapy.sensor.wavelength_channels">wavelength_channels</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Find the channels whose centre wavelength falls inside any of the given ranges.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name"><a href="./#tetrapy.sensor.resolve_deleted_channels" title="tetrapy.sensor.resolve_deleted_channels">resolve_deleted_channels</a></span>
+ <span class="mkapi-dash">&mdash;</span>
+Resolve a <code>sensor.deleted_channels</code> config value to channel numbers.</p>
 </li>
 <li>
 <p><span class="mkapi-item-name"><a href="./#tetrapy.sensor.build" title="tetrapy.sensor.build">build</a></span>
@@ -1371,6 +1480,321 @@ The expanded integers, in the order the items were given.</p>
 </code></pre></div>
 </div>
 </div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.sensor.parse_channels">
+<span class="mkapi-object-link">
+
+
+<a href="../../../src/tetrapy/sensor/#tetrapy.sensor.parse_channels" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-object-name"><a href="./#tetrapy.sensor.parse_channels" title="tetrapy.sensor.parse_channels">parse_channels</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">spec</span><span class="mkapi-colon">: </span><span class="mkapi-ann">str</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="typing.List">List</span>[int]</span></span>
+</p>
+<div class="mkapi-document">
+<p>Expand a tetracorder deleted-channels spec into a sorted list of channel numbers.</p>
+<p>The spec is whitespace-separated tokens, each a single 1-based channel <code>N</code> or an
+inclusive range <code>NtM</code>. The terminating <code>c</code> (standalone or attached to the last
+token, e.g. <code>280t285c</code>) and any <code># comment</code> are ignored.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">spec</span> : 
+<span class="mkapi-item-type">str</span> <span class="mkapi-dash">&mdash;</span>
+Deleted-channels spec, e.g. <code>"1t4 75t79 218 280t285c"</code>.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">list[int]</span> <span class="mkapi-dash">&mdash;</span>
+Sorted, de-duplicated channel numbers.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle raises">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Raises</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">ValueError</span>
+ <span class="mkapi-dash">&mdash;</span>
+If a token is malformed or a range is reversed.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle examples">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Examples</span>
+</p>
+<div class="mkapi-section-content">
+<div class="mkapi-example-input highlight"><pre><span></span><code><span class="n">parse_channels</span><span class="p">(</span><span class="s2">&quot;1t3 7 9t10c&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="mkapi-example-output highlight"><pre><span></span><code>[1, 2, 3, 7, 9, 10]
+</code></pre></div>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.sensor.format_channels">
+<span class="mkapi-object-link">
+
+
+<a href="../../../src/tetrapy/sensor/#tetrapy.sensor.format_channels" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-object-name"><a href="./#tetrapy.sensor.format_channels" title="tetrapy.sensor.format_channels">format_channels</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">chans</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[int]</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return">str</span></span>
+</p>
+<div class="mkapi-document">
+<p>Compress channel numbers into tetracorder range syntax.</p>
+<p>Consecutive runs become <code>NtM</code> and isolated channels stay as plain numbers. No
+terminating <code>c</code> is added.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">chans</span> : 
+<span class="mkapi-item-type"><span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[int]</span> <span class="mkapi-dash">&mdash;</span>
+Channel numbers, in any order; duplicates are ignored.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">str</span> <span class="mkapi-dash">&mdash;</span>
+The compressed spec, e.g. <code>"1t4 218 280t285"</code>.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle examples">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Examples</span>
+</p>
+<div class="mkapi-section-content">
+<div class="mkapi-example-input highlight"><pre><span></span><code><span class="n">format_channels</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+</code></pre></div>
+<div class="mkapi-example-output highlight"><pre><span></span><code>&#39;1t3 7 9t10&#39;
+</code></pre></div>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.sensor.wavelength_channels">
+<span class="mkapi-object-link">
+
+
+<a href="../../../src/tetrapy/sensor/#tetrapy.sensor.wavelength_channels" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-object-name"><a href="./#tetrapy.sensor.wavelength_channels" title="tetrapy.sensor.wavelength_channels">wavelength_channels</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">ranges</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[<span class="mkapi-tooltip" title="typing.Sequence">Sequence</span>[float]]</span><span class="mkapi-comma">, </span><span class="mkapi-arg">wavelengths</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="numpy">np</span>.<span class="mkapi-tooltip" title="numpy._core.ndarray">ndarray</span></span><span class="mkapi-comma">, </span><span class="mkapi-arg">units</span><span class="mkapi-colon">: </span><span class="mkapi-ann">str</span><span class="mkapi-equal"> = </span><span class="mkapi-default">'um'</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="typing.List">List</span>[int]</span></span>
+</p>
+<div class="mkapi-document">
+<p>Find the channels whose centre wavelength falls inside any of the given ranges.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">ranges</span> : 
+<span class="mkapi-item-type"><span class="mkapi-tooltip" title="typing.Iterable">Iterable</span>[<span class="mkapi-tooltip" title="typing.Sequence">Sequence</span>[float]]</span> <span class="mkapi-dash">&mdash;</span>
+Inclusive <code>[min, max]</code> wavelength ranges, in <code>units</code>.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">wavelengths</span> : 
+<span class="mkapi-item-type">numpy.<span class="mkapi-tooltip" title="numpy._core.ndarray">ndarray</span></span> <span class="mkapi-dash">&mdash;</span>
+Band-centre wavelengths of the scene grid, in microns.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">units</span> : 
+<span class="mkapi-item-type">str, default="um"</span> <span class="mkapi-dash">&mdash;</span>
+Units of <code>ranges</code>: <code>"um"</code> (or <code>"µm"</code>) or <code>"nm"</code>.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">list[int]</span> <span class="mkapi-dash">&mdash;</span>
+Sorted 1-based channel numbers matched by any range.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle raises">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Raises</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">ValueError</span>
+ <span class="mkapi-dash">&mdash;</span>
+If <code>units</code> is unknown, a value's magnitude does not fit <code>units</code>, or a range
+is not an ordered <code>[min, max]</code> pair.</p>
+</li>
+</ul>
+</div>
+<div class="mkapi-section-content">
+<div class="admonition note">
+<p class="admonition-title">Notes</p>
+<p>A range that matches no channels is logged as a warning, as it usually means a
+typo or the wrong units.</p>
+</div>
+</div>
+</div>
+<p class="mkapi-object mkapi-page-source" id="tetrapy.sensor.resolve_deleted_channels">
+<span class="mkapi-object-link">
+
+
+<a href="../../../src/tetrapy/sensor/#tetrapy.sensor.resolve_deleted_channels" title="Go to source">source</a>
+<span class="mkapi-document-toggle" title="Toggle all docs">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-object-name"><a href="./#tetrapy.sensor.resolve_deleted_channels" title="tetrapy.sensor.resolve_deleted_channels">resolve_deleted_channels</a></span><span class="mkapi-signature"><span class="mkapi-paren">(</span><span class="mkapi-arg">spec</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Union">Union</span>[str, int, <span class="mkapi-tooltip" title="typing.Mapping">Mapping</span>]</span><span class="mkapi-comma">, </span><span class="mkapi-arg">rfl</span><span class="mkapi-colon">: </span><span class="mkapi-ann"><span class="mkapi-tooltip" title="typing.Union">Union</span>[str, <span class="mkapi-tooltip" title="pathlib.Path">Path</span>]</span><span class="mkapi-comma">, </span><span class="mkapi-arg">nchans</span><span class="mkapi-colon">: </span><span class="mkapi-ann">int</span><span class="mkapi-paren">)</span><span class="mkapi-arrow"> → </span><span class="mkapi-return"><span class="mkapi-tooltip" title="typing.List">List</span>[int]</span></span>
+</p>
+<div class="mkapi-document">
+<p>Resolve a <code>sensor.deleted_channels</code> config value to channel numbers.</p>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle parameters">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Parameters</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">spec</span> : 
+<span class="mkapi-item-type">str or <span class="mkapi-tooltip" title="typing.Mapping">Mapping</span></span> <span class="mkapi-dash">&mdash;</span>
+Either a tetracorder channel spec string (see :func:<a href="./#tetrapy.sensor.parse_channels" title="tetrapy.sensor.parse_channels"><code>parse_channels</code></a>), or a
+mapping with keys:</p>
+<p><code>wavelengths</code> : list[[float, float]], optional
+    Inclusive wavelength ranges, matched against band centres of the scene grid.
+<code>units</code> : str, default="um"
+    Units of <code>wavelengths</code>: <code>"um"</code> or <code>"nm"</code>.
+<code>channels</code> : str, optional
+    Extra 1-based channel numbers in tetracorder spec syntax.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">rfl</span> : 
+<span class="mkapi-item-type">str or <span class="mkapi-tooltip" title="pathlib.Path">Path</span></span> <span class="mkapi-dash">&mdash;</span>
+Scene reflectance raster; its <code>.hdr</code> supplies the wavelength grid. Only read
+when <code>wavelengths</code> is given.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">nchans</span> : 
+<span class="mkapi-item-type">int</span> <span class="mkapi-dash">&mdash;</span>
+Number of channels in the scene; every resolved channel must be within
+<code>[1, nchans]</code>.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle returns">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Returns</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-type">list[int]</span> <span class="mkapi-dash">&mdash;</span>
+Sorted, de-duplicated channel numbers to delete.</p>
+</li>
+</ul>
+</div>
+<p class="mkapi-section">
+<span class="mkapi-object-link">
+<span class="mkapi-section-toggle" title="Toggle raises">
+<i class="fa-regular fa-square-minus"></i>
+</span>
+</span>
+<span class="mkapi-section-name">Raises</span>
+</p>
+<div class="mkapi-section-content">
+<ul class="mkapi-item-list">
+<li>
+<p><span class="mkapi-item-name">TypeError</span>
+ <span class="mkapi-dash">&mdash;</span>
+If <code>spec</code> is neither a string nor a mapping.</p>
+</li>
+<li>
+<p><span class="mkapi-item-name">ValueError</span>
+ <span class="mkapi-dash">&mdash;</span>
+If the spec is malformed, wavelength ranges are given but the header has no
+usable wavelength grid, or a channel is outside <code>[1, nchans]</code>.</p>
+</li>
+</ul>
+</div>
+</div>
 <p class="mkapi-object mkapi-page-source" id="tetrapy.sensor.build">
 <span class="mkapi-object-link">
 
@@ -1415,8 +1839,11 @@ The <code>sensor</code> config block. Fields used:</p>
 <code>reflib</code> / <code>reslib</code> : str
     Paths to the convolved reference / research specpr libraries, written
     into the restart file.
-<code>deleted_channels</code> : str
-    specpr channel-deletion spec (e.g. <code>"1t4 75t79 ... 226c"</code>).
+<code>deleted_channels</code> : str or mapping
+    Either a specpr channel-deletion spec (e.g. <code>"1t4 75t79 ... 226c"</code>), or
+    a mapping of <code>wavelengths</code> ranges (in <code>units</code>, default <code>um</code>) plus
+    optional <code>channels</code>, resolved against the scene's wavelength grid (see
+    :func:<a href="./#tetrapy.sensor.resolve_deleted_channels" title="tetrapy.sensor.resolve_deleted_channels"><code>resolve_deleted_channels</code></a>).
 <code>enable.groups</code> / <code>enable.cases</code> : list
     Analysis groups and cases to enable (as accepted by :func:<a href="./#tetrapy.sensor.parse_list" title="tetrapy.sensor.parse_list"><code>parse_list</code></a>);
     everything else is disabled.
@@ -1426,7 +1853,8 @@ The <code>sensor</code> config block. Fields used:</p>
 <li>
 <p><span class="mkapi-item-name">rfl</span> : 
 <span class="mkapi-item-type">str or <span class="mkapi-tooltip" title="pathlib.Path">Path</span></span> <span class="mkapi-dash">&mdash;</span>
-Scene reflectance raster; its band count sets <code>nchans</code> in the restart file.</p>
+Scene reflectance raster; its band count sets <code>nchans</code> in the restart file,
+and its <code>.hdr</code> supplies the grid for wavelength-based <code>deleted_channels</code>.</p>
 </li>
 </ul>
 </div>
