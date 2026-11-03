@@ -24,15 +24,10 @@ A guided walkthrough: run Tetracorder over a 300x150 window of a real EMIT L2A
 scene, one step at a time, and see the mineral maps at the end. No install, no
 configuration; about ten minutes of which nine are the run itself.
 
-The badge opens `main`, and the demo scripts pull the image built from whichever
-branch the codespace checked out (`ghcr.io/emit-sds/tetracorder-lite:main` here).
-A codespace opened on a fork uses that fork's image and demo data instead.
-
-The codespace opens with a terminal and starts nothing by itself. Its banner tells
-you to type `.devcontainer/get-started.sh`, which takes each step on request and resumes correctly if
-you stop and restart the codespace. See
-[`.devcontainer/README.md`](.devcontainer/README.md) for how it is put together
-and how to point it at a different scene.
+The badge above opens a GitHub codespace of the repo. The terminal banner tells you
+how to start the demo (`.devcontainer/get-started.sh`), which then walks you
+through tetracorder-lite one step at a time. See
+[`.devcontainer/README.md`](.devcontainer/README.md) for specific details of how it all works.
 
 ## Docker or Podman
 
@@ -65,13 +60,8 @@ wslc version
 ```
 
 Run the examples in this README from PowerShell, with `wslc` in place of `docker`.
-The flags they use (`--rm`, `-v`, `-e`, `-p`, `--name`) all appear in Microsoft's
-`wslc` documentation, and `wslc build -t tetracorder-lite .` reads `Containerfile`
-by default. `wslc` is new, though, and we have not yet run this pipeline on it.
-If something behaves differently from Docker, please open an issue.
 
-Write `/output` to a named volume rather than a Windows folder. A full scene writes
-8,516 files, and every one of them crosses into the Windows filesystem (see
+For performance, write `/output` to a named volume rather than a Windows folder (see
 [where `/output` lives](#on-macos-and-windows-where-output-lives-changes-the-runtime)):
 
 ```powershell
@@ -97,18 +87,7 @@ Details: [WSL containers](https://learn.microsoft.com/windows/wsl/wsl-container)
 
 ### Architecture
 
-The published image covers **linux/amd64 and linux/arm64**, so Apple Silicon, an
-arm64 Linux box and Windows on ARM all pull a native image and no `--platform`
-flag is needed anywhere. None of the examples below carry one.
-
-This was not always true. ASU distributes DaVinci only as an amd64 `.deb`, which
-made the image amd64-only and meant an arm64 host had to ask for emulation by
-hand or be refused with `no matching manifest for linux/arm64/v8`. The image now
-compiles DaVinci from vendored source instead — see
-[`vendor/davinci/VENDOR.md`](vendor/davinci/VENDOR.md) — which is what removed the
-constraint.
-
-If you need a specific architecture, for instance to compare results under
+Tetracorder-lite images are provided for both **linux/amd64 and linux/arm64**, so modern platforms should pull the correct image. If you need a specific architecture, for instance to compare results under
 emulation, ask for it as usual:
 
 ```
@@ -163,8 +142,8 @@ is the container method: which engine, which mounts, which image. Everything aft
 the image name is the command that runs inside the container:
 
 ```
-docker run --rm -v …:/data -v …:/output IMAGE   tetrapy <command> config.yml [--key value …]
-└──────────────── container method ────────┘   └──────────── runs inside the container ──────────┘
+docker run --rm -v …:/data -v …:/output IMAGE  tetrapy <command> config.yml [--key value …]
+└───────────── container method ────────────┘  └───────── runs inside the container ──────┘
 ```
 
 | Part | What it is |
@@ -191,7 +170,7 @@ passes it as a single argument.
 |---|---|
 | `--output.base /output/<run>` | Writes this run under its own directory. Tetracorder's output directory is wiped at the start of each run, so give each run its own `base` if you want to keep earlier results |
 | `--data.glt ""` | No GLT. COGs are written in raw instrument geometry instead of being orthorectified |
-| `--sensor.deleted_channels "…"` | Channels Tetracorder ignores. The default is wavelength ranges resolved against the scene's own grid, plus three EMIT-only channels (see below and [Deleted channels](#deleted-channels)) |
+| `--sensor.deleted_channels.wavelengths "[[…], …]"` | Wavelength ranges Tetracorder ignores (water bands, detector edges). They are matched against the scene's own grid; see the non-EMIT example below |
 | `--<stage>.enabled False` | Skips a pipeline stage, such as `--postprocess.enabled False` (see [The pipeline](#the-pipeline)) |
 
 To check the resolved config without running anything, replace `run` with `preview`:
@@ -201,16 +180,16 @@ docker run --rm tetracorder-lite \
   tetrapy preview config.yml --output.base /output/run2
 ```
 
-### Example: a non-EMIT sensor (deleted channels)
+### Example: a non-EMIT sensor
 
-Tetracorder blanks the deleted channels in every reference spectrum before it fits
-anything, so the list decides which absorption features can be matched. The
-default is a set of wavelength ranges (water bands and detector edges) that the
-`sensor` stage maps onto whatever grid the scene's `.hdr` describes, so it carries
-over to other sensors. It also adds three channel numbers, `218 219t221 226`, that
-are only right on EMIT's grid. For another sensor, either drop those and keep the
-wavelength ranges (see [Deleted channels](#deleted-channels)), or pass that
-sensor's own channel list as a string, which replaces the default entirely:
+Tetracorder ignores some wavelengths when it fits: the atmospheric water bands and
+the detector edges, where the reflectance is unreliable. These are set in
+`sensor.deleted_channels` as wavelength ranges, and tetrapy matches them against
+the band centres in the scene's own `.hdr`, so the same ranges work on any sensor.
+
+The default config also lists three EMIT-specific channels by number. For another
+sensor, set wavelength ranges that suit the instrument and drop those channels
+with `--sensor.deleted_channels.channels None`:
 
 ```sh
 docker run --rm \
@@ -221,26 +200,16 @@ docker run --rm \
     --data.rfl       /data/<scene>_rfl \
     --data.rfluncert /data/<scene>_uncert \
     --data.glt       "" \
-    --output.base    /output/aviris-2019 \
-    --sensor.deleted_channels "1 61t66 81t84 102t117 150t170 175 176 179 181"
+    --output.base    /output/aviris-ng \
+    --sensor.deleted_channels.units       nm \
+    --sensor.deleted_channels.wavelengths "[[365, 400], [1340, 1460], [1790, 1960], [2450, 2520]]" \
+    --sensor.deleted_channels.channels    None
 ```
 
-The syntax:
-
-* `NtM` deletes channels N through M, inclusive. A bare number deletes one channel.
-* Channels are **1-based**. If you start from a 0-based band index or an ENVI bad
-  band list, add 1.
-* The trailing `c` that the Tetracorder files use is optional. tetrapy writes it
-  either way.
-
-USGS-curated lists for several AVIRIS years ship in the image under
-`/root/tetracorder/tetracorder.cmds/tetracorder6.00a.cmds/DELETED.channels/`, for
-example `delete_aviris_2019`. Copy the first line up to the `c`. To list them:
-
-```sh
-docker run --rm tetracorder-lite \
-  ls /root/tetracorder/tetracorder.cmds/tetracorder6.00a.cmds/DELETED.channels
-```
+Ranges are inclusive and in `units` (`um` by default, or `nm`). The ranges above
+are illustrative, so tune them for your instrument. The `sensor` stage logs the
+channels it resolved, and [Deleted channels](#deleted-channels) covers the full
+syntax.
 
 ### Using your own config
 
