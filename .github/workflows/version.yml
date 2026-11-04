@@ -1,0 +1,36 @@
+# Image-changing PRs must bump pyproject.toml's version. container.yml publishes
+# the version tags and the v<version> release when the bump reaches main.
+name: version
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "Containerfile"
+      - "tetrapy/**"
+      - "tetracorder/**"
+      - "vendor/**"
+      - "pyproject.toml"
+      - "uv.lock"
+
+jobs:
+  bumped:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Require a version above the base branch's
+        env:
+          BASE: ${{ github.base_ref }}
+        run: |
+          git fetch --depth=1 origin "$BASE"
+          read_version() {
+            python3 -c 'import sys, tomllib; print(tomllib.loads(sys.stdin.read())["project"]["version"])'
+          }
+          head=$(read_version < pyproject.toml)
+          base=$(git show "origin/$BASE:pyproject.toml" | read_version)
+          echo "base $base, PR $head"
+          if [ "$head" = "$base" ] || [ "$(printf '%s\n' "$base" "$head" | sort -V | tail -1)" != "$head" ]; then
+            echo "::error file=pyproject.toml::This PR changes the image, so bump [project] version above $base (a patch bump is fine)."
+            exit 1
+          fi
