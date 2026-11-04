@@ -170,7 +170,7 @@ passes it as a single argument.
 |---|---|
 | `--output.base /output/<run>` | Writes this run under its own directory. Tetracorder's output directory is wiped at the start of each run, so give each run its own `base` if you want to keep earlier results |
 | `--data.glt ""` | No GLT. COGs are written in raw instrument geometry instead of being orthorectified |
-| `--sensor.deleted_channels.wavelengths "[[…], …]"` | Wavelength ranges Tetracorder ignores (water bands, detector edges). They are matched against the scene's own grid; see the non-EMIT example below |
+| `--sensor.deleted_channels.wavelengths "[[…], …]"` | Wavelength ranges to delete (water bands, detector edges). tetrapy converts them to channel numbers using the scene's own grid; see the non-EMIT example below |
 | `--<stage>.enabled False` | Skips a pipeline stage, such as `--postprocess.enabled False` (see [The pipeline](#the-pipeline)) |
 
 To check the resolved config without running anything, replace `run` with `preview`:
@@ -182,14 +182,14 @@ docker run --rm tetracorder-lite \
 
 ### Example: a non-EMIT sensor
 
-Tetracorder ignores some wavelengths when it fits: the atmospheric water bands and
-the detector edges, where the reflectance is unreliable. These are set in
-`sensor.deleted_channels` as wavelength ranges, and tetrapy matches them against
-the band centres in the scene's own `.hdr`, so the same ranges work on any sensor.
+Tetracorder takes deleted channels as integer channel numbers. tetrapy lets you
+give them as wavelength ranges instead: the `sensor` stage converts each range to
+channel numbers using the band centres in the scene's `.hdr`, so the same ranges
+work on any sensor.
 
-The default config also lists three EMIT-specific channels by number. For another
-sensor, set wavelength ranges that suit the instrument and drop those channels
-with `--sensor.deleted_channels.channels None`:
+Anything in `sensor.deleted_channels.channels` is deleted in addition to the
+ranges, and the default config sets it, so set it to `None` when you supply your
+own wavelengths:
 
 ```sh
 docker run --rm \
