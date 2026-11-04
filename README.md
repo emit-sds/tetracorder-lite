@@ -245,6 +245,20 @@ build for the architecture you are not on, which *is* emulated and much slower:
 docker buildx build --platform=linux/arm64 -f Containerfile -t tetracorder-lite .
 ```
 
+### Published images
+
+CI publishes multi-arch (amd64 + arm64) images to
+`ghcr.io/emit-sds/tetracorder-lite`:
+
+| Tag | Points at |
+|---|---|
+| `1.1.0`, `1.1`, `1`, `latest` | a release; `1.1` and `1` move to the newest matching release |
+| `main` | the newest build of `main` |
+| `sha-<commit>` | the build of that exact commit |
+
+Pin a full version such as `1.1.0` for reproducible runs. Use `main` to try
+unreleased changes.
+
 ## The pipeline
 
 `tetrapy run <config.yml>` runs these stages in order. Each stage has an `enabled`
@@ -598,6 +612,14 @@ uv run --group dev pytest
 
 Running `tetrapy` outside the container is for development. The pipeline stages that
 call Tetracorder need the binaries and command tree that only the image provides.
+
+The version in `pyproject.toml` is the project's only version: `tetrapy
+--version`, the docs and the image tags all read it. A PR that changes the image
+(`Containerfile`, `tetrapy/`, `tetracorder/`, `vendor/`, `pyproject.toml` or
+`uv.lock`) must raise it, and the `version` check fails until it does. A patch
+bump is fine. When the new version reaches `main`, CI publishes the version
+image tags and creates the `v<version>` tag and GitHub release, so do not tag
+releases by hand.
 
 The build context is filtered by two files that must be changed together:
 `.dockerignore`, which only Docker reads, and `.containerignore`, which Podman

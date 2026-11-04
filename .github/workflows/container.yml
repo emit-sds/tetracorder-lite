@@ -1,4 +1,11 @@
 # Builds and publishes the image for linux/amd64 and linux/arm64 (arm64 under qemu).
+#
+# Versioning: pyproject.toml's [project] version is the only version. When a push
+# to main carries a version that has no v<version> git tag yet, this workflow also
+# publishes the <version>, <major>.<minor>, <major> and latest image tags, then
+# creates the v<version> tag and GitHub release. Every other push to main only
+# moves :main and adds :sha-<commit>. version.yml makes image-changing PRs bump
+# the version.
 name: container
 
 on:
@@ -8,8 +15,6 @@ on:
       - "SE-Documentation/**"
       - "**/*.md"
       - ".devcontainer/**"
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       tag:
@@ -26,28 +31,41 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
-      contents: read
+      contents: write # create the v<version> tag and release
       packages: write
       attestations: write
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: docker/setup-qemu-action@v3
+      - id: version
+        name: Read the version and decide whether this push releases it
+        run: |
+          version=$(python3 -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')
+          release=false
+          if [ "$GITHUB_REF" = refs/heads/main ] &&
+             ! git ls-remote --exit-code --tags origin "refs/tags/v$version" >/dev/null; then
+            release=true
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "release=$release" >> "$GITHUB_OUTPUT"
+          echo "version $version, release $release"
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-qemu-action@v4
 
-      - uses: docker/login-action@v3
+      - uses: docker/setup-buildx-action@v4
+
+      - uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         env:
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
         with:
@@ -58,16 +76,21 @@ jobs:
             org.opencontainers.image.description=Containerized Tetracorder 6 for EMIT mineral identification
             org.opencontainers.image.licenses=Apache-2.0 AND GPL-3.0-only AND GPL-2.0-or-later
           images: ${{ env.IMAGE }}
+          flavor: |
+            latest=false
+          # The full version gets the highest priority so it becomes the
+          # org.opencontainers.image.version label on a release.
           tags: |
             type=ref,event=branch
             type=sha,format=long
             type=raw,value=${{ inputs.tag }},enable=${{ inputs.tag != '' }}
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
+            type=raw,value=${{ steps.version.outputs.version }},priority=1000,enable=${{ steps.version.outputs.release }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.version }},enable=${{ steps.version.outputs.release }}
+            type=semver,pattern={{major}},value=${{ steps.version.outputs.version }},enable=${{ steps.version.outputs.release }}
+            type=raw,value=latest,enable=${{ steps.version.outputs.release }}
 
       - id: push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: Containerfile
@@ -76,11 +99,29 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
+          # actions/attest below records provenance; the buildx attestation
+          # would add an unknown/unknown manifest per platform to the index.
+          provenance: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      # Kept in GitHub's attestation store, not pushed to GHCR. GHCR has no
+      # referrers API, so pushing it creates a second tagged package version
+      # (sha256-<digest>). Verify with:
+      #   gh attestation verify oci://ghcr.io/<owner>/tetracorder-lite:<tag> -R <owner>/tetracorder-lite
       - uses: actions/attest@v4
         with:
           subject-name: ${{ env.IMAGE }}
           subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true
+
+      - name: Create the v${{ steps.version.outputs.version }} release
+        if: steps.version.outputs.release == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        # Notes start from the previous v* tag. Left to itself GitHub may pick a
+        # newer demo-data-v* release as the starting point.
+        run: |
+          previous=$(git ls-remote --tags --refs origin 'refs/tags/v*' | sed 's#.*refs/tags/##' | sort -V | tail -1)
+          gh release create "v$VERSION" --target "$GITHUB_SHA" --title "v$VERSION" \
+            --generate-notes ${previous:+--notes-start-tag "$previous"}
