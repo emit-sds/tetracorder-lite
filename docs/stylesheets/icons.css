@@ -1,0 +1,17 @@
+/* Custom icon / card styling for the tetrapy docs. */
+
+/* Grid of link cards used on the landing page. */
+.md-typeset .grid.cards > ul > li,
+.md-typeset .grid > .card {
+  border-radius: 0.2rem;
+}
+
+.md-typeset .grid.cards > ul > li:hover {
+  border-color: var(--md-accent-fg-color);
+}
+
+/* Give inline icons a little breathing room from adjacent text. */
+.md-typeset .twemoji,
+.md-typeset .md-icon {
+  vertical-align: text-bottom;
+}
