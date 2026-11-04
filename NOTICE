@@ -6,9 +6,10 @@ The original work in this repository (the tetrapy package, Containerfile,
 configuration, documentation and tests) is licensed under the Apache License,
 Version 2.0; see LICENSE.
 
-This repository also includes the third-party components below. Each is distributed under its own license,
-not the Apache License. Those licenses govern the components they cover, and
-nothing in LICENSE changes them.
+This repository and the container image built from it also include the
+third-party components below. Each is distributed under its own license, not the
+Apache License. Those licenses govern the components they cover, and nothing in
+LICENSE changes them.
 
 
 Tetracorder, specpr and the Tetracorder command files
@@ -39,6 +40,9 @@ Public License, version 2.1 (see COPYING.LIB in that directory).
 Spectral libraries
 ------------------
 Location:  tetracorder/sl1/usgs/library06.conv/  (splib06b, sprlb06b)
+             -- in the repository and in the container image. These are the
+             unconvolved masters; the pipeline convolves them to each scene's
+             wavelength grid at run time, so no convolved libraries are shipped.
 Source:    Copied from spectroscopy-tetracorder (see above).
            splib06 is the USGS Digital Spectral Library:
            Clark, R.N., et al., 2007, USGS digital spectral library splib06a:
@@ -46,3 +50,125 @@ Source:    Copied from spectroscopy-tetracorder (see above).
            https://doi.org/10.3133/ds231
            sprlb06 is the companion research library distributed with
            Tetracorder.
+License:   The library data are public domain. Upstream states this directly,
+           in the license.txt carried in the library directory: "The USGS
+           spectral library 06 is public domain data." The GPL-3.0 and PSI
+           conditions described above attach to the software in those
+           directories, not to the library data itself.
+
+The library directory carries upstream's license.txt, reached as
+AAAA.license.txt, restored from spectroscopy-tetracorder's
+sl1/usgs/library06.conv/license.txt.
+
+
+DaVinci
+-------
+Location:  vendor/davinci/src/  (vendored source, compiled into the container
+           image; the source tree is itself carried in the image, see
+           "Container images" below)
+Upstream:  Arizona State University, Mars Space Flight Facility,
+           https://davinci.asu.edu
+Source:    https://oss.mars.asu.edu/svn/davinci/davinci/trunk
+Revision:  r19810, version 3.02. vendor/davinci/refresh.sh reproduces the export.
+Copyright: (c) Arizona State University and the DaVinci developers
+           <davinci-dev@mars.asu.edu>.
+License:   GNU General Public License, version 2 or later.
+           vendor/davinci/src/LICENSE is the GPL-2 text. The version-or-later
+           grant is upstream's own, in vendor/davinci/src/contrib/debian/
+           copyright, which applies "GPL-2+" to Files: *.
+
+DaVinci is the language Tetracorder's colour products and browse images are
+written in: the scripts under tetracorder/tetracorder.cmds/*/davinci-cmds.for.
+usr.local.bin/ carry a "#!/usr/bin/env -S davinci -f" shebang and are
+interpreted by it. They are data to DaVinci, not linked into it.
+
+The image used to install ASU's prebuilt davinci_3.0.1-1_amd64_ubuntu22_04.deb.
+Building from vendored source replaced that, which is what made an arm64 image
+possible and what lets the corresponding source ship with the binary.
+
+The tree under vendor/davinci/src/ is an unmodified export of upstream at
+r19810. The build makes one change to it, in the Containerfile rather than in
+the vendored tree, and only to build machinery: every config.guess and
+config.sub (six of each, dated 2003-06-17 and predating aarch64) is replaced
+with the current copy from Debian's autotools-dev (Copyright 1992-2022 Free
+Software Foundation, Inc.). Those two files are GPL-3-or-later with the special
+exception that covers their use in a configure script, are used only to run
+configure, and are not installed into the image.
+
+Components inside the DaVinci tree under their own licenses:
+
+  vendor/davinci/src/vicar/Xvic*         X11 VICAR image widgets.
+                                         Copyright (c) 1999 California Institute
+                                         of Technology; 3-clause BSD, see
+                                         vendor/davinci/src/LICENSE.Xvic.
+                                         Present in the source; not compiled,
+                                         because the build disables X11.
+
+  vendor/davinci/src/libcsv.c, csv.h     libcsv. GNU Lesser General Public
+                                         License, version 2.1, see
+                                         vendor/davinci/src/LICENSE_libcsv.
+                                         Compiled into DaVinci.
+
+  vendor/davinci/src/libltdl/            GNU Libtool's libltdl. GNU Lesser
+                                         General Public License, version 2.1,
+                                         see vendor/davinci/src/libltdl/
+                                         COPYING.LIB. Compiled into DaVinci,
+                                         which uses it for loadable modules.
+
+DaVinci's image-IO layer, vendor/davinci/src/iomedley/, bundles its own copies
+of four libraries and compiles them rather than using the system ones. This is
+upstream's arrangement, and it is why the PNG encoder is the same one on both
+architectures, which is what makes the colour products come out byte-identical.
+All four are permissive:
+
+  iomedley/tiff-4.0.3/      libtiff. Copyright (c) 1988-1997 Sam Leffler,
+                            (c) 1991-1997 Silicon Graphics, Inc.
+                            See iomedley/tiff-4.0.3/COPYRIGHT.
+
+  iomedley/libpng-1.2.3/    libpng. Copyright (c) 2000-2002 Glenn
+                            Randers-Pehrson and the libpng authors.
+                            See iomedley/libpng-1.2.3/LICENSE.
+
+  iomedley/giflib-4.1.4/    giflib. Copyright (c) 1997 Eric S. Raymond.
+                            MIT license, see iomedley/giflib-4.1.4/COPYING.
+
+  iomedley/libjpeg/         Independent JPEG Group's libjpeg. The IJG license
+                            in iomedley/libjpeg/README applies; that README is
+                            distributed unaltered, as it requires, and the
+                            source is unmodified.
+
+
+Container images
+----------------
+A container image built from this repository is an aggregate of separate
+programs. Each keeps its own license: tetrapy (Apache-2.0), Tetracorder and
+specpr (GPL-3.0 with the PSI conditions), DaVinci (GPL-2.0-or-later), and the
+Ubuntu, conda-forge and PyPI packages in the image (their own licenses). They
+are combined as separate programs that run each other, not linked into a single
+work, so no license here extends to another.
+
+The complete corresponding source for the GPL components is inside the image,
+not merely offered: the Containerfile's "COPY . ." puts the whole repository at
+/root, so an image carries /root/vendor/davinci/src (DaVinci, GPL-2.0-or-later)
+and /root/tetracorder (Tetracorder and specpr, GPL-3.0) as the source the
+binaries in it were built from. This satisfies GPL-2 section 3(a) and GPL-3
+section 6(a) directly, and no separate written offer is needed.
+
+The same source is in this repository, at the commit the image was built from;
+images published by .github/workflows/container.yml carry a build-provenance
+attestation naming that commit.
+
+
+Demo scene data
+---------------
+Location:  not in this repository; the Codespaces demo downloads it at run time
+           from a GitHub release
+           (.devcontainer/scripts/common.sh, SCENE_URL)
+Contents:  a 300x150-sample subset of EMIT granule emit20240626t165035
+Source:    NASA JPL / EMIT mission, distributed by the NASA LP DAAC,
+           https://lpdaac.usgs.gov/product_search/?query=EMIT
+
+EMIT data are released by NASA without restriction on use or redistribution.
+The subset is redistributed here only to give the walkthrough a real scene to
+run on; the mission and the LP DAAC are the authoritative source.
+.devcontainer/page/full-scene.jpg is a quicklook rendered from the same granule.

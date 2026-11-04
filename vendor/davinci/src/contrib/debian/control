@@ -1,0 +1,17 @@
+Source: davinci
+Section: unknown
+Priority: optional
+Maintainer: Davinci Developers <davinci-dev@mars.asu.edu>
+Build-Depends: autotools-dev, debhelper (>=9), libgdal-dev, libxml2-dev,libhdf5-dev
+Standards-Version: 3.9.6
+Homepage: http://davinci.mars.asu.edu
+
+Package: davinci
+Architecture: any
+Depends: gnuplot,gdal-bin,libxml2,libcfitsio9,libcurl4-nss-dev,libreadline8
+Description: Davinci - A tool to manipulate and view various types of data
+ Davinci is an interpreted language that looks and feels a lot like C,
+ but has additional vector oriented features that make working with blocks
+ of data a lot easier. This makes davinci well suited for use as a data
+ processing tool, allowing symbolic and mathematical manipulation of
+ hyperspectral data for imaging spectroscopy applications.

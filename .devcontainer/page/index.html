@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tetracorder demo</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff; --fg: #16181d; --muted: #5c6270;
+    --line: #e2e5ea; --panel: #f6f7f9; --accent: #b4530a;
+    --ok: #2f9e5f; --bad: #d1453b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14161a; --fg: #e8eaee; --muted: #9aa1ad;
+            --line: #2a2e36; --panel: #1b1e24; --accent: #f0a35e;
+            --ok: #4ac281; --bad: #f0655c; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 15px/1.55 ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  h1 { font-size: 1.5rem; margin: 0 0 .25rem; letter-spacing: -0.01em; }
+  h2 { font-size: 1.05rem; margin: 2.5rem 0 .75rem; }
+  .sub { color: var(--muted); margin: 0 0 2rem; }
+
+  .status { display: flex; align-items: center; gap: .75rem; padding: .9rem 1.1rem;
+            border: 1px solid var(--line); border-radius: 10px 10px 0 0; background: var(--panel);
+            border-bottom: 0; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex: none; }
+  .dot.spin { animation: pulse 1.2s ease-in-out infinite; }
+  .dot.ok { background: var(--ok); } .dot.bad { background: var(--bad); }
+  @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .25 } }
+  .elapsed { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  /* Stage stepper: the pipeline is five tetrapy stages plus our render step,
+     so a spinner alone would hide where a nine-minute run actually is. */
+  .steps { display: flex; flex-wrap: wrap; gap: .4rem; padding: .75rem 1.1rem;
+           border: 1px solid var(--line); border-bottom: 0; background: var(--panel); }
+  .step { font-size: .78rem; letter-spacing: .04em; text-transform: uppercase;
+          color: var(--muted); padding: .2rem .6rem; border-radius: 999px;
+          border: 1px solid var(--line); }
+  .step.done { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, transparent); }
+  .step.active { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+
+  .logwrap { border: 1px solid var(--line); border-radius: 0 0 10px 10px; overflow: hidden; }
+  .logbar { display: flex; align-items: center; gap: .75rem; padding: .4rem .9rem;
+            background: var(--panel); border-bottom: 1px solid var(--line);
+            font-size: .78rem; color: var(--muted); }
+  .logbar a { color: var(--muted); }
+  .logbar label { margin-left: auto; display: flex; align-items: center; gap: .35rem; }
+  pre { margin: 0; overflow: auto; background: var(--bg); padding: .9rem 1.1rem;
+        font-size: .78rem; line-height: 1.5; height: 26rem;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 1.75rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+  .stats div { font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+  .stats span { display: block; color: var(--muted); font-size: .8rem; text-transform: uppercase;
+                letter-spacing: .06em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; }
+  /* One figure on its own would otherwise stretch to the full column width. */
+  .grid.single { grid-template-columns: minmax(0, 520px); }
+  figure { margin: 0; }
+  figure img { width: 100%; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+  figcaption { color: var(--muted); font-size: .85rem; margin-top: .5rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; margin-top: 1.5rem; }
+  th, td { text-align: left; padding: .4rem .6rem; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 500; font-size: .78rem; text-transform: uppercase;
+       letter-spacing: .06em; }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  .swatch { display: inline-block; width: .8rem; height: .8rem; border-radius: 3px;
+            margin-right: .5rem; vertical-align: -1px; }
+  .muted { color: var(--muted); }
+  tr.member td:first-child { padding-left: 1.6rem; font-size: .85rem; }
+  .swatch.sm { width: .6rem; height: .6rem; margin-right: .45rem; }
+  tr.member td { border-bottom-color: transparent; }
+  /* Tetracorder's colour products are drawn on black and carry white legend
+     text, so they need a black mount rather than the page's panel colour --
+     anything else puts a grey frame around a black image. */
+  .product { margin: 0 0 2rem; }
+  .product img { width: 100%; display: block; border-radius: 8px; background: #000;
+                 border: 1px solid var(--line); image-rendering: pixelated; }
+  .product h3 { margin: 0 0 .25rem; font-size: 1.05rem; }
+  .product .file { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+                   font-size: .75rem; color: var(--muted); margin: .4rem 0 0; }
+  .product .blurb { color: var(--muted); font-size: .9rem; margin: 0 0 .75rem; max-width: 46rem; }
+  .empty { display: flex; flex-wrap: wrap; gap: .4rem; margin: .75rem 0 0; padding: 0; list-style: none; }
+  .empty li { font-size: .8rem; color: var(--muted); border: 1px solid var(--line);
+              border-radius: 999px; padding: .15rem .6rem; }
+  details.more { margin-top: 1.5rem; border: 1px solid var(--line); border-radius: 8px; }
+  details.more > summary { cursor: pointer; padding: .7rem 1rem; font-weight: 600; font-size: .95rem; }
+  details.more[open] > summary { border-bottom: 1px solid var(--line); }
+  details.more .inner { padding: 1.25rem 1rem .25rem; }
+  .prose { max-width: 46rem; margin: 1.5rem 0; }
+  .recap { max-width: 46rem; margin: 1.5rem 0; padding-left: 1.4rem; }
+  .recap li { margin: .55rem 0; }
+  .recap b code { background: none; padding: 0; }
+  .prose code { background: var(--panel); padding: .1rem .3rem; border-radius: 4px; font-size: .9em; }
+  tbody th { font-weight: 600; text-transform: none; letter-spacing: 0; font-size: .85rem;
+             color: var(--fg); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  tr.section td { padding-top: 1.4rem; color: var(--muted); font-size: .78rem;
+                  text-transform: uppercase; letter-spacing: .06em; border-bottom: 0; }
+  .tag { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .8rem;
+         color: var(--muted); }
+  a.mineral { color: inherit; text-decoration-color: var(--muted); text-underline-offset: 2px; }
+  .warn { margin-top: 1rem; padding: .7rem 1rem; border-radius: 8px; font-size: .88rem;
+          border: 1px solid color-mix(in srgb, var(--bad) 40%, transparent);
+          color: var(--bad); }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Tetracorder on an EMIT L2A scene</h1>
+  <p class="sub">Congratulations, you've just processed part of an EMIT scene
+    through tetracorder-lite! This page summarizes what happened, including the full
+    output of <code>tetrapy</code> and Tetracorder.</p>
+
+  <div class="status">
+    <span class="dot spin" id="dot"></span>
+    <span id="message">waiting for the run to start&hellip;</span>
+    <span class="elapsed" id="elapsed"></span>
+  </div>
+  <div class="steps" id="steps"></div>
+  <div class="logwrap">
+    <div class="logbar">
+      <span>run log</span>
+      <a href="run.log" download>download full log</a>
+      <label><input type="checkbox" id="follow" checked> follow</label>
+    </div>
+    <pre id="log">The pipeline writes here as it goes. Nothing yet.</pre>
+  </div>
+
+  <div id="stall" class="warn hidden"></div>
+
+  <section id="results" class="hidden">
+    <ul class="stats" id="scene"></ul>
+
+    <h2>Process summary</h2>
+    <p class="prose">The <a href="https://github.com/features/codespaces">GitHub
+      Codespace</a> you opened at the start of this demo is a ready-made environment
+      that already has Docker installed. You then pulled the <code>tetracorder-lite</code>
+      container image, which is published alongside this repository, and downloaded a
+      300&times;150 window of an EMIT scene. Finally, you started a Docker container
+      from that image. Inside it, <code>tetrapy run</code> drove the first five stages
+      below, and the demo added a sixth to draw this page:</p>
+    <ol class="recap">
+      <li><b><code>convolve</code></b> &mdash; resampled the spectral library onto
+        this scene's exact channels, reading <code>wavelength</code> and <code>fwhm</code>
+        out of the ENVI header. This keeps the library in step with the scene
+        Tetracorder is evaluating.</li>
+      <li><b><code>sensor</code></b> &mdash; wrote the sensor definition telling
+        Tetracorder which channels to ignore (bad detectors, water-vapour bands) and which
+        mineral groups to look for.</li>
+      <li><b><code>setup</code></b> &mdash; generated the run directory and the command
+        files. This is where the individual material tests get laid out, one per
+        library entry Tetracorder will look for.</li>
+      <li><b><code>tetrun</code></b> &mdash; the actual identification, and nearly all of
+        the wall clock. Every pixel is compared against every enabled library entry, and
+        the best fit wins. Output is thousands of small gzipped ENVI rasters, one per
+        material per quantity.</li>
+      <li><b><code>aggregate</code></b> &mdash; reduced those thousands of files to the
+        two NetCDFs that are the output of this process: <code>agg.nc</code> and
+        <code>agg-uncert.nc</code>.</li>
+      <li><b><code>render</code></b> &mdash; drew the images on this page from
+        <code>agg.nc</code>. This stage is the demo's, not the pipeline's; a production
+        run stops after <code>aggregate</code>.</li>
+    </ol>
+    <p class="prose">The rest of this page is a walk back through that, in order: what
+      went in, how to read what came out, the maps Tetracorder drew for itself, and where
+      everything landed.</p>
+
+    <h2>The input scene</h2>
+    <div class="grid">
+      <figure>
+        <img src="rfl_rgb.png" alt="True-colour reflectance quicklook of the subset">
+        <figcaption>What the demo ran on: a 300&times;150 window, true colour
+          (640 / 550 / 470 nm).</figcaption>
+      </figure>
+      <figure>
+        <img src="full-scene.jpg" alt="The full granule with the demo's window outlined">
+      </figure>
+    </div>
+
+    <p class="prose"><b>This demo uses a subset</b> of the full scene to keep the
+      processing time short. A full scene goes through exactly the same process.</p>
+
+    <p class="prose">Tetracorder expects an ENVI-format input file with its sidecar
+      header, at least 300 samples wide (see
+      <a href="https://github.com/emit-sds/tetracorder-lite/issues/24">#24</a>). The table below documents the minimal set of header fields
+      needed to understand an ENVI file's image byte array, i.e. the shape of the cube, numeric type,
+      and the order the values were written in. The second group is
+      what <i>this</i> pipeline needs. The <code>convolve</code> step reads
+      <code>wavelength</code> and <code>fwhm</code> straight out of this header
+      to build the grid it resamples the spectral library onto.  This is required so the
+      library matches the instrument that took the scene.
+      Both are mandatory and must be the same length; a header missing either is
+      rejected. If <code>wavelength units</code> is absent the values are assumed
+      to be nanometres.</p>
+
+    <table id="header"></table>
+    <p class="prose" id="description"></p>
+
+    <h2>How to read the mineral names</h2>
+    <p class="prose">The names below come straight from Tetracorder. Each is the
+      <code>TITLE=</code> field of an entry in its <code>cmd.lib.setup</code>
+      file, which is the title of the spectral library record that entry
+      matches against.</p>
+    <p class="prose">The smaller line under each name is the identifier
+      Tetracorder knows the material by, and the library and record number the
+      spectrum came from; the name itself links to the published metadata page for
+      that record. The <code>aggregate</code> step looks each one up in
+      <code>tetrapy/data/v6.00a6.csv</code>, which <code>export-matrix</code>
+      generates from those same command files.</p>
+    <p class="prose">The output file this demo writes,
+      <code>agg.nc</code>, is not the delivered EMIT product.  This file has numeric IDs whose 
+      names live in the reference matrix.</p>
+
+    <p class="prose"><b>Where the family groupings come from.</b> Tetracorder names
+      its products <code>group.&lt;region&gt;/&lt;family&gt;_&lt;material&gt;</code> &mdash;
+      <code>carbonate_calcite</code>, <code>kaolgrp_halloysite</code>,
+      <code>fe3+_goethite.thincoat</code> &mdash; so the family is already in the
+      path, and <code>quicklook.py</code> takes that prefix. Most prefixes are
+      already the mineral's name and only need capitalising; the ones that are
+      not &mdash; a chemical class that reads better as a plural, an abbreviation
+      like <code>sioh</code>, an iron variant belonging with an existing family
+      &mdash; are mapped by hand. A mixture takes the family of its leading
+      component, so <code>talc+calcite</code> is filed under Talc.</p>
+    <p class="prose">This is <i>a</i> grouping, not <i>the</i> grouping. Tetracorder
+      ships its own, in the DaVinci colour recipes that drew the maps further down this
+      page &mdash; and there are several of them at different granularity, on
+      purpose: <code>2micron-mins-emit8</code> pools the 2&nbsp;µm minerals into
+      the eight EMIT reports, while <code>2micron-mins-detail2</code> splits much
+      the same entries thirteen ways. Rather than pick one and reimplement it,
+      this page shows both kinds: the path-derived families here, and Tetracorder's
+      own groupings below exactly as it drew them, with the published key.</p>
+
+    <div id="groups"></div>
+
+    <section id="colour-section" class="hidden">
+      <h2>Davinci Generated Images</h2>
+      <p class="prose">The images above were drawn by the demo from
+        <code>agg.nc</code>. Below are the DaVinci outputs for this run.</p>
+      <p class="prose">Each one is a fixed recipe living in the container under
+        <code>cmds.color.support/davinci.make.*</code>. A recipe names the
+        minerals, gives each a colour, and lists the library entries that count
+        as that mineral.</p>
+      <p class="prose">These images are generated for any 
+        <code>tetrapy run</code> in <code>cube</code> mode and writes them to
+        <code>color.results+labels/</code> in the run directory, as long as the
+        config gives <code>sensor.colors</code> the band numbers to build a base
+        image from.</p>
+      <div id="colour"></div>
+    </section>
+
+    <p class="prose">You will also see <code>results.json</code> in the list below.
+      That one is not a product: <code>quicklook.py</code> writes it from
+      <code>agg.nc</code> purely to render this page. Everything listed is on disk
+      in the codespace under <code>~/tetracorder-demo/output</code>, so you can
+      open any of it after the run.</p>
+    <table id="outputs"></table>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+let rendered = false;
+
+const fmt = n => n.toLocaleString();
+const PREFIX = 'tet_color-results_';
+const clock = s => `${Math.floor(s / 60)}m ${String(s % 60).padStart(2, '0')}s`;
+
+async function json(path) {
+  const r = await fetch(path + '?t=' + Date.now(), { cache: 'no-store' });
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+}
+
+function renderSteps(stages, stage, state) {
+  if (!stages || !stages.length) return;
+  const at = stages.indexOf(stage);
+  $('steps').innerHTML = stages.map((s, i) => {
+    let cls = 'step';
+    if (state === 'done') cls += ' done';
+    else if (at >= 0 && i < at) cls += ' done';
+    else if (at >= 0 && i === at) cls += ' active';
+    return `<span class="${cls}">${s}</span>`;
+  }).join('');
+}
+
+async function renderResults() {
+  const data = await json('results.json');
+
+  $('scene').innerHTML = `
+    <div>${fmt(data.scene.lines)}&times;${fmt(data.scene.samples)}<span>pixels</span></div>
+    <div>${fmt(data.scene.bands)}<span>channels</span></div>
+    <div>${fmt(data.scene.valid_pixels)}<span>valid pixels</span></div>`;
+
+  // Cache-bust the imagery too: a rerun writes to the same filenames.
+  const bust = '?t=' + Date.now();
+  const hdr = data.scene.header || [];
+  if (hdr.length) {
+    let lastGroup = null;
+    $('header').innerHTML =
+      '<thead><tr><th>Header field</th><th>Value in this scene</th><th>What it is</th></tr></thead><tbody>'
+      + hdr.map(f => {
+          // A divider between "any reader needs this" and "Tetracorder needs this".
+          const head = f.group !== lastGroup
+            ? `<tr class="section"><td colspan="3">${f.group === 'geometry'
+                ? 'Needed to read the cube at all'
+                : 'Needed by convolve, to match the library to the instrument'}</td></tr>`
+            : '';
+          lastGroup = f.group;
+          return head + `<tr><th>${f.key}</th><td>${f.value}</td>`
+               + `<td class="muted">${f.note}</td></tr>`;
+        }).join('')
+      + '</tbody>';
+  }
+  if (data.scene.description) {
+    $('description').innerHTML =
+      `<span class="muted">The header's own <code>description</code> field records how the scene was made:</span><br>`
+      + `<code>${data.scene.description.replace(/</g, '&lt;')}</code>`;
+  }
+
+  const outs = data.outputs || [];
+  if (outs.length) {
+    $('outputs').innerHTML =
+      '<thead><tr><th>Product</th><th>Format</th><th>Size</th><th>What it holds</th></tr></thead><tbody>'
+      + outs.map(o => `<tr><th>${o.name}</th><td>${o.format}</td>`
+                    + `<td class="muted">${o.detail}</td>`
+                    + `<td class="muted">${o.what}</td></tr>`).join('')
+      + '</tbody>';
+  }
+
+  $('groups').innerHTML = data.groups.map(g => `
+    <h2>Group ${g.group} &mdash; ${g.percent}% of pixels identified,
+        ${fmt(g.materials)} library entries in ${fmt(g.families_total)} mineral families</h2>
+    <div class="grid">
+      <figure>
+        <img src="group${g.group}.png${bust}" alt="Group ${g.group} mineral identifications">
+        <figcaption>Coloured by mineral <b>family</b>, not by individual library
+          entry. Tetracorder often splits one unit between near-identical
+          entries &mdash; Kaolinite CM9 and Kaolinite KGa-2, say &mdash; and
+          colouring those separately renders a coherent unit as speckle.</figcaption>
+      </figure>
+      <figure>
+        <img src="group${g.group}_depth.png${bust}" alt="Group ${g.group} band depth">
+        <figcaption>Band depth of the identified feature.</figcaption>
+      </figure>
+    </div>
+    <table>
+      <thead><tr><th>Mineral family / library entries</th><th class="n">Pixels</th></tr></thead>
+      <tbody>${g.families.map(f => `
+        <tr>
+          <td><span class="swatch" style="background:${f.color}"></span><b>${f.family}</b>
+              <span class="muted">&mdash; ${fmt(f.materials)} entr${f.materials === 1 ? 'y' : 'ies'}</span></td>
+          <td class="n">${fmt(f.pixels)}</td>
+        </tr>${f.members.map(m => `
+        <tr class="member">
+          <td><span class="swatch sm" style="background:${m.color}"></span>${
+              m.url ? `<a class="mineral" href="${m.url}" target="_blank" rel="noopener">${m.title}</a>` : m.title}
+              <span class="tag">${m.id || ''}${m.library && m.record ? ` &middot; ${m.library} rec ${m.record}` : ''}</span></td>
+          <td class="n muted">${fmt(m.pixels)}</td>
+        </tr>`).join('')}`).join('')}${g.other ? `
+        <tr>
+          <td><span class="swatch" style="background:${g.other.color}"></span>
+              <span class="muted">${fmt(g.other.families)} further families</span></td>
+          <td class="n">${fmt(g.other.pixels)}</td>
+        </tr>` : ''}
+      </tbody>
+    </table>`).join('');
+
+  const colour = data.colour || [];
+  if (colour.length) {
+    // Anything under 2% of the colour panel is, to the eye, an empty frame.
+    // Those are a real result -- Tetracorder looked and found nothing -- but
+    // they are not worth a figure each, so they are named instead.
+    const shown = colour.filter(c => c.coverage >= 0.02 || c.coverage < 0);
+    const empty = colour.filter(c => c.coverage >= 0 && c.coverage < 0.02);
+
+    const fig = c => `
+      <figure class="product">
+        <h3>${c.name}</h3>
+        ${c.blurb ? `<p class="blurb">${c.blurb}</p>` : ''}
+        <img src="${(c.labelled || c.plain || c.overlay)}${bust}" alt="${c.name}" loading="lazy">
+        <p class="file">${PREFIX}${c.key} &mdash; ${c.coverage >= 0
+            ? `${(c.coverage * 100).toFixed(0)}% of the window carries an identification`
+            : 'coverage not measured'}</p>
+      </figure>`;
+
+    $('colour').innerHTML =
+      shown.slice(0, 2).map(fig).join('')
+      + (shown.length > 2 ? `
+        <details class="more">
+          <summary>${shown.length - 2} more colour products from this run</summary>
+          <div class="inner">${shown.slice(2).map(fig).join('')}</div>
+        </details>` : '')
+      + (empty.length ? `
+        <p class="prose" style="margin-top:1.5rem"><b>Looked for, not found.</b>
+          ${empty.length} further product${empty.length === 1 ? ' was' : 's were'}
+          drawn and came out empty &mdash; Tetracorder searched this window for
+          them and identified nothing. On an arid volcanic scene that is the
+          expected answer, and it is as much a result as the maps above.</p>
+        <ul class="empty">${empty.map(c => `<li>${c.name}</li>`).join('')}</ul>` : '');
+
+    $('colour-section').classList.remove('hidden');
+  }
+
+  $('results').classList.remove('hidden');
+  rendered = true;
+}
+
+async function tickStatus() {
+  let s;
+  try { s = await json('status.json'); }
+  catch (e) { return; }   // not written until the run is queued
+
+  $('message').textContent = s.message || s.state;
+  $('dot').className = 'dot' + (s.state === 'done' ? ' ok'
+                              : s.state === 'failed' ? ' bad' : ' spin');
+  renderSteps(s.stages, s.stage, s.state);
+
+  // status.json is only rewritten every few seconds, and tetrun is a very long
+  // stage -- so tick the clock from the start time rather than showing a number
+  // that sits still for minutes.
+  const live = s.state === 'running' || s.state === 'rendering' || s.state === 'queued';
+  const secs = live && s.started
+    ? Math.max(0, Math.round((Date.now() - Date.parse(s.started)) / 1000))
+    : s.elapsed;
+  $('elapsed').textContent = secs ? clock(secs) : '';
+
+  // A run that has been killed leaves "running" on screen forever otherwise.
+  // The heartbeat is refreshed every few seconds while the pipeline is
+  // supervised, so a stale one means the run is gone, not merely quiet.
+  const stale = live && s.heartbeat && (Date.now() / 1000 - s.heartbeat) > 30;
+  $('stall').classList.toggle('hidden', !stale);
+  if (stale) {
+    const ago = Math.round(Date.now() / 1000 - s.heartbeat);
+    $('stall').textContent =
+      `No heartbeat for ${ago}s — the pipeline is no longer running. `
+      + `Check the codespace terminal: cat ~/tetracorder-demo/state/run-pipeline.log`;
+  }
+
+  if (s.state === 'done' && !rendered) await renderResults();
+}
+
+async function tickLog() {
+  let text;
+  try {
+    // run.tail, not run.log: the full log runs to megabytes and python's
+    // http.server does not honour Range requests, so polling run.log would
+    // re-download all of it every couple of seconds.
+    const r = await fetch('run.tail?t=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) return;
+    text = await r.text();
+  } catch (e) { return; }
+
+  // tetrapy's progress rendering can still leave colour and OSC-8 hyperlink
+  // escapes in the log; they are unreadable in a <pre>.
+  text = text.replace(/\x1b\]8;[^\x07\x1b]*(?:\x07|\x1b\\)/g, '')
+             .replace(/\x1b\[[0-9;?]*[A-Za-z]/g, '');
+  if (!text.trim()) return;
+
+  const el = $('log');
+  // Only stick to the bottom if the reader has not scrolled up to look at
+  // something -- yanking their scroll position every two seconds is hostile.
+  const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+  el.textContent = text;
+  if ($('follow').checked && atBottom) el.scrollTop = el.scrollHeight;
+}
+
+async function tick() { await Promise.all([tickStatus(), tickLog()]); }
+
+tick();
+setInterval(tick, 2000);
+</script>
+</body>
+</html>

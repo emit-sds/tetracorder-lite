@@ -1,0 +1,60 @@
+{
+  // The ROOT config, so it is what the badge, the green button and
+  // ?quickstart=1 use. With only named configs under .devcontainer/<name>/,
+  // those paths silently fall back to the universal image and nothing runs.
+  "name": "Tetracorder demo (published image)",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  // Tetracorder's cost is near-fixed per run, so cores set the wall clock:
+  // 8m11s on 4 cores, and 2 would be noticeably worse. 32 GB because the image
+  // is ~1.7 GB compressed and ~6.5 GB unpacked.
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "16gb",
+    "storage": "32gb"
+  },
+  // No TETRACORDER_IMAGE or TETRACORDER_SCENE_URL on purpose: they are the
+  // override variables and would beat common.sh's defaults, which derive from
+  // GITHUB_REPOSITORY so a fork's codespace uses that fork's image and scene.
+  // Nothing here fetches, builds or runs anything -- get-started.sh takes each
+  // step on request. This only installs the banner pointing at it.
+  "onCreateCommand": ".devcontainer/scripts/install-welcome.sh",
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "Tetracorder results",
+      "onAutoForward": "notify",
+      "protocol": "http"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        // Mermaid in START-HERE.md; VS Code's preview has none built in. This
+        // one works in the web client too.
+        "bierner.markdown-mermaid"
+      ],
+      // Layout for a demo: the file tree and a terminal, nothing else.
+      "settings": {
+        // No Welcome tab; codespaces.openFiles below replaces the README.
+        "workbench.startupEditor": "none",
+        // Hide the Chat/agent side bar; the toggle still works.
+        "workbench.secondarySideBar.defaultVisibility": "hidden",
+        // Open Editors is noise here.
+        "explorer.openEditors.visible": 0,
+        // START-HERE.md renders; every other .md still opens as source.
+        "workbench.editorAssociations": {
+          "**/START-HERE.md": "vscode.markdown.preview.editor"
+        }
+      }
+    },
+    "codespaces": {
+      // The only thing that opens by itself. Web client only -- the desktop
+      // app ignores this, so open it by hand there.
+      "openFiles": [".devcontainer/START-HERE.md"]
+    }
+  }
+}

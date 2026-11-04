@@ -1,0 +1,86 @@
+# Builds and publishes the image for linux/amd64 and linux/arm64 (arm64 under qemu).
+name: container
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "SE-Documentation/**"
+      - "**/*.md"
+      - ".devcontainer/**"
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Extra tag to publish alongside the automatic ones"
+        required: false
+        type: string
+
+concurrency:
+  group: container-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/tetracorder-lite
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-qemu-action@v3
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        uses: docker/metadata-action@v5
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
+        with:
+          labels: |
+            org.opencontainers.image.description=Containerized Tetracorder 6 for EMIT mineral identification
+            org.opencontainers.image.licenses=Apache-2.0 AND GPL-3.0-only AND GPL-2.0-or-later
+          annotations: |
+            org.opencontainers.image.description=Containerized Tetracorder 6 for EMIT mineral identification
+            org.opencontainers.image.licenses=Apache-2.0 AND GPL-3.0-only AND GPL-2.0-or-later
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=ref,event=branch
+            type=sha,format=long
+            type=raw,value=${{ inputs.tag }},enable=${{ inputs.tag != '' }}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+
+      - id: push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Containerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - uses: actions/attest@v4
+        with:
+          subject-name: ${{ env.IMAGE }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true

@@ -1,0 +1,92 @@
+##
+## Config for the Codespaces demo run.
+##
+## Differs from the repository's config.yml in three ways:
+##   * paths point at the demo's mounts (/data, /output) rather than the defaults
+##   * setup.args ends in "none", which tells cmd-setup-tetrun to skip generating
+##     the ~2,700 browse images -- roughly 150 s of a run whose cost is otherwise
+##     almost entirely fixed overhead
+##   * aggregate writes a single NetCDF, which is what the results page renders
+##
+# I/O
+#
+output:
+  base: /output/demo
+  tetracorder: ${output.base}/tetracorder
+  tetrapy: ${output.base}/aggregate
+data:
+  rfl: /data/scene_rfl
+  rfluncert: /data/scene_uncert
+#
+# Tetracorder settings
+#
+tetracorder:
+  root: /root/tetracorder
+  davinci: True
+  version: 6.00a
+  sensor: ${sensor.name}
+  mode: cube
+#
+# Pipeline
+#
+log:
+  level: INFO
+  file: ${output.tetrapy}/tetrapy.log
+  append: False
+  config: ${output.tetrapy}/config.yml
+export_matrix:
+  enabled: False
+  file: ${output.tetrapy}/matrix.csv
+  groups: [1, 2]
+  columns: [id, group, library, record, title, path]
+  reference: tetrapy/data/v6.00a6.csv
+  sortby: [group, index]
+  clean_titles: True
+convolve:
+  enabled: True
+  reflib: ${tetracorder.root}/sl1/usgs/library06.conv/splib06b
+  reslib: ${tetracorder.root}/sl1/usgs/library06.conv/sprlb06b
+  output:
+    reflib: /conv/reflib
+    reslib: /conv/reslib
+  name: ${sensor.name}
+sensor:
+  enabled: True
+  name: tetrapy
+  deleted_channels: "1t4 75t79 99t106 128t148 188t214 218 219t221 226 280t285c"
+  enable:
+    groups: [1-5, 18, 20-22, 37-38]
+    cases: [1-6]
+  colors:
+    - BASE     23 23 23  base-image.jpg
+    - COLOR1   38 23 11  color-visRGB.jpg
+    - COLOR2  246 85 18  color-vir.jpg
+  reflib: ${convolve.output.reflib}
+  reslib: ${convolve.output.reslib}
+setup:
+  enabled: True
+  geology: False
+  # nodualimages / noredoverlayimages are what actually save the time: without
+  # them the run spends most of its wall clock writing gamma-stretched JPEG
+  # overlays into results.dual.* and results.red.*, none of which the results
+  # page uses -- it renders from the aggregated NetCDF.
+  #
+  # Note the option is "image none", not a bare "none" -- cmd-setup-tetrun's
+  # parser only looks for the value after the literal keyword `image`, so a
+  # lone "none" is silently ignored. It is not passed here anyway: that branch
+  # of cmd-setup-tetrun assigns `imageout=$i` where it means `imageout=$1`, so
+  # `image none` sets the format to the empty string rather than to none.
+  args: ["1", "-T", "-20", "80", "C", "-P", ".5", "1.5", "bar",
+         "nodualimages", "noredoverlayimages"]
+tetrun:
+  enabled: True
+  args: ["band", "20", "gif"]
+aggregate:
+  enabled: True
+  tetracorder: ${output.tetracorder}
+  output: ${output.tetrapy}
+  reflib: ${convolve.output.reflib}
+  reslib: ${convolve.output.reslib}
+  out_min: ${output.tetrapy}/agg.nc
+  out_minuncert: ${output.tetrapy}/agg-uncert.nc
+  reference: tetrapy/data/v6.00a6.csv

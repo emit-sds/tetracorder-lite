@@ -16,7 +16,8 @@ build_image.sh
 .vscode
 
 # Ignore test, build and distribution files
-build/
+# Anchored to the repository root: vendored source has its own build/ directories.
+/build/
 dist/*.whl
 *.egg
 *.egg-info/
@@ -24,7 +25,7 @@ dist/*.whl
 __pycache__/
 
 # Ignore built documentation files
-site/
+/site/
 .cache/
 
 # Ignore local testing directories

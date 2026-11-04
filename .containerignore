@@ -1,3 +1,5 @@
+# Kept in step with .dockerignore: podman reads this one, docker reads that
+# one, and without them `COPY . .` bakes the whole working tree into the image.
 **/.git
 **/.venv
 **/.pixi
@@ -10,3 +12,21 @@ emit-sds-l2b
 emit-utils
 tetrapy/configs/
 *.sh
+
+# Local scratch: input scenes, run outputs and logs. Large, never needed at
+# build time, and exactly what inflates an image built from a working tree.
+in/
+out/
+_e2e*
+_nodata*
+*.log
+*.png
+# Scene archives and debugging captures kept beside the repo -- 10.5 GB against
+# a ~200 MB context, and untracked, so only local builds ever saw them.
+demo-data-source/
+failing_file/
+
+# Repository furniture with no role in the build.
+.devcontainer/
+.github/
+.pytest_cache/
