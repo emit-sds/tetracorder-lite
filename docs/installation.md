@@ -1,9 +1,35 @@
 # Installation
 
-`tetrapy` requires Python ≥ 3.10 (the project targets 3.12) and a working
-Tetracorder installation on disk.
+## Use the container (recommended)
 
-## Install the package
+The container image ships Tetracorder, specpr, DaVinci, the spectral libraries
+and `tetrapy`, for both linux/amd64 and linux/arm64. Build it from the
+repository root:
+
+```bash
+docker build -f Containerfile -t tetracorder-lite .
+```
+
+and run the pipeline with your scene mounted at `/data`:
+
+```bash
+docker run --rm -v /path/to/scenes:/data -v tetra-out:/output \
+  tetracorder-lite \
+  tetrapy run config.yml \
+    --data.rfl       /data/<scene>_rfl \
+    --data.rfluncert /data/<scene>_uncert \
+    --data.glt       /data/<scene>_glt
+```
+
+See the [README](https://github.com/emit-sds/tetracorder-lite#readme) for
+Podman, Windows, the volume contract, and why `/output` should be a named
+volume on macOS and Windows.
+
+## Install `tetrapy` locally
+
+For development, `tetrapy` can be installed outside the container. It requires
+Python ≥ 3.10 (the project targets 3.12), and the stages that call Tetracorder
+need a working Tetracorder installation on disk.
 
 Using [uv](https://docs.astral.sh/uv/):
 
@@ -32,6 +58,12 @@ This pulls in `mkdocs`, `mkdocs-material`, `mkapi`, and `mike`. See the
 [Documentation](developers/documentation.md) developer guide for how to build
 and serve the site.
 
+## Running the tests
+
+```bash
+uv run --group dev pytest
+```
+
 ## Verify the install
 
 ```bash
@@ -39,5 +71,5 @@ tetrapy --help
 ```
 
 You should see the top-level command group and its subcommands
-(`run`, `export_matrix`, `convolve`, `sensor`, `setup`, `tetrun`,
-`aggregate`, `preview`).
+(`run`, `export-matrix`, `convolve`, `sensor`, `setup`, `tetrun`,
+`postprocess`, `aggregate`, `preview`).

@@ -1,11 +1,21 @@
-# tetrapy
+# tetracorder-lite
 
 A containerized, config-driven wrapper around the USGS
 [Tetracorder](https://www.usgs.gov/labs/spectroscopy-lab/tetracorder) expert
-system for imaging-spectroscopy mineral identification. `tetrapy` drives the
-full pipeline — from convolving spectral libraries onto a scene's grid, through
-running Tetracorder, to aggregating its outputs into L2B mineral and
-uncertainty products — off a single YAML config.
+system for imaging-spectroscopy mineral identification. The
+[tetracorder-lite](https://github.com/emit-sds/tetracorder-lite) container
+bundles Tetracorder, specpr, DaVinci and the `tetrapy` Python CLI. `tetrapy`
+drives the full pipeline — from convolving spectral libraries onto a scene's
+grid, through running Tetracorder, to aggregating its outputs into L2B mineral
+and uncertainty products — off a single YAML config.
+
+!!! tip "Running the container"
+    Most people run the whole pipeline in one `docker run` (or `podman run`)
+    call and never install `tetrapy` themselves. The
+    [README](https://github.com/emit-sds/tetracorder-lite#readme) covers the
+    container: Docker vs Podman, Windows, the volume contract, and a guided
+    [Codespaces demo](https://github.com/emit-sds/tetracorder-lite#try-it-in-a-codespace).
+    These pages document `tetrapy` itself.
 
 ## What it does
 
@@ -26,9 +36,14 @@ automates that end to end:
   features, constraints) and exports a material matrix CSV.
 - **Sensor integration** ([`tetrapy.sensor`][]) writes the per-sensor files the
   command tree looks up by name (restart, deleted-channels, enable/disable,
-  color-channels) so a run uses the freshly convolved library.
+  color-channels, datasets) so a run uses the freshly convolved library. Deleted
+  channels can be given as wavelength ranges, which are converted to channel
+  numbers on the scene's own grid.
 - **Run orchestration** ([`tetrapy.tetra`][]) drives the vendored
   `cmd-setup-tetrun` / `cmd.runtet` scripts.
+- **Post-processing** ([`tetrapy.postprocess`][]) converts matched Tetracorder
+  rasters into Cloud-Optimized GeoTIFFs, optionally orthorectified onto the
+  scene's GLT, and prunes the run directory.
 - **L2B aggregation** ([`tetrapy.aggregate`][]) composites the group 1 / group 2
   material rasters into band-depth and mineral-id stacks, with per-pixel
   band-depth uncertainty (Clark, 2003), written as NetCDF and/or GeoTIFF.
@@ -45,7 +60,7 @@ automates that end to end:
 
     How the stages fit together, and how to configure and run them.
 
-- :material-code-braces: **[Reference](api/tetrapy/)**
+- :material-code-braces: **[Reference](api/tetrapy/README.md)**
 
     Auto-generated API documentation for every module.
 
@@ -64,9 +79,8 @@ NetCDF, `.tif` for GeoTIFF). See
 
 ## Notes
 
-- The default config paths (`/root/tetracorder`, `/data`, `/output`) reflect the
-  intended containerized deployment; adjust them for a local Tetracorder
-  install.
+- The default config paths (`/root/tetracorder`, `/data`, `/output`) are the
+  paths inside the container; adjust them for a local Tetracorder install.
 - Logs are written both to the console (via
   [rich](https://github.com/Textualize/rich)) and, when `log.file` is set, to a
   file. The resolved config is exported to `log.config` for reproducibility.

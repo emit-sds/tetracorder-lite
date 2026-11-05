@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in improving `tetrapy`. This page covers the basics for
+Thanks for your interest in improving tetracorder-lite and `tetrapy`. This page covers the basics for
 getting a development environment set up and the conventions the project
 follows.
 
@@ -10,9 +10,9 @@ Clone the repository and sync the environment with [uv](https://docs.astral.sh/u
 including the docs extra so you can build the site locally:
 
 ```bash
-git clone https://github.com/jammont/tetrapy
-cd tetrapy
-uv sync --extra docs
+git clone https://github.com/emit-sds/tetracorder-lite
+cd tetracorder-lite
+uv sync --all-extras
 ```
 
 ## Project layout
@@ -26,15 +26,21 @@ tetrapy/
 ├── tetracorder.py    # TetraDecoder: parse the expert-system command files
 ├── sensor.py         # write per-sensor tetracorder integration files
 ├── tetra.py          # setup/exec Tetracorder + library convolution drivers
+├── postprocess.py    # COG conversion (optionally orthorectified) + run-directory pruning
 ├── aggregate.py      # aggregate group outputs into L2B products + uncertainty
 ├── utils.py          # logging/timing helpers
 ├── conv/             # pure-Python specpr Gaussian convolution
 │   ├── library.py    #   build a convolved specpr library from a master
 │   ├── convolve.py   #   the Convolver
 │   └── specpr.py     #   specpr file reader/writer
-├── configs/          # example configs (aviris, test)
 └── data/             # reference material matrices (v6.00a6.csv)
 ```
+
+The rest of the repository holds the `Containerfile`, the default `config.yml`,
+the `pytest` suite under `tests/`, the vendored Tetracorder and DaVinci source
+trees, and these docs under `docs/`. See the
+[README](https://github.com/emit-sds/tetracorder-lite#project-structure) for
+the full layout.
 
 ## Conventions
 
@@ -51,6 +57,8 @@ tetrapy/
 
 1. Create a branch off `main`.
 2. Make your change, keeping docstrings and docs up to date.
-3. Build the docs locally to confirm the reference still renders.
-4. Open a pull request against
-   [`jammont/tetrapy`](https://github.com/jammont/tetrapy/).
+3. Run the tests with `uv run --group dev pytest`.
+4. Build the docs with `uv run mkdocs build --strict` to confirm every page and
+   reference still resolves.
+5. Open a pull request against
+   [`emit-sds/tetracorder-lite`](https://github.com/emit-sds/tetracorder-lite).

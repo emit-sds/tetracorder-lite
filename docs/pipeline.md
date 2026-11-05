@@ -4,7 +4,7 @@ The whole pipeline runs from a single YAML config. `tetrapy run` executes the
 enabled stages in order:
 
 ```
-export_matrix → convolve → sensor → setup → tetrun → aggregate
+export_matrix → convolve → sensor → setup → tetrun → postprocess → aggregate
 ```
 
 Each stage is gated by its own `{stage}.enabled` flag in the config, so any
@@ -16,17 +16,23 @@ maps config keys onto the underlying calls.
 ```bash
 tetrapy run config.yml \
   --data.rfl /data/emit20230728t214153_rfl \
-  --data.rfluncert /data/emit20230728t214153_uncert
+  --data.rfluncert /data/emit20230728t214153_uncert \
+  --data.glt /data/emit20230728t214153_glt
 ```
+
+These are shown in short form. In the container, put your `docker run` mounts
+and the image name in front, as in the
+[README](https://github.com/emit-sds/tetracorder-lite#how-a-container-call-is-put-together).
 
 Individual stages are also exposed as subcommands:
 
 ```bash
-tetrapy export_matrix config.yml   # decode expert system -> material matrix CSV
+tetrapy export-matrix config.yml   # decode expert system -> material matrix CSV
 tetrapy convolve      config.yml   # convolve reference/research libraries to scene grid
 tetrapy sensor        config.yml   # wire convolved library into the command tree
 tetrapy setup         config.yml   # configure a Tetracorder run (cmd-setup-tetrun)
 tetrapy tetrun        config.yml   # execute the run (cmd.runtet)
+tetrapy postprocess   config.yml   # write COGs and prune the run directory
 tetrapy aggregate     config.yml   # aggregate outputs into L2B products
 tetrapy preview       config.yml   # print the resolved config without running anything
 ```
@@ -43,6 +49,7 @@ work. See [`tetrapy.pipeline`][] for the full docstrings.
 | [`sensor`](#sensor) | Integrate the convolved library into the command tree | [`tetrapy.sensor`][] |
 | [`setup`](#setup) | Configure a Tetracorder run (`cmd-setup-tetrun`) | [`tetrapy.tetra`][] |
 | [`tetrun`](#tetrun) | Execute the run (`cmd.runtet`) | [`tetrapy.tetra`][] |
+| [`postprocess`](#postprocess) | Convert matched outputs into COGs and/or delete matched paths | [`tetrapy.postprocess`][] |
 | [`aggregate`](#aggregate) | Aggregate outputs into L2B mineral/uncertainty products | [`tetrapy.aggregate`][] |
 
 Every stage carries an `enabled` flag (documented per-stage below); the rest of
@@ -60,6 +67,7 @@ These keys are not owned by any one stage but are read by several of them.
 | --- | --- | --- |
 | `data.rfl` | `convolve`, `sensor`, `setup`, `tetrun`, `aggregate` | Scene reflectance raster (the data file, **not** the `.hdr`). Its companion `.hdr` supplies the target wavelength/FWHM grid for convolution, and its band count sets the sensor restart file's channel count. |
 | `data.rfluncert` | `aggregate` | Reflectance-uncertainty raster. Required (together with `rfl`) to compute band-depth uncertainty. |
+| `data.glt` | `postprocess` | Geometry lookup table, referenced by `postprocess.cogs.glt`. When set, COGs are orthorectified onto its map grid; `""` writes them in raw instrument geometry. |
 | `tetracorder.root` | `export_matrix`, `sensor`, `setup` | Root of the Tetracorder install (command tree + libraries). |
 | `tetracorder.version` | `export_matrix`, `sensor`, `setup` | Tetracorder version, e.g. `6.00a`. Selects the `.cmds` tree and enables v6-specific patches. |
 | `tetracorder.sensor` | `setup` | Sensor name passed to `cmd-setup-tetrun`; typically `${sensor.name}`. |
@@ -109,15 +117,15 @@ specpr library for each. Backed by [`tetrapy.tetra.convolve`][] /
 ### `sensor`
 
 Wire the convolved libraries into the Tetracorder command tree for a named
-sensor, by writing the four per-sensor files the tree looks up by name (restart,
-deleted-channels, enable/disable, and color-channels). Backed by
+sensor, by writing the per-sensor files the tree looks up by name (restart,
+deleted-channels, enable/disable, color-channels, and datasets). Backed by
 [`tetrapy.sensor.build`][].
 
 | Key | Type | Description |
 | --- | --- | --- |
 | `enabled` | bool | Whether the stage runs. |
 | `name` | str | Sensor name; every written file is keyed on it. |
-| `deleted_channels` | str | specpr channel-deletion spec, e.g. `"1t4 75t79 ... 226c"`. Written to `DELETED.channels/delete_{name}`. |
+| `deleted_channels` | mapping or str | Channels Tetracorder ignores. See [Deleted channels](#deleted-channels). The resolved channel numbers are written to `DELETED.channels/delete_{name}`. |
 | `enable.groups` | list | Analysis groups to enable; everything else is disabled. Accepts ints and inclusive `"a-b"` range strings (e.g. `[1-5, 18, 20-22]`). |
 | `enable.cases` | list | Analysis cases to enable (same range syntax), e.g. `[1-6]`. |
 | `colors` | list[str] | Lines for the color-channels file (`COLOR.channels/color-{name}`). |
@@ -128,6 +136,37 @@ deleted-channels, enable/disable, and color-channels). Backed by
     The restart file's channel count (`nchans`) is read directly from
     `data.rfl`, so it self-consistently matches the scene being mapped. Missing
     libraries raise `FileNotFoundError`.
+
+#### Deleted channels
+
+Tetracorder takes deleted channels as integer channel numbers, and ignores those
+channels when it fits. `deleted_channels` can be given in two forms:
+
+- **Wavelength ranges** (the default). A mapping with `wavelengths`, a list of
+  inclusive `[min, max]` ranges; `units`, `um` (default) or `nm`; and optional
+  `channels`, extra channel numbers. The ranges are converted to channel numbers
+  by matching them against the band centres in `{data.rfl}.hdr`, so the same
+  ranges work on any sensor. Anything in `channels` is deleted in addition to
+  the ranges.
+- **Channel numbers.** A string in Tetracorder's own syntax: `NtM` for an
+  inclusive range, single numbers, 1-based, with an optional trailing `c`. It
+  is used as written, so it is only correct on the grid it was written for.
+
+```yaml
+sensor:
+  deleted_channels:
+    units: um
+    wavelengths:
+      - [1.327, 1.477]      # 1.4 um water band
+      - [1.770, 1.968]      # 1.9 um water band
+    channels: "218 219t221 226"
+```
+
+The default config's `channels` are EMIT-specific, so set
+`--sensor.deleted_channels.channels None` when you supply wavelength ranges for
+another sensor. Every resolved channel must fall within `[1, nchans]`, and the
+resolved list is logged. Backed by
+[`tetrapy.sensor.resolve_deleted_channels`][].
 
 ### `setup`
 
@@ -161,6 +200,24 @@ output directory. Backed by [`tetrapy.tetra.exec_tetrun`][].
 Mode, reflectance, output directory, and the DaVinci toggle come from the
 [shared](#shared-inputs) `tetracorder.mode`, `data.rfl`, `output.tetracorder`,
 and `tetracorder.davinci` keys.
+
+### `postprocess`
+
+Repackage matched Tetracorder outputs as Cloud-Optimized GeoTIFFs and/or delete
+matched paths from the run directory. Backed by [`tetrapy.postprocess.run`][].
+
+| Key | Type | Description |
+| --- | --- | --- |
+| `enabled` | bool | Whether the stage runs. |
+| `tetracorder` | str | Glob root for both `cogs` and `remove` (typically `${output.tetracorder}`). |
+| `cogs.output` | str | Destination root; the run directory's subdirectory tree is mirrored under it. |
+| `cogs.glob` | str or list[str] | Patterns, relative to `tetracorder`, of rasters to convert (e.g. `"results.masses/*.png"`, `"group.*/*.depth.gz"`). `**` is supported. |
+| `cogs.skip_existing` | bool | Keep COGs that already exist instead of overwriting them. |
+| `cogs.glt` | str | GLT to orthorectify onto (typically `${data.glt}`). Omit or set `""` for raw geometry. |
+| `remove` | list[str] | Patterns of files or directories to delete from the run directory. |
+
+Omit `cogs` or `remove` to skip that operation. Removal runs after COG
+conversion, so it is safe to remove the rasters the COGs were made from.
 
 ### `aggregate`
 
@@ -201,4 +258,4 @@ products always carry all four group variables.
 
 Every stage is driven by a single YAML config, with interpolation, CLI
 overrides, and section inheritance. See the [Configuration](configuration.md)
-page for the full reference and an example `config.yml`.
+page for the full reference and the default `config.yml`.
