@@ -59,9 +59,8 @@ def setup_tetrun(
     version : str, default="6.00a"
         Tetracorder version to use (e.g., "6.00a", "5.00").
     output : str, default="/output/tetracorder"
-        Output directory path. If it already exists, all contents except the
-        ``logs/`` subdirectory are removed so ``cmd-setup-tetrun`` sees a fresh
-        directory while preserving any log file already written there.
+        Output directory path. If it already exists, it is removed entirely so
+        ``cmd-setup-tetrun`` sees a fresh directory.
     sensor : str, default="emit_c"
         Sensor identifier for spectral library selection (e.g., "emit_c", "aviris").
     mode : str, default="cube"
@@ -116,8 +115,9 @@ def setup_tetrun(
     if path.exists():
         text = path.read_text()
 
-        # Remove erroneous 'time' command
-        text = text.replace("time", "")
+        # Remove erroneous 'time' command prefix (only where it leads a command, so
+        # "time" elsewhere in the script, e.g. in a comment or path, is left alone)
+        text = re.sub(r"^(\s*)time\s+", r"\1", text, flags=re.MULTILINE)
 
         # Remove redirect to tetracorder.out so output flows to stdout
         text = text.replace("> tetracorder.out 2>&1", "2>&1")

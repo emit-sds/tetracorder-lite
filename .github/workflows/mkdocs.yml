@@ -28,6 +28,10 @@ jobs:
         with:
           version: "0.9.25"
           python-version: "3.12"
+          enable-cache: true
+          # Pruning drops pre-built wheels, which is every dependency here
+          prune-cache: false
+          cache-suffix: docs
 
       - name: Install dependencies
         run: |
