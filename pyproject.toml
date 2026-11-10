@@ -1,6 +1,6 @@
 [project]
 name = "tetrapy"
-version = "1.1.0"
+version = "1.1.1"
 description = "Containerized USGS Tetracorder (v6) for EMIT mineral identification"
 readme = "README.md"
 license = "Apache-2.0"
