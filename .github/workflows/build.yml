@@ -71,7 +71,7 @@ jobs:
           cache-suffix: pytests
 
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync
 
       - name: Run pytests
         run: uv run pytest -v --cov --cov-report=term --cov-report=xml --cov-report=html
