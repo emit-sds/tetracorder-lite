@@ -16,6 +16,11 @@ This repository is also a work in progress,
 that we are continuing to try and revise and simplify to aid in community use and uptake
 of Tetracorder.  Suggested contributions are welcome as PRs.
 
+Just want to run the container? The
+[Running the container](https://emit-sds.github.io/tetracorder-lite/latest/running-the-container/)
+page on the documentation site has the container sections of this README on their own.
+
+<!-- --8<-- [start:container] -->
 ## Try it in a codespace
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/emit-sds/tetracorder-lite?quickstart=1)
@@ -27,7 +32,7 @@ configuration; about ten minutes of which nine are the run itself.
 The badge above opens a GitHub codespace of the repo. The terminal banner tells you
 how to start the demo (`.devcontainer/get-started.sh`), which then walks you
 through tetracorder-lite one step at a time. See
-[`.devcontainer/README.md`](.devcontainer/README.md) for specific details of how it all works.
+[`.devcontainer/README.md`](https://github.com/emit-sds/tetracorder-lite/blob/main/.devcontainer/README.md) for specific details of how it all works.
 
 ## Docker or Podman
 
@@ -171,7 +176,7 @@ passes it as a single argument.
 | `--output.base /output/<run>` | Writes this run under its own directory. Tetracorder's output directory is wiped at the start of each run, so give each run its own `base` if you want to keep earlier results |
 | `--data.glt ""` | No GLT. COGs are written in raw instrument geometry instead of being orthorectified |
 | `--sensor.deleted_channels.wavelengths "[[…], …]"` | Wavelength ranges to delete (water bands, detector edges). tetrapy converts them to channel numbers using the scene's own grid; see the non-EMIT example below |
-| `--<stage>.enabled False` | Skips a pipeline stage, such as `--postprocess.enabled False` (see [The pipeline](#the-pipeline)) |
+| `--<stage>.enabled False` | Skips a pipeline stage, such as `--postprocess.enabled False` (see [The pipeline](https://github.com/emit-sds/tetracorder-lite#the-pipeline)) |
 
 To check the resolved config without running anything, replace `run` with `preview`:
 
@@ -208,13 +213,13 @@ docker run --rm \
 
 Ranges are inclusive and in `units` (`um` by default, or `nm`). The ranges above
 are illustrative, so tune them for your instrument. The `sensor` stage logs the
-channels it resolved, and [Deleted channels](#deleted-channels) covers the full
+channels it resolved, and [Deleted channels](https://github.com/emit-sds/tetracorder-lite#deleted-channels) covers the full
 syntax.
 
 ### Using your own config
 
 For repeated runs of the same kind, for example one sensor, copy
-[`config.yml`](config.yml), edit it, and mount it into the container:
+[`config.yml`](https://github.com/emit-sds/tetracorder-lite/blob/main/config.yml), edit it, and mount it into the container:
 
 ```sh
 docker run --rm \
@@ -235,7 +240,7 @@ docker build -f Containerfile -t tetracorder-lite .
 
 The image compiles specpr + Tetracorder (Fortran/ratfor) and DaVinci (C), then
 sets up the `tetrapy` Python environment with uv. DaVinci builds from the
-vendored source in [`vendor/davinci`](vendor/davinci/VENDOR.md) in a separate
+vendored source in [`vendor/davinci`](https://github.com/emit-sds/tetracorder-lite/blob/main/vendor/davinci/VENDOR.md) in a separate
 stage, so the compilers and source do not end up in the finished image.
 
 The build is native on both amd64 and arm64, so nothing here is emulated. To
@@ -244,6 +249,7 @@ build for the architecture you are not on, which *is* emulated and much slower:
 ```sh
 docker buildx build --platform=linux/arm64 -f Containerfile -t tetracorder-lite .
 ```
+<!-- --8<-- [end:container] -->
 
 ## The pipeline
 
@@ -506,6 +512,7 @@ docker run --rm tetracorder-lite tetrapy --help
 docker run --rm tetracorder-lite tetrapy run --help
 ```
 
+<!-- --8<-- [start:volumes] -->
 ## Volume contract
 
 | Mount point | Purpose |
@@ -562,6 +569,7 @@ On **Windows**, [the Windows section](#windows) shows the same pattern with
 rather than `/mnt/c/...` avoids the much more expensive crossing into NTFS, but a
 named volume is still the safer choice.
 On **Linux**, ignore all of this and bind-mount whatever you like.
+<!-- --8<-- [end:volumes] -->
 
 ## Convolved spectral library
 

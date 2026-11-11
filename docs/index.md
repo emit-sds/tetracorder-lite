@@ -11,10 +11,10 @@ and uncertainty products — off a single YAML config.
 
 !!! tip "Running the container"
     Most people run the whole pipeline in one `docker run` (or `podman run`)
-    call and never install `tetrapy` themselves. The
-    [README](https://github.com/emit-sds/tetracorder-lite#readme) covers the
-    container: Docker vs Podman, Windows, the volume contract, and a guided
-    [Codespaces demo](https://github.com/emit-sds/tetracorder-lite#try-it-in-a-codespace).
+    call and never install `tetrapy` themselves.
+    [Running the container](running-the-container.md) covers the container:
+    Docker vs Podman, Windows, the volume contract, and a guided
+    [Codespaces demo](running-the-container.md#try-it-in-a-codespace).
     These pages document `tetrapy` itself.
 
 ## What it does

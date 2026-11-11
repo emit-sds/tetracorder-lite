@@ -21,8 +21,8 @@ tetrapy run config.yml \
 ```
 
 These are shown in short form. In the container, put your `docker run` mounts
-and the image name in front, as in the
-[README](https://github.com/emit-sds/tetracorder-lite#how-a-container-call-is-put-together).
+and the image name in front, as shown on
+[Running the container](running-the-container.md#how-a-container-call-is-put-together).
 
 Individual stages are also exposed as subcommands:
 

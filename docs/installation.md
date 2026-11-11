@@ -21,7 +21,7 @@ docker run --rm -v /path/to/scenes:/data -v tetra-out:/output \
     --data.glt       /data/<scene>_glt
 ```
 
-See the [README](https://github.com/emit-sds/tetracorder-lite#readme) for
+See [Running the container](running-the-container.md) for
 Podman, Windows, the volume contract, and why `/output` should be a named
 volume on macOS and Windows.
 
