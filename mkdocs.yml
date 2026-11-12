@@ -1,11 +1,13 @@
-site_name: Tetrapy
-site_url: https://github.com/jammont/tetrapy/
-repo_name: jammont/tetrapy
-repo_url: https://github.com/jammont/tetrapy/
+site_name: tetracorder-lite
+site_url: https://emit-sds.github.io/tetracorder-lite/
+repo_name: emit-sds/tetracorder-lite
+repo_url: https://github.com/emit-sds/tetracorder-lite/
 docs_dir: docs/
+# Fail the build on any warning (a nav page missing from docs/, a broken
+# cross-reference) instead of publishing a site without it.
+strict: true
 theme:
   name: material
-  theme:
   palette:
     # Palette toggle for automatic mode (light during day, dark during night)
     - media: "(prefers-color-scheme)"
@@ -36,9 +38,16 @@ plugins:
   - social
 markdown_extensions:
   - attr_list
+  - md_in_html            # card grid on the landing page
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.emoji:       # :material-...: icons
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.snippets:    # embeds config.yml into configuration.md
+      base_path: ["."]
+      check_paths: true
   - toc:
       permalink: "#"
       baselevel: 2
@@ -57,8 +66,10 @@ extra:
 nav:
   - About: index.md
   - Installation: installation.md
+  - Running the container: running-the-container.md
   - Pipeline: pipeline.md
   - Configuration: configuration.md
+  - Convolved library: convolved-library-build.md
   - Developers:
     - Contributing: developers/contributing.md
     - Documentation: developers/documentation.md
