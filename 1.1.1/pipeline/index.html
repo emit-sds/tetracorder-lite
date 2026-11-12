@@ -1,0 +1,2183 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://emit-sds.github.io/tetracorder-lite/1.1.1/pipeline/">
+      
+      
+        <link rel="prev" href="../running-the-container/">
+      
+      
+        <link rel="next" href="../configuration/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Pipeline - tetracorder-lite</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/mkapi-common.css">
+    
+      <link rel="stylesheet" href="../css/mkapi-material.css">
+    
+      <link rel="stylesheet" href="../stylesheets/icons.css">
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Pipeline - tetracorder-lite" />
+<meta property="og:image" content="https://emit-sds.github.io/tetracorder-lite/1.1.1/assets/images/social/pipeline.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://emit-sds.github.io/tetracorder-lite/1.1.1/pipeline/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Pipeline - tetracorder-lite" />
+<meta property="twitter:image" content="https://emit-sds.github.io/tetracorder-lite/1.1.1/assets/images/social/pipeline.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pipeline" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="tetracorder-lite" class="md-header__button md-logo" aria-label="tetracorder-lite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            tetracorder-lite
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Pipeline
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/emit-sds/tetracorder-lite/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    emit-sds/tetracorder-lite
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="tetracorder-lite" class="md-nav__button md-logo" aria-label="tetracorder-lite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    tetracorder-lite
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/emit-sds/tetracorder-lite/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    emit-sds/tetracorder-lite
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../running-the-container/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running the container
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#running-the-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export_matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        export_matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convolve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        convolve
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sensor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="sensor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deleted-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deleted channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tetrun
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postprocess" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        postprocess
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        aggregate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-products" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output products
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convolved-library-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Convolved library
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developers/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developers/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tetrapy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    tetrapy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_1_2" id="__nav_8_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tetrapy.conv
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    tetrapy.conv
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/conv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/conv/convolve/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Convolve
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/conv/library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Library
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/conv/specpr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specpr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/aggregate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aggregate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/postprocess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Postprocess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/sensor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sensor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/tetra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tetra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/tetracorder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tetracorder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#running-the-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared inputs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export_matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        export_matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convolve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        convolve
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sensor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="sensor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deleted-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deleted channels
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tetrun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tetrun
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postprocess" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        postprocess
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggregate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        aggregate
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-products" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output products
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>Pipeline</h1>
+
+<h2 id="pipeline">Pipeline<a class="headerlink" href="#pipeline" title="Permanent link">#</a></h2>
+<p>The whole pipeline runs from a single YAML config. <code>tetrapy run</code> executes the
+enabled stages in order:</p>
+<div class="highlight"><pre><span></span><code>export_matrix → convolve → sensor → setup → tetrun → postprocess → aggregate
+</code></pre></div>
+<p>Each stage is gated by its own <code>{stage}.enabled</code> flag in the config, so any
+stage can be skipped. The stage functions live in <a href="../api/tetrapy/pipeline/#tetrapy.pipeline" title="tetrapy.pipeline"><code>tetrapy.pipeline</code></a>, which
+maps config keys onto the underlying calls.</p>
+<h3 id="running-the-pipeline">Running the pipeline<a class="headerlink" href="#running-the-pipeline" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code>tetrapy<span class="w"> </span>run<span class="w"> </span>config.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--data.rfl<span class="w"> </span>/data/emit20230728t214153_rfl<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--data.rfluncert<span class="w"> </span>/data/emit20230728t214153_uncert<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--data.glt<span class="w"> </span>/data/emit20230728t214153_glt
+</code></pre></div>
+<p>These are shown in short form. In the container, put your <code>docker run</code> mounts
+and the image name in front, as shown on
+<a href="../running-the-container/#how-a-container-call-is-put-together">Running the container</a>.</p>
+<p>Individual stages are also exposed as subcommands:</p>
+<div class="highlight"><pre><span></span><code>tetrapy<span class="w"> </span>export-matrix<span class="w"> </span>config.yml<span class="w">   </span><span class="c1"># decode expert system -&gt; material matrix CSV</span>
+tetrapy<span class="w"> </span>convolve<span class="w">      </span>config.yml<span class="w">   </span><span class="c1"># convolve reference/research libraries to scene grid</span>
+tetrapy<span class="w"> </span>sensor<span class="w">        </span>config.yml<span class="w">   </span><span class="c1"># wire convolved library into the command tree</span>
+tetrapy<span class="w"> </span>setup<span class="w">         </span>config.yml<span class="w">   </span><span class="c1"># configure a Tetracorder run (cmd-setup-tetrun)</span>
+tetrapy<span class="w"> </span>tetrun<span class="w">        </span>config.yml<span class="w">   </span><span class="c1"># execute the run (cmd.runtet)</span>
+tetrapy<span class="w"> </span>postprocess<span class="w">   </span>config.yml<span class="w">   </span><span class="c1"># write COGs and prune the run directory</span>
+tetrapy<span class="w"> </span>aggregate<span class="w">     </span>config.yml<span class="w">   </span><span class="c1"># aggregate outputs into L2B products</span>
+tetrapy<span class="w"> </span>preview<span class="w">       </span>config.yml<span class="w">   </span><span class="c1"># print the resolved config without running anything</span>
+</code></pre></div>
+<h3 id="stages">Stages<a class="headerlink" href="#stages" title="Permanent link">#</a></h3>
+<p>Each stage takes the loaded config and dispatches to the module that does the
+work. See <a href="../api/tetrapy/pipeline/#tetrapy.pipeline" title="tetrapy.pipeline"><code>tetrapy.pipeline</code></a> for the full docstrings.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Does</th>
+<th>Backed by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#export_matrix"><code>export_matrix</code></a></td>
+<td>Decode the expert system and export a material matrix CSV</td>
+<td><a href="../api/tetrapy/tetracorder/#tetrapy.tetracorder" title="tetrapy.tetracorder"><code>tetrapy.tetracorder</code></a></td>
+</tr>
+<tr>
+<td><a href="#convolve"><code>convolve</code></a></td>
+<td>Gaussian-convolve reference/research libraries to the scene grid</td>
+<td><a href="../api/tetrapy/conv/#tetrapy.conv" title="tetrapy.conv"><code>tetrapy.conv</code></a> / <a href="../api/tetrapy/tetra/#tetrapy.tetra" title="tetrapy.tetra"><code>tetrapy.tetra</code></a></td>
+</tr>
+<tr>
+<td><a href="#sensor"><code>sensor</code></a></td>
+<td>Integrate the convolved library into the command tree</td>
+<td><a href="../api/tetrapy/sensor/#tetrapy.sensor" title="tetrapy.sensor"><code>tetrapy.sensor</code></a></td>
+</tr>
+<tr>
+<td><a href="#setup"><code>setup</code></a></td>
+<td>Configure a Tetracorder run (<code>cmd-setup-tetrun</code>)</td>
+<td><a href="../api/tetrapy/tetra/#tetrapy.tetra" title="tetrapy.tetra"><code>tetrapy.tetra</code></a></td>
+</tr>
+<tr>
+<td><a href="#tetrun"><code>tetrun</code></a></td>
+<td>Execute the run (<code>cmd.runtet</code>)</td>
+<td><a href="../api/tetrapy/tetra/#tetrapy.tetra" title="tetrapy.tetra"><code>tetrapy.tetra</code></a></td>
+</tr>
+<tr>
+<td><a href="#postprocess"><code>postprocess</code></a></td>
+<td>Convert matched outputs into COGs and/or delete matched paths</td>
+<td><a href="../api/tetrapy/postprocess/#tetrapy.postprocess" title="tetrapy.postprocess"><code>tetrapy.postprocess</code></a></td>
+</tr>
+<tr>
+<td><a href="#aggregate"><code>aggregate</code></a></td>
+<td>Aggregate outputs into L2B mineral/uncertainty products</td>
+<td><a href="../api/tetrapy/aggregate/#tetrapy.aggregate" title="tetrapy.aggregate"><code>tetrapy.aggregate</code></a></td>
+</tr>
+</tbody>
+</table>
+<p>Every stage carries an <code>enabled</code> flag (documented per-stage below); the rest of
+its keys are described in each section. Values shared across stages —
+<code>data.rfl</code>, <code>data.rfluncert</code>, <code>tetracorder.*</code>, and <code>output.*</code> — are documented
+under <a href="#shared-inputs">Shared inputs</a>. After all stages complete, output
+directory permissions are set to <code>ugo+rwX,o-w</code> (group-writable,
+world-readable).</p>
+<h4 id="shared-inputs">Shared inputs<a class="headerlink" href="#shared-inputs" title="Permanent link">#</a></h4>
+<p>These keys are not owned by any one stage but are read by several of them.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Used by</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data.rfl</code></td>
+<td><code>convolve</code>, <code>sensor</code>, <code>setup</code>, <code>tetrun</code>, <code>aggregate</code></td>
+<td>Scene reflectance raster (the data file, <strong>not</strong> the <code>.hdr</code>). Its companion <code>.hdr</code> supplies the target wavelength/FWHM grid for convolution, and its band count sets the sensor restart file's channel count.</td>
+</tr>
+<tr>
+<td><code>data.rfluncert</code></td>
+<td><code>aggregate</code></td>
+<td>Reflectance-uncertainty raster. Required (together with <code>rfl</code>) to compute band-depth uncertainty.</td>
+</tr>
+<tr>
+<td><code>data.glt</code></td>
+<td><code>postprocess</code></td>
+<td>Geometry lookup table, referenced by <code>postprocess.cogs.glt</code>. When set, COGs are orthorectified onto its map grid; <code>""</code> writes them in raw instrument geometry.</td>
+</tr>
+<tr>
+<td><code>tetracorder.root</code></td>
+<td><code>export_matrix</code>, <code>sensor</code>, <code>setup</code></td>
+<td>Root of the Tetracorder install (command tree + libraries).</td>
+</tr>
+<tr>
+<td><code>tetracorder.version</code></td>
+<td><code>export_matrix</code>, <code>sensor</code>, <code>setup</code></td>
+<td>Tetracorder version, e.g. <code>6.00a</code>. Selects the <code>.cmds</code> tree and enables v6-specific patches.</td>
+</tr>
+<tr>
+<td><code>tetracorder.sensor</code></td>
+<td><code>setup</code></td>
+<td>Sensor name passed to <code>cmd-setup-tetrun</code>; typically <code>${sensor.name}</code>.</td>
+</tr>
+<tr>
+<td><code>tetracorder.mode</code></td>
+<td><code>setup</code>, <code>tetrun</code></td>
+<td>Processing mode: <code>cube</code> or <code>singlespectrum</code>.</td>
+</tr>
+<tr>
+<td><code>tetracorder.davinci</code></td>
+<td><code>tetrun</code></td>
+<td>If <code>False</code>, DaVinci entries are stripped from <code>PATH</code> before the run.</td>
+</tr>
+<tr>
+<td><code>output.tetracorder</code></td>
+<td><code>run</code>, <code>setup</code>, <code>tetrun</code>, <code>aggregate</code></td>
+<td>Tetracorder run output directory.</td>
+</tr>
+<tr>
+<td><code>output.tetrapy</code></td>
+<td><code>run</code>, <code>aggregate</code>, <code>log</code></td>
+<td>tetrapy (L2B) output directory.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="export_matrix"><code>export_matrix</code><a class="headerlink" href="#export_matrix" title="Permanent link">#</a></h4>
+<p>Decode the Tetracorder expert system and export its material matrix to CSV
+(one row per mapped material). Backed by
+<a href="../api/tetrapy/tetracorder/#tetrapy.tetracorder.TetraDecoder" title="tetrapy.tetracorder.TetraDecoder"><code>tetrapy.tetracorder.TetraDecoder</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>bool</td>
+<td>Whether the stage runs. Disabled by default in the example config.</td>
+</tr>
+<tr>
+<td><code>file</code></td>
+<td>str</td>
+<td>Destination path for the exported CSV.</td>
+</tr>
+<tr>
+<td><code>groups</code></td>
+<td>list[int]</td>
+<td>Group numbers to decode and include (e.g. <code>[1, 2]</code>).</td>
+</tr>
+<tr>
+<td><code>columns</code></td>
+<td>list[str]</td>
+<td>Record keys to emit as columns, in order — chosen from <code>id</code>, <code>group</code>, <code>library</code>, <code>record</code>, <code>title</code>, <code>path</code>.</td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td>str</td>
+<td>Reference matrix CSV. When set, a stable <code>index</code> column is added by aligning records to it, keeping material indices consistent across runs.</td>
+</tr>
+<tr>
+<td><code>sortby</code></td>
+<td>list[str]</td>
+<td>Sort key(s) for the output rows (e.g. <code>[group, index]</code>).</td>
+</tr>
+<tr>
+<td><code>clean_titles</code></td>
+<td>bool</td>
+<td>Normalize material titles when matching against the reference.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="convolve"><code>convolve</code><a class="headerlink" href="#convolve" title="Permanent link">#</a></h4>
+<p>Gaussian-convolve the unconvolved reference and research master libraries onto
+the scene's wavelength grid (read from <code>{data.rfl}.hdr</code>), writing a convolved
+specpr library for each. Backed by <a href="../api/tetrapy/tetra/#tetrapy.tetra.convolve" title="tetrapy.tetra.convolve"><code>tetrapy.tetra.convolve</code></a> /
+<a href="../api/tetrapy/conv/#tetrapy.conv" title="tetrapy.conv"><code>tetrapy.conv</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>bool</td>
+<td>Whether the stage runs.</td>
+</tr>
+<tr>
+<td><code>reflib</code></td>
+<td>str</td>
+<td>Path to the unconvolved <strong>reference</strong> master library (<code>splib06b</code>, specpr format).</td>
+</tr>
+<tr>
+<td><code>reslib</code></td>
+<td>str</td>
+<td>Path to the unconvolved <strong>research</strong> master library (<code>sprlb06b</code>, specpr format).</td>
+</tr>
+<tr>
+<td><code>output.reflib</code></td>
+<td>str</td>
+<td>Output path for the convolved reference library.</td>
+</tr>
+<tr>
+<td><code>output.reslib</code></td>
+<td>str</td>
+<td>Output path for the convolved research library.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>str</td>
+<td>Library/sensor name (typically <code>${sensor.name}</code>).</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The convolved libraries are consumed by both the <code>sensor</code> stage (wired into
+the command tree) and the <code>aggregate</code> stage (reference spectra for
+uncertainty). It raises <code>FileNotFoundError</code> if a master library or the
+scene <code>.hdr</code> is missing.</p>
+</div>
+<h4 id="sensor"><code>sensor</code><a class="headerlink" href="#sensor" title="Permanent link">#</a></h4>
+<p>Wire the convolved libraries into the Tetracorder command tree for a named
+sensor, by writing the per-sensor files the tree looks up by name (restart,
+deleted-channels, enable/disable, color-channels, and datasets). Backed by
+<a href="../api/tetrapy/sensor/#tetrapy.sensor.build" title="tetrapy.sensor.build"><code>tetrapy.sensor.build</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>bool</td>
+<td>Whether the stage runs.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>str</td>
+<td>Sensor name; every written file is keyed on it.</td>
+</tr>
+<tr>
+<td><code>deleted_channels</code></td>
+<td>mapping or str</td>
+<td>Channels Tetracorder ignores. See <a href="#deleted-channels">Deleted channels</a>. The resolved channel numbers are written to <code>DELETED.channels/delete_{name}</code>.</td>
+</tr>
+<tr>
+<td><code>enable.groups</code></td>
+<td>list</td>
+<td>Analysis groups to enable; everything else is disabled. Accepts ints and inclusive <code>"a-b"</code> range strings (e.g. <code>[1-5, 18, 20-22]</code>).</td>
+</tr>
+<tr>
+<td><code>enable.cases</code></td>
+<td>list</td>
+<td>Analysis cases to enable (same range syntax), e.g. <code>[1-6]</code>.</td>
+</tr>
+<tr>
+<td><code>colors</code></td>
+<td>list[str]</td>
+<td>Lines for the color-channels file (<code>COLOR.channels/color-{name}</code>).</td>
+</tr>
+<tr>
+<td><code>reflib</code></td>
+<td>str</td>
+<td>Convolved reference library (typically <code>${convolve.output.reflib}</code>), written into the restart file.</td>
+</tr>
+<tr>
+<td><code>reslib</code></td>
+<td>str</td>
+<td>Convolved research library (typically <code>${convolve.output.reslib}</code>), written into the restart file.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The restart file's channel count (<code>nchans</code>) is read directly from
+<code>data.rfl</code>, so it self-consistently matches the scene being mapped. Missing
+libraries raise <code>FileNotFoundError</code>.</p>
+</div>
+<h5 id="deleted-channels">Deleted channels<a class="headerlink" href="#deleted-channels" title="Permanent link">#</a></h5>
+<p>Tetracorder takes deleted channels as integer channel numbers, and ignores those
+channels when it fits. <code>deleted_channels</code> can be given in two forms:</p>
+<ul>
+<li><strong>Wavelength ranges</strong> (the default). A mapping with <code>wavelengths</code>, a list of
+  inclusive <code>[min, max]</code> ranges; <code>units</code>, <code>um</code> (default) or <code>nm</code>; and optional
+  <code>channels</code>, extra channel numbers. The ranges are converted to channel numbers
+  by matching them against the band centres in <code>{data.rfl}.hdr</code>, so the same
+  ranges work on any sensor. Anything in <code>channels</code> is deleted in addition to
+  the ranges.</li>
+<li><strong>Channel numbers.</strong> A string in Tetracorder's own syntax: <code>NtM</code> for an
+  inclusive range, single numbers, 1-based, with an optional trailing <code>c</code>. It
+  is used as written, so it is only correct on the grid it was written for.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">sensor</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">deleted_channels</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">units</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">um</span>
+<span class="w">    </span><span class="nt">wavelengths</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1.327</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.477</span><span class="p p-Indicator">]</span><span class="w">      </span><span class="c1"># 1.4 um water band</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1.770</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.968</span><span class="p p-Indicator">]</span><span class="w">      </span><span class="c1"># 1.9 um water band</span>
+<span class="w">    </span><span class="nt">channels</span><span class="p">:</span><span class="w"> </span><span class="s">"218</span><span class="nv"> </span><span class="s">219t221</span><span class="nv"> </span><span class="s">226"</span>
+</code></pre></div>
+<p>The default config's <code>channels</code> are EMIT-specific, so set
+<code>--sensor.deleted_channels.channels None</code> when you supply wavelength ranges for
+another sensor. Every resolved channel must fall within <code>[1, nchans]</code>, and the
+resolved list is logged. Backed by
+<a href="../api/tetrapy/sensor/#tetrapy.sensor.resolve_deleted_channels" title="tetrapy.sensor.resolve_deleted_channels"><code>tetrapy.sensor.resolve_deleted_channels</code></a>.</p>
+<h4 id="setup"><code>setup</code><a class="headerlink" href="#setup" title="Permanent link">#</a></h4>
+<p>Initialize a Tetracorder run via the vendored <code>cmd-setup-tetrun</code> script, then
+apply post-setup patches (geology flag, CPU count, <code>cmd.runtet</code> fixups). Backed
+by <a href="../api/tetrapy/tetra/#tetrapy.tetra.setup_tetrun" title="tetrapy.tetra.setup_tetrun"><code>tetrapy.tetra.setup_tetrun</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>bool</td>
+<td>Whether the stage runs.</td>
+</tr>
+<tr>
+<td><code>geology</code></td>
+<td>bool</td>
+<td>On v6, enables geology mode; otherwise <code>nogeology</code> is used.</td>
+</tr>
+<tr>
+<td><code>cores</code></td>
+<td>int</td>
+<td>CPU cores written to <code>TETNCPU.txt</code>. Defaults to <code>os.cpu_count()</code> when unset.</td>
+</tr>
+<tr>
+<td><code>args</code></td>
+<td>list[str]</td>
+<td>Extra arguments passed through to <code>cmd-setup-tetrun</code>, e.g. <code>["1", "-T", "-20", "80", "C", "-P", ".5", "1.5", "bar"]</code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Any pre-existing <code>output.tetracorder</code> directory is removed entirely before
+setup (<code>cmd-setup-tetrun</code> requires a fresh directory), so don't point it at
+a location holding data you want to keep.</p>
+</div>
+<h4 id="tetrun"><code>tetrun</code><a class="headerlink" href="#tetrun" title="Permanent link">#</a></h4>
+<p>Execute the run prepared by <code>setup</code> via the vendored <code>cmd.runtet</code> script,
+streaming output to a live panel and capturing it to <code>tetracorder.out</code> in the
+output directory. Backed by <a href="../api/tetrapy/tetra/#tetrapy.tetra.exec_tetrun" title="tetrapy.tetra.exec_tetrun"><code>tetrapy.tetra.exec_tetrun</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>bool</td>
+<td>Whether the stage runs.</td>
+</tr>
+<tr>
+<td><code>args</code></td>
+<td>list[str]</td>
+<td>Extra arguments passed through to <code>cmd.runtet</code>, e.g. <code>["band", "20", "gif"]</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Mode, reflectance, output directory, and the DaVinci toggle come from the
+<a href="#shared-inputs">shared</a> <code>tetracorder.mode</code>, <code>data.rfl</code>, <code>output.tetracorder</code>,
+and <code>tetracorder.davinci</code> keys.</p>
+<h4 id="postprocess"><code>postprocess</code><a class="headerlink" href="#postprocess" title="Permanent link">#</a></h4>
+<p>Repackage matched Tetracorder outputs as Cloud-Optimized GeoTIFFs and/or delete
+matched paths from the run directory. Backed by <a href="../api/tetrapy/postprocess/#tetrapy.postprocess.run" title="tetrapy.postprocess.run"><code>tetrapy.postprocess.run</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>bool</td>
+<td>Whether the stage runs.</td>
+</tr>
+<tr>
+<td><code>tetracorder</code></td>
+<td>str</td>
+<td>Glob root for both <code>cogs</code> and <code>remove</code> (typically <code>${output.tetracorder}</code>).</td>
+</tr>
+<tr>
+<td><code>cogs.output</code></td>
+<td>str</td>
+<td>Destination root; the run directory's subdirectory tree is mirrored under it.</td>
+</tr>
+<tr>
+<td><code>cogs.glob</code></td>
+<td>str or list[str]</td>
+<td>Patterns, relative to <code>tetracorder</code>, of rasters to convert (e.g. <code>"results.masses/*.png"</code>, <code>"group.*/*.depth.gz"</code>). <code>**</code> is supported.</td>
+</tr>
+<tr>
+<td><code>cogs.skip_existing</code></td>
+<td>bool</td>
+<td>Keep COGs that already exist instead of overwriting them.</td>
+</tr>
+<tr>
+<td><code>cogs.glt</code></td>
+<td>str</td>
+<td>GLT to orthorectify onto (typically <code>${data.glt}</code>). Omit or set <code>""</code> for raw geometry.</td>
+</tr>
+<tr>
+<td><code>remove</code></td>
+<td>list[str]</td>
+<td>Patterns of files or directories to delete from the run directory.</td>
+</tr>
+</tbody>
+</table>
+<p>Omit <code>cogs</code> or <code>remove</code> to skip that operation. Removal runs after COG
+conversion, so it is safe to remove the rasters the COGs were made from.</p>
+<h4 id="aggregate"><code>aggregate</code><a class="headerlink" href="#aggregate" title="Permanent link">#</a></h4>
+<p>Composite the group 1 / group 2 material rasters into the L2B mineral and
+uncertainty products, in whatever formats the output extensions imply (<code>.nc</code>
+NetCDF, <code>.tif</code> GeoTIFF). Backed by <a href="../api/tetrapy/aggregate/#tetrapy.aggregate.build" title="tetrapy.aggregate.build"><code>tetrapy.aggregate.build</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>bool</td>
+<td>Whether the stage runs.</td>
+</tr>
+<tr>
+<td><code>tetracorder</code></td>
+<td>str</td>
+<td>Tetracorder output directory to read group products from (typically <code>${output.tetracorder}</code>).</td>
+</tr>
+<tr>
+<td><code>reflib</code></td>
+<td>str</td>
+<td>Convolved reference library, supplying reference spectra for the band-depth uncertainty calculation.</td>
+</tr>
+<tr>
+<td><code>reslib</code></td>
+<td>str</td>
+<td>Convolved research library, likewise used for uncertainty.</td>
+</tr>
+<tr>
+<td><code>out_min</code></td>
+<td>str</td>
+<td>Output path for the <strong>mineral</strong> product; extension selects <code>.nc</code> or <code>.tif</code>.</td>
+</tr>
+<tr>
+<td><code>out_minuncert</code></td>
+<td>str</td>
+<td>Output path for the <strong>uncertainty</strong> product; extension selects <code>.nc</code> or <code>.tif</code>.</td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td>str</td>
+<td>Reference matrix CSV; when set, the mineral-id band uses each material's stable <code>index</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Band-depth uncertainty is only computed when all of <code>data.rfl</code>,
+<code>data.rfluncert</code>, <code>reflib</code>, and <code>reslib</code> are available. See
+<a href="#output-products">Output products</a> below for the resulting variables.</p>
+<h3 id="output-products">Output products<a class="headerlink" href="#output-products" title="Permanent link">#</a></h3>
+<p><code>aggregate</code> writes two products over the <code>downtrack</code>/<code>crosstrack</code> dimensions
+(extension decides format — <code>.nc</code> for NetCDF, <code>.tif</code> for GeoTIFF):</p>
+<ul>
+<li><strong>Mineral product</strong> (<code>out_min</code>): <code>group_1_band_depth</code>, <code>group_1_mineral_id</code>,
+  and the group 2 equivalents.</li>
+<li><strong>Uncertainty product</strong> (<code>out_minuncert</code>): <code>group_1_band_depth_unc</code>,
+  <code>group_1_fit</code>, and the group 2 equivalents.</li>
+</ul>
+<p>Mineral IDs are keyed to a stable reference matrix (<code>tetrapy/data/v6.00a6.csv</code>)
+so material indices stay consistent across runs. A group that identified nothing
+(e.g. full cloud, snow, or water) is zero-filled rather than omitted, so both
+products always carry all four group variables.</p>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">#</a></h3>
+<p>Every stage is driven by a single YAML config, with interpolation, CLI
+overrides, and section inheritance. See the <a href="../configuration/">Configuration</a>
+page for the full reference and the default <code>config.yml</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+  
+
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences, as well as to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="github" checked>
+      <span class="task-list-indicator"></span>
+      GitHub
+    </label>
+  </li>
+
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Manage settings</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.expand", "navigation.path"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+        <script src="../javascript/mkapi.js"></script>
+      
+    
+  </body>
+</html>

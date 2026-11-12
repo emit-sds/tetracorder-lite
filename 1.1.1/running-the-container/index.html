@@ -1,0 +1,2019 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://emit-sds.github.io/tetracorder-lite/1.1.1/running-the-container/">
+      
+      
+        <link rel="prev" href="../installation/">
+      
+      
+        <link rel="next" href="../pipeline/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Running the container - tetracorder-lite</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/mkapi-common.css">
+    
+      <link rel="stylesheet" href="../css/mkapi-material.css">
+    
+      <link rel="stylesheet" href="../stylesheets/icons.css">
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Running the container - tetracorder-lite" />
+<meta property="og:image" content="https://emit-sds.github.io/tetracorder-lite/1.1.1/assets/images/social/running-the-container.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://emit-sds.github.io/tetracorder-lite/1.1.1/running-the-container/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Running the container - tetracorder-lite" />
+<meta property="twitter:image" content="https://emit-sds.github.io/tetracorder-lite/1.1.1/assets/images/social/running-the-container.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#running-the-container" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="tetracorder-lite" class="md-header__button md-logo" aria-label="tetracorder-lite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            tetracorder-lite
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Running the container
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/emit-sds/tetracorder-lite/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    emit-sds/tetracorder-lite
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="tetracorder-lite" class="md-nav__button md-logo" aria-label="tetracorder-lite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    tetracorder-lite
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/emit-sds/tetracorder-lite/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    emit-sds/tetracorder-lite
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running the container
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running the container
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the container
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running the container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-in-a-codespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it in a codespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-or-podman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker or Podman
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker or Podman">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-you-are-using-podman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        If you are using Podman
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-the-container_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the container
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running the container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-a-container-call-is-put-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a container call is put together
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-a-non-emit-sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: a non-EMIT sensor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-your-own-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using your own config
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building the container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volume-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Volume contract
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Volume contract">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#on-macos-and-windows-where-output-lives-changes-the-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On macOS and Windows, where /output lives changes the runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../convolved-library-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Convolved library
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developers
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developers
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developers/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developers/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tetrapy
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    tetrapy
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_1_2" id="__nav_8_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tetrapy.conv
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_8_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    tetrapy.conv
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/conv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/conv/convolve/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Convolve
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/conv/library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Library
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/conv/specpr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specpr
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/aggregate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Aggregate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/postprocess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Postprocess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/sensor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sensor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/tetra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tetra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/tetracorder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tetracorder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/tetrapy/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the container
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running the container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#try-it-in-a-codespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it in a codespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker-or-podman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker or Podman
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker or Podman">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-you-are-using-podman" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        If you are using Podman
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick start
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-the-container_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the container
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running the container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-a-container-call-is-put-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a container call is put together
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-a-non-emit-sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: a non-EMIT sensor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-your-own-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using your own config
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-the-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building the container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volume-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Volume contract
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Volume contract">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#on-macos-and-windows-where-output-lives-changes-the-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On macOS and Windows, where /output lives changes the runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>Running the container</h1>
+
+<h2 id="running-the-container">Running the container<a class="headerlink" href="#running-the-container" title="Permanent link">#</a></h2>
+<p>Most people run the whole pipeline in one <code>docker run</code> (or <code>podman run</code>) call
+and never install <code>tetrapy</code> themselves. This page covers the container:
+Docker vs Podman, Windows, how a container call is put together, building the
+image, and the volume contract. The rest of the site documents <code>tetrapy</code>
+itself.</p>
+<!-- The sections below are included from README.md, which stays the single
+     source. Edit them there, between the "container" and "volumes" snippet
+     markers. -->
+
+<h3 id="try-it-in-a-codespace">Try it in a codespace<a class="headerlink" href="#try-it-in-a-codespace" title="Permanent link">#</a></h3>
+<p><a href="https://codespaces.new/emit-sds/tetracorder-lite?quickstart=1"><img alt="Open in GitHub Codespaces" src="https://github.com/codespaces/badge.svg" /></a></p>
+<p>A guided walkthrough: run Tetracorder over a 300x150 window of a real EMIT L2A
+scene, one step at a time, and see the mineral maps at the end. No install, no
+configuration; about ten minutes of which nine are the run itself.</p>
+<p>The badge above opens a GitHub codespace of the repo. The terminal banner tells you
+how to start the demo (<code>.devcontainer/get-started.sh</code>), which then walks you
+through tetracorder-lite one step at a time. See
+<a href="https://github.com/emit-sds/tetracorder-lite/blob/main/.devcontainer/README.md"><code>.devcontainer/README.md</code></a> for specific details of how it all works.</p>
+<h3 id="docker-or-podman">Docker or Podman<a class="headerlink" href="#docker-or-podman" title="Permanent link">#</a></h3>
+<p>Either works. Podman implements the same command-line interface, so every
+example below runs unchanged under <code>podman</code> — substitute the command name and
+nothing else. The only additions Podman ever needs are volume suffixes on
+SELinux systems, covered below.</p>
+<p><strong>Install</strong> — follow the official instructions, they change more often than this
+file does:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Docker</th>
+<th>Podman</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows</td>
+<td><a href="https://learn.microsoft.com/windows/wsl/wsl-container">WSL containers</a> (<code>wslc</code>, recommended; see below) or <a href="https://docs.docker.com/desktop/install/windows-install/">Docker Desktop</a></td>
+<td><a href="https://podman-desktop.io/docs/installation/windows-install">Podman Desktop</a></td>
+</tr>
+<tr>
+<td>macOS</td>
+<td><a href="https://docs.docker.com/desktop/install/mac-install/">Docker Desktop</a></td>
+<td><a href="https://podman-desktop.io/docs/installation/macos-install">Podman Desktop</a></td>
+</tr>
+<tr>
+<td>Linux</td>
+<td><a href="https://docs.docker.com/engine/install/">Docker Engine</a></td>
+<td><a href="https://podman.io/docs/installation#installing-on-linux">Podman</a></td>
+</tr>
+</tbody>
+</table>
+<h4 id="windows">Windows<a class="headerlink" href="#windows" title="Permanent link">#</a></h4>
+<p>Every option on Windows runs Linux containers in a WSL 2 virtual machine.</p>
+<p><strong>Recommended: WSL containers (<code>wslc</code>).</strong> Since September 2026, WSL includes its
+own container engine, so there is nothing else to install and no Docker Desktop
+licence to consider. You need WSL 2.9.3 or later. From PowerShell:</p>
+<div class="highlight"><pre><span></span><code><span class="n">wsl</span> <span class="p">-</span><span class="n">-install</span>      <span class="c"># first time only, then reboot</span>
+<span class="n">wsl</span> <span class="p">-</span><span class="n">-update</span>
+<span class="n">wslc</span> <span class="n">version</span>
+</code></pre></div>
+<p>Run the examples in this README from PowerShell, with <code>wslc</code> in place of <code>docker</code>.</p>
+<p>For performance, write <code>/output</code> to a named volume rather than a Windows folder (see
+<a href="#on-macos-and-windows-where-output-lives-changes-the-runtime">where <code>/output</code> lives</a>):</p>
+<div class="highlight"><pre><span></span><code><span class="n">wslc</span> <span class="n">volume</span> <span class="n">create</span> <span class="p">-</span><span class="n">-driver</span> <span class="n">vhd</span> <span class="n">-o</span> <span class="n">SizeBytes</span><span class="p">=</span><span class="n">20000000000</span> <span class="n">tetra-out</span>
+<span class="n">wslc</span> <span class="n">run</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="n">C</span><span class="p">:\</span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">scenes</span><span class="p">:/</span><span class="n">data</span> <span class="n">-v</span> <span class="n">tetra-out</span><span class="p">:/</span><span class="n">output</span> <span class="p">`</span>
+  <span class="n">tetracorder-lite</span> <span class="n">tetrapy</span> <span class="n">run</span> <span class="n">config</span><span class="p">.</span><span class="n">yml</span> <span class="p">`</span>
+    <span class="p">-</span><span class="n">-data</span><span class="p">.</span><span class="n">rfl</span> <span class="p">/</span><span class="n">data</span><span class="p">/&lt;</span><span class="n">scene</span><span class="p">&gt;</span><span class="n">_rfl</span> <span class="p">-</span><span class="n">-data</span><span class="p">.</span><span class="n">rfluncert</span> <span class="p">/</span><span class="n">data</span><span class="p">/&lt;</span><span class="n">scene</span><span class="p">&gt;</span><span class="n">_uncert</span>
+<span class="c"># copy the results out in one pass</span>
+<span class="n">wslc</span> <span class="n">run</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="n">tetra-out</span><span class="p">:/</span><span class="n">output</span> <span class="n">-v</span> <span class="n">C</span><span class="p">:\</span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">results</span><span class="p">:/</span><span class="n">host</span> <span class="p">`</span>
+  <span class="n">tetracorder-lite</span> <span class="nb">cp </span><span class="n">-a</span> <span class="p">/</span><span class="n">output</span><span class="p">/.</span> <span class="p">/</span><span class="n">host</span><span class="p">/</span>
+</code></pre></div>
+<p><strong>Alternatives: Docker Desktop or Podman Desktop.</strong> Install either one, and turn
+on Docker Desktop's <strong>Settings → Resources → WSL integration</strong> for your
+distribution. Then run <code>docker</code> or <code>podman</code> from inside the WSL shell, and keep
+scenes and output under your WSL home (<code>/home/you/...</code>), not <code>/mnt/c/...</code>. You can
+still reach those files from Explorer at <code>\\wsl$\Ubuntu\home\you</code>.</p>
+<p>Details: <a href="https://learn.microsoft.com/windows/wsl/wsl-container">WSL containers</a> ·
+<a href="https://learn.microsoft.com/windows/wsl/install">WSL install</a> ·
+<a href="https://docs.docker.com/desktop/wsl/">Docker Desktop WSL 2 backend</a> ·
+<a href="https://podman-desktop.io/docs/installation/windows-install">Podman on WSL</a></p>
+<h4 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">#</a></h4>
+<p>Tetracorder-lite images are provided for both <strong>linux/amd64 and linux/arm64</strong>, so modern platforms should pull the correct image. If you need a specific architecture, for instance to compare results under
+emulation, ask for it as usual:</p>
+<div class="highlight"><pre><span></span><code>--platform=linux/amd64
+</code></pre></div>
+<h4 id="if-you-are-using-podman">If you are using Podman<a class="headerlink" href="#if-you-are-using-podman" title="Permanent link">#</a></h4>
+<p>Nothing in the examples changes — <code>--rm</code>, <code>-v</code>, <code>-e</code> and the rest mean the same
+thing to both. Two things are worth knowing anyway:</p>
+<ul>
+<li><strong>SELinux</strong> (Fedora, RHEL, CentOS): add <code>:z</code> to bind mounts, as in
+  <code>-v /path/to/input:/data:z</code>. Without it the container cannot read the mount.
+  This is the one flag Docker has no equivalent for.</li>
+<li><strong>Rootless</strong>: files written to <code>/output</code> come back owned by you, not by root,
+  which is usually what you want.</li>
+</ul>
+<h3 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">#</a></h3>
+<p>Most people run the whole pipeline in one container call and never install
+<code>tetrapy</code> themselves. Put the scene's ENVI files in one directory and run:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>/path/to/scenes:/data<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>tetra-out:/output<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>tetracorder-lite<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>tetrapy<span class="w"> </span>run<span class="w"> </span>config.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data.rfl<span class="w">       </span>/data/&lt;scene&gt;_rfl<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data.rfluncert<span class="w"> </span>/data/&lt;scene&gt;_uncert<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data.glt<span class="w">       </span>/data/&lt;scene&gt;_glt
+</code></pre></div>
+<p>This convolves the spectral library onto the scene's wavelength grid, runs
+Tetracorder, writes COGs, and aggregates the result into L2B mineral products under
+<code>/output/test/</code>. Point <code>--data.*</code> at the data files, not the <code>.hdr</code>s. The examples
+use <code>tetracorder-lite</code> as the image name, which is the tag
+<a href="#building-the-container">Building the container</a> produces. If your image has a
+different name, use that instead.</p>
+<p><code>tetra-out</code> is a named volume, which is the fast choice on macOS and Windows. Copy
+the results out when the run finishes. See
+<a href="#on-macos-and-windows-where-output-lives-changes-the-runtime">where <code>/output</code> lives</a>.
+On Linux you can bind-mount a host directory, for example <code>-v /path/to/output:/output</code>.</p>
+<h3 id="running-the-container_1">Running the container<a class="headerlink" href="#running-the-container_1" title="Permanent link">#</a></h3>
+<h4 id="how-a-container-call-is-put-together">How a container call is put together<a class="headerlink" href="#how-a-container-call-is-put-together" title="Permanent link">#</a></h4>
+<p>Every call has the same two halves. Everything up to and including the image name
+is the container method: which engine, which mounts, which image. Everything after
+the image name is the command that runs inside the container:</p>
+<div class="highlight"><pre><span></span><code>docker run --rm -v …:/data -v …:/output IMAGE  tetrapy &lt;command&gt; config.yml [--key value …]
+└───────────── container method ────────────┘  └───────── runs inside the container ──────┘
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>docker run --rm</code></td>
+<td>Engine. <code>podman run --rm</code> works the same way (see <a href="#docker-or-podman">Docker or Podman</a>)</td>
+</tr>
+<tr>
+<td><code>-v …:/data</code></td>
+<td>Your input scenes. Read-only access is enough</td>
+</tr>
+<tr>
+<td><code>-v …:/output</code></td>
+<td>Where results are written</td>
+</tr>
+<tr>
+<td><code>IMAGE</code></td>
+<td><code>tetracorder-lite</code> in these examples; substitute your image's name</td>
+</tr>
+<tr>
+<td><code>tetrapy &lt;command&gt;</code></td>
+<td>The command to run. The image's default command is bare <code>tetrapy</code>, and anything you put after the image name replaces it, so <code>tetrapy</code> must be typed out</td>
+</tr>
+<tr>
+<td><code>config.yml</code></td>
+<td>The default config baked into the image (at <code>/root/config.yml</code>, the working directory)</td>
+</tr>
+<tr>
+<td><code>--key value</code></td>
+<td>Overrides for any config value (see below)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The rest of this README shows commands in their short form</strong>, such as
+<code>tetrapy run config.yml …</code> or <code>tetrapy aggregate config.yml</code>. Run them by putting
+your container method in front, exactly as in the Quick start. Mounts and engine
+flags go before the image name. Config overrides go after <code>config.yml</code>.</p>
+<h4 id="common-options">Common options<a class="headerlink" href="#common-options" title="Permanent link">#</a></h4>
+<p>Add these after <code>config.yml</code>. Quote any value that contains spaces, so your shell
+passes it as a single argument.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--output.base /output/&lt;run&gt;</code></td>
+<td>Writes this run under its own directory. Tetracorder's output directory is wiped at the start of each run, so give each run its own <code>base</code> if you want to keep earlier results</td>
+</tr>
+<tr>
+<td><code>--data.glt ""</code></td>
+<td>No GLT. COGs are written in raw instrument geometry instead of being orthorectified</td>
+</tr>
+<tr>
+<td><code>--sensor.deleted_channels.wavelengths "[[…], …]"</code></td>
+<td>Wavelength ranges to delete (water bands, detector edges). tetrapy converts them to channel numbers using the scene's own grid; see the non-EMIT example below</td>
+</tr>
+<tr>
+<td><code>--&lt;stage&gt;.enabled False</code></td>
+<td>Skips a pipeline stage, such as <code>--postprocess.enabled False</code> (see <a href="https://github.com/emit-sds/tetracorder-lite#the-pipeline">The pipeline</a>)</td>
+</tr>
+</tbody>
+</table>
+<p>To check the resolved config without running anything, replace <code>run</code> with <code>preview</code>:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>tetracorder-lite<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>tetrapy<span class="w"> </span>preview<span class="w"> </span>config.yml<span class="w"> </span>--output.base<span class="w"> </span>/output/run2
+</code></pre></div>
+<h4 id="example-a-non-emit-sensor">Example: a non-EMIT sensor<a class="headerlink" href="#example-a-non-emit-sensor" title="Permanent link">#</a></h4>
+<p>Tetracorder takes deleted channels as integer channel numbers. tetrapy lets you
+give them as wavelength ranges instead: the <code>sensor</code> stage converts each range to
+channel numbers using the band centres in the scene's <code>.hdr</code>, so the same ranges
+work on any sensor.</p>
+<p>Anything in <code>sensor.deleted_channels.channels</code> is deleted in addition to the
+ranges, and the default config sets it, so set it to <code>None</code> when you supply your
+own wavelengths:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>/path/to/scenes:/data<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>tetra-out:/output<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>tetracorder-lite<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>tetrapy<span class="w"> </span>run<span class="w"> </span>config.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data.rfl<span class="w">       </span>/data/&lt;scene&gt;_rfl<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data.rfluncert<span class="w"> </span>/data/&lt;scene&gt;_uncert<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data.glt<span class="w">       </span><span class="s2">""</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output.base<span class="w">    </span>/output/aviris-ng<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--sensor.deleted_channels.units<span class="w">       </span>nm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--sensor.deleted_channels.wavelengths<span class="w"> </span><span class="s2">"[[365, 400], [1340, 1460], [1790, 1960], [2450, 2520]]"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--sensor.deleted_channels.channels<span class="w">    </span>None
+</code></pre></div>
+<p>Ranges are inclusive and in <code>units</code> (<code>um</code> by default, or <code>nm</code>). The ranges above
+are illustrative, so tune them for your instrument. The <code>sensor</code> stage logs the
+channels it resolved, and <a href="https://github.com/emit-sds/tetracorder-lite#deleted-channels">Deleted channels</a> covers the full
+syntax.</p>
+<h4 id="using-your-own-config">Using your own config<a class="headerlink" href="#using-your-own-config" title="Permanent link">#</a></h4>
+<p>For repeated runs of the same kind, for example one sensor, copy
+<a href="https://github.com/emit-sds/tetracorder-lite/blob/main/config.yml"><code>config.yml</code></a>, edit it, and mount it into the container:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>/path/to/scenes:/data<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span>tetra-out:/output<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/config.aviris.yml:/config/config.aviris.yml:ro"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>tetracorder-lite<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>tetrapy<span class="w"> </span>run<span class="w"> </span>/config/config.aviris.yml<span class="w"> </span>--data.rfl<span class="w"> </span>/data/&lt;scene&gt;_rfl
+</code></pre></div>
+<p>Overrides still apply on top of a mounted config.</p>
+<h3 id="building-the-container">Building the container<a class="headerlink" href="#building-the-container" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>Containerfile<span class="w"> </span>-t<span class="w"> </span>tetracorder-lite<span class="w"> </span>.
+</code></pre></div>
+<p>The image compiles specpr + Tetracorder (Fortran/ratfor) and DaVinci (C), then
+sets up the <code>tetrapy</code> Python environment with uv. DaVinci builds from the
+vendored source in <a href="https://github.com/emit-sds/tetracorder-lite/blob/main/vendor/davinci/VENDOR.md"><code>vendor/davinci</code></a> in a separate
+stage, so the compilers and source do not end up in the finished image.</p>
+<p>The build is native on both amd64 and arm64, so nothing here is emulated. To
+build for the architecture you are not on, which <em>is</em> emulated and much slower:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>buildx<span class="w"> </span>build<span class="w"> </span>--platform<span class="o">=</span>linux/arm64<span class="w"> </span>-f<span class="w"> </span>Containerfile<span class="w"> </span>-t<span class="w"> </span>tetracorder-lite<span class="w"> </span>.
+</code></pre></div>
+<h3 id="volume-contract">Volume contract<a class="headerlink" href="#volume-contract" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Mount point</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/data</code></td>
+<td>Input: reflectance + uncertainty (ENVI format with <code>.hdr</code>; the reflectance header supplies the target grid) and optional GLT</td>
+</tr>
+<tr>
+<td><code>/output</code></td>
+<td>Output: tetracorder results, COGs, and aggregated L2B products</td>
+</tr>
+<tr>
+<td><code>/conv</code></td>
+<td>Optional: convolved libraries (written inside the container unless mounted)</td>
+</tr>
+</tbody>
+</table>
+<p>The unconvolved master libraries (<code>splib06b</code>, <code>sprlb06b</code>; ~24 MB total) are <strong>baked
+into the image</strong> at <code>/root/tetracorder/sl1/usgs/library06.conv/</code>, so a normal run only
+needs the scene mounted at <code>/data</code>. The <code>convolve</code> stage reads its target
+wavelength/FWHM grid from the reflectance ENVI header (<code>${data.rfl}.hdr</code>), so the
+convolved library self-consistently matches the scene.</p>
+<h4 id="on-macos-and-windows-where-output-lives-changes-the-runtime">On macOS and Windows, where <code>/output</code> lives changes the runtime<a class="headerlink" href="#on-macos-and-windows-where-output-lives-changes-the-runtime" title="Permanent link">#</a></h4>
+<p>A full scene writes <strong>8,516 files</strong>. On Linux that costs nothing — the daemon shares
+your kernel and a bind mount is an ordinary path. On macOS and Windows every
+container runs inside a Linux VM, and a bind mount of a host directory crosses a
+file-sharing layer that charges per filesystem operation. Thousands of small
+creates, writes, gzips and renames is the worst possible shape for it.</p>
+<p>Measured on an M5 Max under Colima (4 CPU, virtiofs), full EMIT granule
+<code>emit20250327t212148</code>, 1242x1280x285, everything else held constant:</p>
+<table>
+<thead>
+<tr>
+<th><code>/output</code> on</th>
+<th>total</th>
+<th><code>tetrun</code></th>
+<th>CPU</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a named volume</td>
+<td><strong>6m 42s</strong></td>
+<td>5m 58s</td>
+<td>200%</td>
+</tr>
+<tr>
+<td>a host bind mount</td>
+<td>24m 23s</td>
+<td>23m 31s</td>
+<td>71%</td>
+</tr>
+</tbody>
+</table>
+<p>Same image, same scene, byte-identical <code>agg.nc</code> — <strong>3.6x</strong>, purely from where the
+output went. The CPU column is the tell: on the volume the run never drops below one
+core, on the bind mount it sits under one core 79% of the time with the rest idle,
+waiting on the filesystem. Raising the VM's CPU allocation does not help, because
+cores were never the constraint.</p>
+<p>So on macOS and Windows, write to a volume and copy out at the end:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>tetra-out
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span>/path/to/input:/data<span class="w"> </span>-v<span class="w"> </span>tetra-out:/output<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>tetracorder-lite<span class="w"> </span>tetrapy<span class="w"> </span>run<span class="w"> </span>config.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--data.rfl<span class="w"> </span>/data/&lt;scene&gt;_rfl<span class="w"> </span>--data.rfluncert<span class="w"> </span>/data/&lt;scene&gt;_uncert
+<span class="c1"># one bulk pass, ~11 s for 1.8 GB -- the cost is per-operation, not per-byte</span>
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span>tetra-out:/output<span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/results:/host"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>tetracorder-lite<span class="w"> </span>cp<span class="w"> </span>-a<span class="w"> </span>/output/.<span class="w"> </span>/host/
+</code></pre></div>
+<p>Input can stay bind-mounted: it is two large sequential reads, which this layer
+handles fine.</p>
+<p>On <strong>Windows</strong>, <a href="#windows">the Windows section</a> shows the same pattern with
+<code>wslc volume create</code>. Under Docker Desktop or Podman, keeping data in your WSL home
+rather than <code>/mnt/c/...</code> avoids the much more expensive crossing into NTFS, but a
+named volume is still the safer choice.
+On <strong>Linux</strong>, ignore all of this and bind-mount whatever you like.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+  
+
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences, as well as to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="github" checked>
+      <span class="task-list-indicator"></span>
+      GitHub
+    </label>
+  </li>
+
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Manage settings</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.expand", "navigation.path"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+        <script src="../javascript/mkapi.js"></script>
+      
+    
+  </body>
+</html>
